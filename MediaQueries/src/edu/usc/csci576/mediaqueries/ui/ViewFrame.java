@@ -15,6 +15,7 @@ public class ViewFrame extends JFrame{
 		super(title);
 		panel = new JPanel();
 		this.getContentPane().add(panel);
+		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		this.setLocation(dim.width / 2 - this.getSize().width / 2,
