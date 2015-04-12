@@ -70,6 +70,20 @@ public class MainFrameUI extends JFrame {
 		queryImageBox.setIcon(new ImageIcon(originalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 	}
+	
+	/**
+	 * External Interface to set the frame for queryImageBox
+	 */
+	public void setQueryImageBoxFrame(BufferedImage frame) {
+		queryImageBox.setIcon(new ImageIcon(frame));
+	}
+	
+	/**
+	 * External Interface to set the frame for resultImageBox
+	 */
+	public void setResultImageBoxFrame(BufferedImage frame) {
+		resultImageBox.setIcon(new ImageIcon(frame));
+	}
 
 	/**
 	 * Create the frame.
