@@ -11,13 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import edu.usc.csci576.mediaqueries.controller.*;
-import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JList;
 import javax.swing.JSlider;
-import javax.swing.BoxLayout;
-import java.awt.Rectangle;
-import java.awt.GridBagLayout;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -30,7 +26,7 @@ public class MainFrameUI extends JFrame {
 	private static final long serialVersionUID = 3055287536615125669L;
 	private JPanel contentPane;
 	private JTextField queryTextField;
-	private JList resultList;
+	private JList<String> resultList;
 	private JLabel matchedVideosLabel;
 	private JPanel resultVideoWrapper;
 	private JPanel visualDescriptorGraphPanel;
@@ -100,7 +96,7 @@ public class MainFrameUI extends JFrame {
 		queryTextLabel.setBounds(111, 159, 62, 22);
 		mainPanel.add(queryTextLabel);
 		
-		resultList = new JList();
+		resultList = new JList<String>();
 		resultList.setBounds(470, 75, 235, 110);
 		String[] ResultListData = {"Mov 1 - 90%","Mov 31 - 87%","Mov 11 - 61%","Mov 12 - 14%"};
 		resultList.setListData(ResultListData);
