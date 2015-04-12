@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import edu.usc.csci576.mediaqueries.controller.*;
+import javax.swing.JSplitPane;
 
 public class MainFrameUI extends JFrame {
 
