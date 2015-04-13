@@ -11,15 +11,20 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import edu.usc.csci576.mediaqueries.controller.*;
+
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JList;
 import javax.swing.JSlider;
 import javax.swing.BoxLayout;
+import javax.swing.UIManager;
+
 import java.awt.Rectangle;
 import java.awt.GridBagLayout;
 import java.awt.FlowLayout;
+
 import javax.swing.JButton;
+
 import java.awt.Color;
 
 public class MainFrameUI extends JFrame {
@@ -55,6 +60,7 @@ public class MainFrameUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					MainFrameUI frame = new MainFrameUI();
 					frame.displayImages();
 					frame.setVisible(true);
