@@ -16,14 +16,15 @@ public class VideoPlayer implements Runnable {
 	MainFrameUI uiObject;
 	private Thread t;
 	private String threadName;
+	private int startFrame;
 	
 	/**
 	 * 
 	 */
 	public void run() {
-		int frame = 1;
 		while(true) {
-			String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, frame);
+			
+			String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, startFrame);
 			File f = new File(filePathString);
 			if(f.exists() && !f.isDirectory()) {
 				byte[] bytes = ImageHandler.readImageFromFile(filePathString);
@@ -43,7 +44,7 @@ public class VideoPlayer implements Runnable {
 			} else {
 				break;
 			}
-			frame++;
+			startFrame++;
 		}
 	}
 	
@@ -63,6 +64,7 @@ public class VideoPlayer implements Runnable {
 	 */
 	public VideoPlayer(String name, MainFrameUI ui, String filepath_s, int type) {
 		threadName = name;
+		startFrame = 1;
 		filepath = filepath_s;
 		int lastsep = filepath.lastIndexOf("/");
 		filename = filepath.substring(lastsep + 1);
