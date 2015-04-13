@@ -61,12 +61,12 @@ public class VideoPlayer implements Runnable {
 	 * type 0 = query
 	 * type 1 = result
 	 */
-	public VideoPlayer(String name, MainFrameUI ui, String filepath_s, int t) {
+	public VideoPlayer(String name, MainFrameUI ui, String filepath_s, int type) {
 		threadName = name;
 		filepath = filepath_s;
 		int lastsep = filepath.lastIndexOf("/");
 		filename = filepath.substring(lastsep + 1);
-		type = t;
+		this.type = type;
 		uiObject = ui;
 	}
 }
