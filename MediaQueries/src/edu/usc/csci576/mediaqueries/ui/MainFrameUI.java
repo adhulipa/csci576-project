@@ -103,7 +103,7 @@ public class MainFrameUI extends JFrame {
 	public MainFrameUI() {
 		super("Media Queries");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 100, 794, 814);
+		setBounds(300, 100, 784, 757);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -114,30 +114,30 @@ public class MainFrameUI extends JFrame {
 		mainPanel.setLayout(null);
 		
 		queryTextField = new JTextField();
-		queryTextField.setBounds(111, 191, 174, 32);
+		queryTextField.setBounds(43, 299, 174, 32);
 		mainPanel.add(queryTextField);
 		queryTextField.setColumns(10);
 		
 		JLabel queryTextLabel = new JLabel("Query:");
-		queryTextLabel.setBounds(111, 159, 62, 22);
+		queryTextLabel.setBounds(43, 267, 62, 22);
 		mainPanel.add(queryTextLabel);
 		
 		resultList = new JList<String>();
-		resultList.setBounds(470, 75, 235, 110);
+		resultList.setBounds(469, 44, 235, 110);
 		String[] ResultListData = {"Mov 1 - 90%","Mov 31 - 87%","Mov 11 - 61%","Mov 12 - 14%"};
 		resultList.setListData(ResultListData);
 		mainPanel.add(resultList);
 		
 		matchedVideosLabel = new JLabel("Matched Videos");
-		matchedVideosLabel.setBounds(470, 42, 96, 22);
+		matchedVideosLabel.setBounds(469, 11, 96, 22);
 		mainPanel.add(matchedVideosLabel);
 		
 		JSlider seekBar = new JSlider();
-		seekBar.setBounds(401, 353, 352, 32);
+		seekBar.setBounds(401, 299, 352, 32);
 		mainPanel.add(seekBar);
 		
 		resultVideoWrapper = new JPanel();
-		resultVideoWrapper.setBounds(389, 396, 369, 358);
+		resultVideoWrapper.setBounds(389, 342, 369, 358);
 		mainPanel.add(resultVideoWrapper);
 		resultVideoWrapper.setLayout(null);
 		
@@ -171,11 +171,11 @@ public class MainFrameUI extends JFrame {
 
 		visualDescriptorGraphPanel = new JPanel();
 		visualDescriptorGraphPanel.setBackground(Color.WHITE);
-		visualDescriptorGraphPanel.setBounds(470, 219, 235, 100);
+		visualDescriptorGraphPanel.setBounds(469, 188, 235, 100);
 		mainPanel.add(visualDescriptorGraphPanel);
 		
 		queryVideoWrapper = new JPanel();
-		queryVideoWrapper.setBounds(10, 396, 369, 358);
+		queryVideoWrapper.setBounds(10, 342, 369, 358);
 		mainPanel.add(queryVideoWrapper);
 		queryVideoWrapper.setLayout(null);
 		
