@@ -16,3 +16,6 @@ hs_err_pid*
 
 # wav file #
 *.wav
+
+CSCI576_Project_Database/*
+**/queryvids/**

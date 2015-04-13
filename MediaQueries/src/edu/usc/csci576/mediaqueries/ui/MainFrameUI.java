@@ -76,7 +76,7 @@ public class MainFrameUI extends JFrame {
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 		
 		/* Right now for testing */
-		VideoPlayer player = new VideoPlayer("Query", this, "database/flowers", 0);
+		VideoPlayer player = new VideoPlayer("Query", this, "database/musicvideo", 0);
 		player.start();
 	}
 	
