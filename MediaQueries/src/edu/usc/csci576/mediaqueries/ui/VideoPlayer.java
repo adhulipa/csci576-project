@@ -21,9 +21,9 @@ public class VideoPlayer implements Runnable {
 	 * 
 	 */
 	public void run() {
-		int i = 1;
+		int frame = 1;
 		while(true) {
-			String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, i);
+			String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, frame);
 			File f = new File(filePathString);
 			if(f.exists() && !f.isDirectory()) {
 				byte[] bytes = ImageHandler.readImageFromFile(filePathString);
@@ -43,7 +43,7 @@ public class VideoPlayer implements Runnable {
 			} else {
 				break;
 			}
-			i++;
+			frame++;
 		}
 	}
 	

@@ -76,7 +76,7 @@ public class MainFrameUI extends JFrame {
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 		
 		/* Right now for testing */
-		VideoPlayer player = new VideoPlayer("Query", this, "database/musicvideo", 0);
+		VideoPlayer player = new VideoPlayer("Query", this, "database/flowers", 0);
 		player.start();
 	}
 	
@@ -100,7 +100,7 @@ public class MainFrameUI extends JFrame {
 	public MainFrameUI() {
 		super("Media Queries");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 794, 814);
+		setBounds(300, 100, 794, 814);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
