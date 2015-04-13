@@ -20,6 +20,8 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainFrameUI extends JFrame {
 
@@ -46,7 +48,9 @@ public class MainFrameUI extends JFrame {
 	private JPanel resultVideoPanel;
 	private JLabel queryImageBox;
 	private JLabel resultImageBox;
-
+	private VideoPlayer queryVideoPlayer;
+	private VideoPlayer resultVideoPlayer;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -74,10 +78,9 @@ public class MainFrameUI extends JFrame {
 		
 		queryImageBox.setIcon(new ImageIcon(originalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
+		queryVideoPlayer = new VideoPlayer("Query", this, "database/flowers", 0);
+		resultVideoPlayer = new VideoPlayer("Result", this, "database/starcraft", 1);
 		
-		/* Right now for testing */
-		VideoPlayer player = new VideoPlayer("Query", this, "database/flowers", 0);
-		player.start();
 	}
 	
 	/**
@@ -144,6 +147,12 @@ public class MainFrameUI extends JFrame {
 		resultButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		resultBtnPlay = new JButton("PLAY");
+		resultBtnPlay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//resultVideoPlayer.setStartFrame(0);
+				resultVideoPlayer.start();
+			}
+		});
 		resultButtonPanel.add(resultBtnPlay);
 		
 		resultBtnPause = new JButton("PAUSE");
@@ -176,6 +185,13 @@ public class MainFrameUI extends JFrame {
 		queryButtonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		queryBtnPlay = new JButton("PLAY");
+		queryBtnPlay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//queryVideoPlayer.setStartFrame(0);
+				queryVideoPlayer.start();
+			}
+			
+		});
 		queryButtonsPanel.add(queryBtnPlay);
 		
 		queryBtnPause = new JButton("PAUSE");
