@@ -13,12 +13,13 @@ public class VideoPlayer implements Runnable {
 	private String filepath;
 	private String filename;
 	private int type;
-	MainFrameUI uiObject;
+	private MainFrameUI uiObject;
 	private Thread videoPlayer;
 	private String threadName;
 	private int startFrame;
 	private int currentFrame;
 	private JLabel videoBox;
+	private BufferedImage[] scrubBuffer;
 	
 	/**
 	 * type 0 = query
@@ -36,7 +37,31 @@ public class VideoPlayer implements Runnable {
 		this.filename = filepath.substring(lastsep + 1);
 		this.type = type;
 		this.uiObject = ui;
+		this.scrubBuffer = populateScrubBuffer(filepath);
+	}
+
+	private BufferedImage[] populateScrubBuffer(String filepath) {
 		
+		int frame = 1;
+		int i = 0;
+		BufferedImage[] sb = new BufferedImage[20];
+		while (frame <= 600) {
+			
+			String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, frame);
+			File f = new File(filePathString);
+			BufferedImage img;
+			
+			if(f.exists() && !f.isDirectory()) {
+				byte[] bytes = ImageHandler.readImageFromFile(filePathString);
+				 img = ImageHandler.toBufferedImage(bytes, 352,
+						288, BufferedImage.TYPE_INT_RGB);
+				 sb[i++] = img;
+			}
+			
+			frame += 30;
+			
+		}
+		return sb;
 	}
 
 	/**
@@ -101,6 +126,11 @@ public class VideoPlayer implements Runnable {
 			}
 			currentFrame++;
 		}
+	}
+
+	public void setFrameAtIndex(int scrubIndex) {
+		pauseVideo();
+		uiObject.setResultImageBoxFrame(scrubBuffer[scrubIndex-1]);
 	}
 	
 }

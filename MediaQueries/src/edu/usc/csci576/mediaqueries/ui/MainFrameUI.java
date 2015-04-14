@@ -136,10 +136,12 @@ public class MainFrameUI extends JFrame {
 		matchedVideosLabel.setBounds(469, 11, 96, 22);
 		mainPanel.add(matchedVideosLabel);
 		
-		seekBar = new JSlider(1,600);
+		seekBar = new JSlider(1,20);
 		seekBar.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				int nextFrame = seekBar.getValue();
+				int scrubIndex = seekBar.getValue();
+				resultVideoPlayer.setFrameAtIndex(scrubIndex );
+				System.out.println(scrubIndex );
 				//resultVideoPlayer.playFromFrame(nextFrame);
 			}
 		});
