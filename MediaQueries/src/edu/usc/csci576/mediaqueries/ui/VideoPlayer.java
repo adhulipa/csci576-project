@@ -37,8 +37,6 @@ public class VideoPlayer implements Runnable {
 		this.type = type;
 		this.uiObject = ui;
 		
-		
-		
 	}
 
 	/**
@@ -48,14 +46,11 @@ public class VideoPlayer implements Runnable {
 	 */
 	
 	public void playFromFrame(int frameNum) {
-		
 		currentFrame = frameNum;
 		if (videoPlayer == null) {
 	         videoPlayer = new Thread (this, threadName);
 	         videoPlayer.start ();
 	      }
-
-		
 	}
 	
 	public void playVideo() {
@@ -97,12 +92,12 @@ public class VideoPlayer implements Runnable {
 				
 				
 				try {
-					Thread.sleep(33);
+					Thread.sleep(25);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			} else {
-				break;
+				this.stopVideo();
 			}
 			currentFrame++;
 		}
