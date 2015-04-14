@@ -117,7 +117,7 @@ public class VideoPlayer implements Runnable {
 				
 				
 				try {
-					Thread.sleep(25);
+					Thread.sleep(33);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
