@@ -3,28 +3,87 @@ package edu.usc.csci576.mediaqueries.ui;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 
 public class VideoPlayer implements Runnable {
 	
-	/**
-	 * 
-	 */
 	private String filepath;
 	private String filename;
 	private int type;
 	MainFrameUI uiObject;
-	private Thread t;
+	private Thread videoPlayer;
 	private String threadName;
 	private int startFrame;
+	private int currentFrame;
+	private JLabel videoBox;
 	
 	/**
+	 * type 0 = query
+	 * type 1 = result
+	 */
+	public VideoPlayer(String threadName, MainFrameUI ui, String filepath, int type) {
+		
+		int lastsep = filepath.lastIndexOf("/");
+		
+		this.videoBox = videoBox;
+		this.threadName = threadName;
+		this.startFrame = 1;
+		this.currentFrame = 1;
+		this.filepath = filepath;
+		this.filename = filepath.substring(lastsep + 1);
+		this.type = type;
+		this.uiObject = ui;
+		
+		
+		
+	}
+
+	/**
+	 * 
+	 * @param frameNum - start playing from "frameNum" of the video
+	 * Plays from arbitrary location in video rather than from the beginning
+	 */
+	
+	public void playFromFrame(int frameNum) {
+		
+		currentFrame = frameNum;
+		if (videoPlayer == null) {
+	         videoPlayer = new Thread (this, threadName);
+	         videoPlayer.start ();
+	      }
+
+		
+	}
+	
+	public void playVideo() {
+		playFromFrame(currentFrame);
+	}
+	
+	/**
+	 * stops playing the video.
+	 * Should reset current frame to 1
 	 * 
 	 */
+	public void stopVideo() {
+		videoPlayer = null;
+		currentFrame = 1;
+	}
+	
+	/**
+	 * pause execution of play at current frame
+	 */
+	public void pauseVideo() {
+		videoPlayer = null;
+	}
+	
 	public void run() {
-		while(true) {
+		Thread thisThread = Thread.currentThread();
+		while(videoPlayer == thisThread) {
 			
-			String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, startFrame);
+			String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, currentFrame);
 			File f = new File(filePathString);
 			if(f.exists() && !f.isDirectory()) {
 				byte[] bytes = ImageHandler.readImageFromFile(filePathString);
@@ -36,6 +95,7 @@ public class VideoPlayer implements Runnable {
 					uiObject.setResultImageBoxFrame(img);
 				}
 				
+				
 				try {
 					Thread.sleep(33);
 				} catch (InterruptedException e) {
@@ -44,31 +104,9 @@ public class VideoPlayer implements Runnable {
 			} else {
 				break;
 			}
-			startFrame++;
+			currentFrame++;
 		}
 	}
 	
-	/**
-	 * 
-	 */
-	public void start () {
-		if (t == null) {
-	         t = new Thread (this, threadName);
-	         t.start ();
-	      }
-	}
-	
-	/**
-	 * type 0 = query
-	 * type 1 = result
-	 */
-	public VideoPlayer(String name, MainFrameUI ui, String filepath_s, int type) {
-		threadName = name;
-		startFrame = 1;
-		filepath = filepath_s;
-		int lastsep = filepath.lastIndexOf("/");
-		filename = filepath.substring(lastsep + 1);
-		this.type = type;
-		uiObject = ui;
-	}
 }
+

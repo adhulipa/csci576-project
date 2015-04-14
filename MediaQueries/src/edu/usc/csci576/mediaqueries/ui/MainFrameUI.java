@@ -22,6 +22,10 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 public class MainFrameUI extends JFrame {
 
@@ -48,6 +52,7 @@ public class MainFrameUI extends JFrame {
 	private JPanel resultVideoPanel;
 	private JLabel queryImageBox;
 	private JLabel resultImageBox;
+	private JSlider seekBar;
 	private VideoPlayer queryVideoPlayer;
 	private VideoPlayer resultVideoPlayer;
 	
@@ -75,11 +80,10 @@ public class MainFrameUI extends JFrame {
 		BufferedImage originalImg = ImageHandler.toBufferedImage(bytes, 352,
 				288, BufferedImage.TYPE_INT_RGB);
 		
-		
 		queryImageBox.setIcon(new ImageIcon(originalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 		queryVideoPlayer = new VideoPlayer("Query", this, "database/flowers", 0);
-		resultVideoPlayer = new VideoPlayer("Result", this, "database/starcraft", 1);
+		resultVideoPlayer = new VideoPlayer("Result", this, "database/starcraft",1);
 		
 	}
 	
@@ -132,7 +136,13 @@ public class MainFrameUI extends JFrame {
 		matchedVideosLabel.setBounds(469, 11, 96, 22);
 		mainPanel.add(matchedVideosLabel);
 		
-		JSlider seekBar = new JSlider();
+		seekBar = new JSlider(1,600);
+		seekBar.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int nextFrame = seekBar.getValue();
+				//resultVideoPlayer.playFromFrame(nextFrame);
+			}
+		});
 		seekBar.setBounds(401, 299, 352, 32);
 		mainPanel.add(seekBar);
 		
@@ -149,16 +159,25 @@ public class MainFrameUI extends JFrame {
 		resultBtnPlay = new JButton("PLAY");
 		resultBtnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//resultVideoPlayer.setStartFrame(0);
-				resultVideoPlayer.start();
+				resultVideoPlayer.playVideo();
 			}
 		});
 		resultButtonPanel.add(resultBtnPlay);
 		
 		resultBtnPause = new JButton("PAUSE");
+		resultBtnPause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resultVideoPlayer.pauseVideo();
+			}
+		});
 		resultButtonPanel.add(resultBtnPause);
 		
 		resultBtnStop = new JButton("STOP");
+		resultBtnStop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resultVideoPlayer.stopVideo();
+			}
+		});
 		resultButtonPanel.add(resultBtnStop);
 		
 		resultVideoPanel = new JPanel();
@@ -187,8 +206,7 @@ public class MainFrameUI extends JFrame {
 		queryBtnPlay = new JButton("PLAY");
 		queryBtnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//queryVideoPlayer.setStartFrame(0);
-				queryVideoPlayer.start();
+				queryVideoPlayer.playVideo();
 			}
 			
 		});
@@ -196,10 +214,20 @@ public class MainFrameUI extends JFrame {
 		
 		queryBtnPause = new JButton("PAUSE");
 		queryButtonsPanel.add(queryBtnPause);
+		queryBtnPause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				queryVideoPlayer.pauseVideo();
+			}
+		});
 		
 		queryBtnStop = new JButton("STOP");
 		queryButtonsPanel.add(queryBtnStop);
-		
+		queryBtnStop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				queryVideoPlayer.stopVideo();
+			}
+		});
+
 		queryVideoPanel = new JPanel();
 		queryVideoPanel.setBounds(10, 11, 352, 292);
 		queryVideoWrapper.add(queryVideoPanel);
