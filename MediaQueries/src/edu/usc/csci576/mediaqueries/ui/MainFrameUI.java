@@ -82,7 +82,7 @@ public class MainFrameUI extends JFrame {
 		
 		queryImageBox.setIcon(new ImageIcon(originalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
-		queryVideoPlayer = new VideoPlayer("Query", this, "database/flowers", 0);
+		queryVideoPlayer = new VideoPlayer("Query", this, "query/first", 0);
 		resultVideoPlayer = new VideoPlayer("Result", this, "database/starcraft",1);
 		
 	}
