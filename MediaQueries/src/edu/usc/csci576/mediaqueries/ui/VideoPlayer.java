@@ -3,9 +3,6 @@ package edu.usc.csci576.mediaqueries.ui;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
 import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 
 public class VideoPlayer implements Runnable {
@@ -16,9 +13,7 @@ public class VideoPlayer implements Runnable {
 	private MainFrameUI uiObject;
 	private Thread videoPlayer;
 	private String threadName;
-	private int startFrame;
 	private int currentFrame;
-	private JLabel videoBox;
 	private BufferedImage[] scrubBuffer;
 	
 	/**
@@ -29,9 +24,7 @@ public class VideoPlayer implements Runnable {
 		
 		int lastsep = filepath.lastIndexOf("/");
 		
-		this.videoBox = videoBox;
 		this.threadName = threadName;
-		this.startFrame = 1;
 		this.currentFrame = 1;
 		this.filepath = filepath;
 		this.filename = filepath.substring(lastsep + 1);
