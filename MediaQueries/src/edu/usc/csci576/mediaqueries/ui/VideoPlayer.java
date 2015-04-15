@@ -3,24 +3,22 @@ package edu.usc.csci576.mediaqueries.ui;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 
 public class VideoPlayer implements Runnable {
 	
 	private String filepath;
 	private String filename;
-	private int type;
-	private MainFrameUI uiObject;
 	private Thread videoPlayer;
 	private String threadName;
 	private int currentFrame;
 	private BufferedImage[] scrubBuffer;
+	private JLabel imageBox;
 	
-	/**
-	 * type 0 = query
-	 * type 1 = result
-	 */
-	public VideoPlayer(String threadName, MainFrameUI ui, String filepath, int type) {
+	public VideoPlayer(String threadName, String filepath, JLabel imgBox) {
 		
 		int lastsep = filepath.lastIndexOf("/");
 		
@@ -28,9 +26,8 @@ public class VideoPlayer implements Runnable {
 		this.currentFrame = 1;
 		this.filepath = filepath;
 		this.filename = filepath.substring(lastsep + 1);
-		this.type = type;
-		this.uiObject = ui;
 		this.scrubBuffer = populateScrubBuffer(filepath);
+		this.imageBox = imgBox;
 	}
 
 	private BufferedImage[] populateScrubBuffer(String filepath) {
@@ -52,7 +49,6 @@ public class VideoPlayer implements Runnable {
 			}
 			
 			frame += 30;
-			
 		}
 		return sb;
 	}
@@ -62,15 +58,17 @@ public class VideoPlayer implements Runnable {
 	 * @param frameNum - start playing from "frameNum" of the video
 	 * Plays from arbitrary location in video rather than from the beginning
 	 */
-	
 	public void playFromFrame(int frameNum) {
 		currentFrame = frameNum;
 		if (videoPlayer == null) {
 	         videoPlayer = new Thread (this, threadName);
-	         videoPlayer.start ();
+	         videoPlayer.start();
 	      }
 	}
 	
+	/**
+	 * play video
+	 */
 	public void playVideo() {
 		playFromFrame(currentFrame);
 	}
@@ -83,6 +81,8 @@ public class VideoPlayer implements Runnable {
 	public void stopVideo() {
 		videoPlayer = null;
 		currentFrame = 1;
+		/* also set current frame in UI to 1 */
+		setCurrentFrameToImageBox();
 	}
 	
 	/**
@@ -92,30 +92,28 @@ public class VideoPlayer implements Runnable {
 		videoPlayer = null;
 	}
 	
+	private void setCurrentFrameToImageBox() {
+		String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, currentFrame);
+		File f = new File(filePathString);
+		if(f.exists() && !f.isDirectory()) {
+			byte[] bytes = ImageHandler.readImageFromFile(filePathString);
+			BufferedImage img = ImageHandler.toBufferedImage(bytes, 352,
+					288, BufferedImage.TYPE_INT_RGB);
+			imageBox.setIcon(new ImageIcon(img));
+		} else {
+			this.stopVideo();
+		}
+	}
+	
+	@Override
 	public void run() {
 		Thread thisThread = Thread.currentThread();
 		while(videoPlayer == thisThread) {
-			
-			String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, currentFrame);
-			File f = new File(filePathString);
-			if(f.exists() && !f.isDirectory()) {
-				byte[] bytes = ImageHandler.readImageFromFile(filePathString);
-				BufferedImage img = ImageHandler.toBufferedImage(bytes, 352,
-						288, BufferedImage.TYPE_INT_RGB);
-				if (type == 0) {
-					uiObject.setQueryImageBoxFrame(img);
-				} else {
-					uiObject.setResultImageBoxFrame(img);
-				}
-				
-				
-				try {
-					Thread.sleep(33);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			} else {
-				this.stopVideo();
+			setCurrentFrameToImageBox();
+			try {
+				Thread.sleep(33);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			currentFrame++;
 		}
@@ -123,8 +121,7 @@ public class VideoPlayer implements Runnable {
 
 	public void setFrameAtIndex(int scrubIndex) {
 		pauseVideo();
-		uiObject.setResultImageBoxFrame(scrubBuffer[scrubIndex-1]);
+		imageBox.setIcon(new ImageIcon(scrubBuffer[scrubIndex - 1]));
 	}
-	
 }
 

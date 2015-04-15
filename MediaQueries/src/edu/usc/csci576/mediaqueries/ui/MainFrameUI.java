@@ -51,8 +51,8 @@ public class MainFrameUI extends JFrame {
 	private JLabel queryImageBox;
 	private JLabel resultImageBox;
 	private JSlider seekBar;
-	private VideoPlayer queryVideoPlayer;
-	private VideoPlayer resultVideoPlayer;
+	private MediaPlayer queryMediaPlayer;
+	private MediaPlayer resultMediaPlayer;
 	
 	/**
 	 * Launch the application.
@@ -80,32 +80,18 @@ public class MainFrameUI extends JFrame {
 		
 		queryImageBox.setIcon(new ImageIcon(originalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
-		queryVideoPlayer = new VideoPlayer("Query", this, "query/first", 0);
-		resultVideoPlayer = new VideoPlayer("Result", this, "database/starcraft",1);
 		
+		queryMediaPlayer = new MediaPlayer("Query", "query/first", queryImageBox);
+		resultMediaPlayer = new MediaPlayer("Result", "database/starcraft", resultImageBox);
 	}
 	
-	/**
-	 * External Interface to set the frame for queryImageBox
-	 */
-	public void setQueryImageBoxFrame(BufferedImage frame) {
-		queryImageBox.setIcon(new ImageIcon(frame));
-	}
-	
-	/**
-	 * External Interface to set the frame for resultImageBox
-	 */
-	public void setResultImageBoxFrame(BufferedImage frame) {
-		resultImageBox.setIcon(new ImageIcon(frame));
-	}
-
 	/**
 	 * Create the frame.
 	 */
 	public MainFrameUI() {
 		super("Media Queries");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 100, 784, 757);
+		setBounds(300, 10, 784, 757);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -138,9 +124,8 @@ public class MainFrameUI extends JFrame {
 		seekBar.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int scrubIndex = seekBar.getValue();
-				resultVideoPlayer.setFrameAtIndex(scrubIndex );
+				resultMediaPlayer.setFrameAtIndex(scrubIndex);
 				System.out.println(scrubIndex );
-				//resultVideoPlayer.playFromFrame(nextFrame);
 			}
 		});
 		seekBar.setBounds(401, 299, 352, 32);
@@ -159,7 +144,7 @@ public class MainFrameUI extends JFrame {
 		resultBtnPlay = new JButton("PLAY");
 		resultBtnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				resultVideoPlayer.playVideo();
+				resultMediaPlayer.playMedia();
 			}
 		});
 		resultButtonPanel.add(resultBtnPlay);
@@ -167,7 +152,7 @@ public class MainFrameUI extends JFrame {
 		resultBtnPause = new JButton("PAUSE");
 		resultBtnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				resultVideoPlayer.pauseVideo();
+				resultMediaPlayer.pauseMedia();
 			}
 		});
 		resultButtonPanel.add(resultBtnPause);
@@ -175,7 +160,7 @@ public class MainFrameUI extends JFrame {
 		resultBtnStop = new JButton("STOP");
 		resultBtnStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				resultVideoPlayer.stopVideo();
+				resultMediaPlayer.pauseMedia();
 			}
 		});
 		resultButtonPanel.add(resultBtnStop);
@@ -206,7 +191,7 @@ public class MainFrameUI extends JFrame {
 		queryBtnPlay = new JButton("PLAY");
 		queryBtnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				queryVideoPlayer.playVideo();
+				queryMediaPlayer.playMedia();
 			}
 			
 		});
@@ -216,7 +201,7 @@ public class MainFrameUI extends JFrame {
 		queryButtonsPanel.add(queryBtnPause);
 		queryBtnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				queryVideoPlayer.pauseVideo();
+				queryMediaPlayer.pauseMedia();
 			}
 		});
 		
@@ -224,7 +209,7 @@ public class MainFrameUI extends JFrame {
 		queryButtonsPanel.add(queryBtnStop);
 		queryBtnStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				queryVideoPlayer.stopVideo();
+				queryMediaPlayer.stopMedia();
 			}
 		});
 
