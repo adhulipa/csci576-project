@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import org.opencv.core.*;
 import org.opencv.core.Core.*;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.core.Algorithm.*;
+
 
 import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 
@@ -55,8 +57,8 @@ public class SceneDetector {
 		BufferedImage im1, im2;
 		im1 = frames.get(2);
 		im2 = frames.get(99);
-		Mat f1 = matify(im1);
-		Mat f2 = matify(im2);
+		Mat f1 = ImageHandler.matify(im1);
+		Mat f2 = ImageHandler.matify(im2);
 		
 		// Step2 compute edges
 		Mat f1e = new Mat();
@@ -65,7 +67,7 @@ public class SceneDetector {
 		Imgproc.Canny(f2, f2e, 100, 1);
 		
 		//Step3 dilate the edges -- improves algorithm
-		//Imgproc.dilate(f1e, f1e, kernel);
+		//Imgproc.dilate(f1e, f1e, );
 		//Imgproc.dilate(f2e, f2e, kernel);
 		
 		//Step4 Edge change calcualtion
@@ -112,20 +114,79 @@ public class SceneDetector {
 		
 	}
 	
-	// Convert image to Mat
-	public static Mat matify(BufferedImage im) {
-	    // Convert INT to BYTE
-	    //im = new BufferedImage(im.getWidth(), im.getHeight(),BufferedImage.TYPE_3BYTE_BGR);
-	    // Convert bufferedimage to byte array
-	    byte[] pixels = ((DataBufferByte) im.getRaster().getDataBuffer())
-	            .getData();
+	
+	
+	public static void hausdorff(Mat set1, Mat set2, int distType, double propRank) {
+		Mat distMat = new Mat(set1.cols(), set2.cols(), CvType.CV_32F);
+		int K = (int) (propRank * (distMat.rows() - 1));
+		
+		for (int r=0; r<distMat.rows()-1; r++) {
+			for (int c=0; c<distMat.cols()-1; c++) {
+				
+				double[] p1 = set1.get(0, r);
+				double[] p2 = set2.get(0, c);
+				double[] d = subtract(p1, p2);
+				
+				
+				Point p = new Point(d);
+				
+				List<Point> pl = new ArrayList<Point>();
+				pl.add(p);
+				
+				Mat dmat = org.opencv.utils.Converters.vector_Point_to_Mat(pl);
+				
+				distMat.put(r, c, Core.norm(dmat, distType));
+				
+				System.out.println(distMat);
+			}
+		}
+		
+		/*
+		 * 
+		static float _apply(const Mat &set1, const Mat &set2, int distType, double propRank)
+		{
+		    // Building distance matrix //
+		    Mat disMat(set1.cols, set2.cols, CV_32F);
+		    int K = int(propRank*(disMat.rows-1));
 
-	    // Create a Matrix the same size of image
-	    Mat image = new Mat(im.getHeight(), im.getWidth(), CvType.CV_8UC3);
-	    // Fill Matrix with image values
-	    image.put(0, 0, pixels);
+		    for (int r=0; r<disMat.rows; r++)
+		    {
+		        for (int c=0; c<disMat.cols; c++)
+		        {
+		            Point2f diff = set1.at<Point2f>(0,r)-set2.at<Point2f>(0,c);
+		            disMat.at<float>(r,c) = (float)norm(Mat(diff), distType);
+		        }
+		    }
 
-	    return image;
+		    Mat shortest(disMat.rows,1,CV_32F);
+		    for (int ii=0; ii<disMat.rows; ii++)
+		    {
+		        Mat therow = disMat.row(ii);
+		        double mindis;
+		        minMaxIdx(therow, &mindis);
+		        shortest.at<float>(ii,0) = float(mindis);
+		    }
+		    Mat sorted;
+		    cv::sort(shortest, sorted, SORT_EVERY_ROW | SORT_DESCENDING);
+		    return sorted.at<float>(K,0);
+		}
 
+		
+		*/
+	}
+
+	static double[] subtract(double[] p1, double[] p2) {
+		
+		double[] d = new double[p1.length];
+		
+		for (int i=0; i<p1.length; i++) {
+			double d1 = p1[i];
+			double d2 = p2[i];
+			d[i] = d1-d2;
+		}
+		
+		return d;
+		// TODO Auto-generated method stub
+		
 	}
 }
