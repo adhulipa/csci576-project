@@ -111,7 +111,7 @@ public class VideoPlayer implements Runnable {
 		while(videoPlayer == thisThread) {
 			setCurrentFrameToImageBox();
 			try {
-				Thread.sleep(33);
+				Thread.sleep(25);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
