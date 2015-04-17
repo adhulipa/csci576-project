@@ -160,7 +160,7 @@ public class MainFrameUI extends JFrame {
 		resultBtnStop = new JButton("STOP");
 		resultBtnStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				resultMediaPlayer.pauseMedia();
+				resultMediaPlayer.stopMedia();
 			}
 		});
 		resultButtonPanel.add(resultBtnStop);
