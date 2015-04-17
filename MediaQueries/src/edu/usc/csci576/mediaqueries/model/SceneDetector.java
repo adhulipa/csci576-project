@@ -10,9 +10,9 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
+import org.opencv.core.*;
+import org.opencv.core.Core.*;
+import org.opencv.imgproc.Imgproc;
 
 import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 
@@ -23,12 +23,12 @@ public class SceneDetector {
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 		
 		
-		int TOTAL_FRAMES = 30;
+		int TOTAL_FRAMES = 400;
 		List<BufferedImage> frames = new ArrayList<BufferedImage>(TOTAL_FRAMES);
 		
 		// load some scenes
 		BufferedImage frame = null;
-		int frameNum = 1;
+		int frameNum = 100;
 		while (frameNum <= TOTAL_FRAMES) {
 			String filePathString = String.format("%s/%s%03d.rgb", "database/starcraft", "StarCraft", frameNum);
 			frame = ImageHandler.toBufferedImage(
@@ -42,13 +42,62 @@ public class SceneDetector {
 
 		// test GUI
 		ViewFrame view = new ViewFrame("Display Images");
-		view.addImage(frame);
 		
 		System.out.println("DONE!");
 		
 		
-		Mat im = matify(frames.get(29));
-		frame = ImageHandler.toBufferedImage(im);
+		
+		
+		
+		// Alg exp
+		
+		// Step1 get the frames
+		BufferedImage im1, im2;
+		im1 = frames.get(2);
+		im2 = frames.get(99);
+		Mat f1 = matify(im1);
+		Mat f2 = matify(im2);
+		
+		// Step2 compute edges
+		Mat f1e = new Mat();
+		Mat f2e = new Mat();
+		Imgproc.Canny(f1, f1e, 100, 1);
+		Imgproc.Canny(f2, f2e, 100, 1);
+		
+		//Step3 dilate the edges -- improves algorithm
+		//Imgproc.dilate(f1e, f1e, kernel);
+		//Imgproc.dilate(f2e, f2e, kernel);
+		
+		//Step4 Edge change calcualtion
+		// 4.1 Hausdorff distance for motion compensation
+		// 4.2 Compute edge change fraction
+		// 4.3 Compute entering and exiting edges
+		// TODO
+		
+		
+		// Step5 compute diffs
+		Mat d1 = new Mat();
+		Mat d2 = new Mat();
+		Core.absdiff(f1e,f2e,d1);
+		Core.subtract(f2e,f1e,d2);
+		
+		// If the diff is close to zero then
+		// scene hasnt changed
+		
+		// Step6: Plot all of above to visualze progress
+		frame = im1;
+		view.addImage(frame);
+		frame = im2;
+		view.addImage(frame);
+
+		frame = ImageHandler.toBufferedImage(f1e);
+		view.addImage(frame);
+		frame = ImageHandler.toBufferedImage(f2e);
+		view.addImage(frame);
+
+		frame = ImageHandler.toBufferedImage(d1);
+		view.addImage(frame);
+		frame = ImageHandler.toBufferedImage(d2);
 		view.addImage(frame);
 		
 		
@@ -56,7 +105,7 @@ public class SceneDetector {
 		// TODO: Use canny edge detector to get edges of image
 		// Use edge-based scene detectiona lgorithm by ranier linehart
 		
-		System.out.println(im);
+		System.out.println(f1);
 		
 		view.setVisible(true);
 		
