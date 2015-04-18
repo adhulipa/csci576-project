@@ -7,8 +7,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 
@@ -102,9 +100,7 @@ public class VideoPlayer implements Runnable {
 		File f = new File(filePathString);
 		if(f.exists() && !f.isDirectory()) {
 			byte[] bytes = ImageHandler.readImageFromFile(filePathString);
-			
-			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-			
+						
 			BufferedImage img = ImageHandler.toBufferedImage(bytes, 352,
 					288, BufferedImage.TYPE_3BYTE_BGR);
 			
