@@ -19,6 +19,7 @@ public class VideoPlayer implements Runnable {
 	private Thread videoPlayer;
 	private String threadName;
 	private int currentFrame;
+	private int endFrame;
 	private BufferedImage[] scrubBuffer;
 	private JLabel imageBox;
 	
