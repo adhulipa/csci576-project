@@ -52,25 +52,52 @@ public class SceneDetector {
 		
 		
 		// Alg exp
+		// Get two frames f1,f2
+		// Get edges e1,e2
+		// Dilate the edgeframe d1,d2
+		// Invert the invertframe i1,i2
+		// Exting pixels = e1 & di2
+		// Entering pixels = e2 & di1
+		// ECR = max(Xin_n⁄σ_n,Xout_n-1 ⁄σ_n-1 ) (X-in, X-out are entering and exiting px count
+		// where σ_n is num of edge pixels in frame n (i.e. sum(edgeMat))
+		
 		
 		// Step1 get the frames
 		BufferedImage im1, im2;
 		im1 = frames.get(2);
-		im2 = frames.get(99);
-		Mat f1 = ImageHandler.matify(im1);
-		Mat f2 = ImageHandler.matify(im2);
+		im2 = frames.get(3);
+		Mat imageFrame1 = ImageHandler.matify(im1);
+		Mat imageFrame2 = ImageHandler.matify(im2);
 		
 		// Step2 compute edges
-		Mat f1e = new Mat();
-		Mat f2e = new Mat();
-		Imgproc.Canny(f1, f1e, 100, 1);
-		Imgproc.Canny(f2, f2e, 100, 1);
+		Mat edgeFrame1 = new Mat();
+		Mat edgeFrame2 = new Mat();
+		Imgproc.Canny(imageFrame1, edgeFrame1, 100, 1);
+		Imgproc.Canny(imageFrame2, edgeFrame2, 100, 1);
+
+		// Step3 dilate the inverted edges
+		// Imgproc.dilate(invertFrame1, invertFrame1, new Mat());
+		// Imgproc.dilate(invertFrame2, invertFrame2, new Mat());
+		Mat dilateFrame1 = new Mat();
+		Mat dilateFrame2 = new Mat();
+		Imgproc.dilate(edgeFrame1, dilateFrame1, Imgproc.getStructuringElement(
+				Imgproc.MORPH_RECT, new Size(2, 2)));
+		Imgproc.dilate(edgeFrame2, dilateFrame2, Imgproc.getStructuringElement(
+				Imgproc.MORPH_RECT, new Size(2, 2)));
+
+		// Step4 
+		Mat invertFrame1 = new Mat();
+		Mat invertFrame2 = new Mat();
+		Core.bitwise_not(dilateFrame1, invertFrame1);
+		Core.bitwise_not(dilateFrame2, invertFrame2);
 		
-		//Step3 dilate the edges -- improves algorithm
-		//Imgproc.dilate(f1e, f1e, );
-		//Imgproc.dilate(f2e, f2e, kernel);
+		// Step5
+		Mat exitPxls = new Mat();
+		Mat entrPxls = new Mat();
+		Core.bitwise_and(edgeFrame1, invertFrame2, exitPxls);
+		Core.bitwise_and(edgeFrame2, invertFrame1, entrPxls);
 		
-		//Step4 Edge change calcualtion
+		/*//Step4 Edge change calcualtion
 		// 4.1 Hausdorff distance for motion compensation
 		// 4.2 Compute edge change fraction
 		// 4.3 Compute entering and exiting edges
@@ -80,9 +107,9 @@ public class SceneDetector {
 		// Step5 compute diffs
 		Mat d1 = new Mat();
 		Mat d2 = new Mat();
-		Core.absdiff(f1e,f2e,d1);
-		Core.subtract(f2e,f1e,d2);
-		
+		Core.absdiff(edgeFrame1,edgeFrame2,d1);
+		Core.subtract(edgeFrame2,edgeFrame1,d2);
+		*/
 		// If the diff is close to zero then
 		// scene hasnt changed
 		
@@ -92,14 +119,27 @@ public class SceneDetector {
 		frame = im2;
 		view.addImage(frame);
 
-		frame = ImageHandler.toBufferedImage(f1e);
+		frame = ImageHandler.toBufferedImage(edgeFrame1);
 		view.addImage(frame);
-		frame = ImageHandler.toBufferedImage(f2e);
+		frame = ImageHandler.toBufferedImage(edgeFrame2);
 		view.addImage(frame);
 
-		frame = ImageHandler.toBufferedImage(d1);
+		frame = ImageHandler.toBufferedImage(invertFrame1);
 		view.addImage(frame);
-		frame = ImageHandler.toBufferedImage(d2);
+		frame = ImageHandler.toBufferedImage(invertFrame2);
+		view.addImage(frame);
+		
+		frame = ImageHandler.toBufferedImage(entrPxls);
+		view.addImage(frame);
+		frame = ImageHandler.toBufferedImage(exitPxls);
+		view.addImage(frame);
+		
+		Mat diff = new Mat();
+		Core.subtract(edgeFrame2, edgeFrame1, diff);
+		frame = ImageHandler.toBufferedImage(diff);
+		view.addImage(frame);
+		Core.absdiff(edgeFrame2, edgeFrame1, diff);
+		frame = ImageHandler.toBufferedImage(diff);
 		view.addImage(frame);
 		
 		
@@ -107,7 +147,7 @@ public class SceneDetector {
 		// TODO: Use canny edge detector to get edges of image
 		// Use edge-based scene detectiona lgorithm by ranier linehart
 		
-		System.out.println(f1);
+		System.out.println(imageFrame1);
 		
 		view.setVisible(true);
 		
@@ -137,6 +177,7 @@ public class SceneDetector {
 				
 				distMat.put(r, c, Core.norm(dmat, distType));
 				
+				Mat shortest = new Mat(distMat.rows(), 1, CvType.CV_32F);
 				System.out.println(distMat);
 			}
 		}
