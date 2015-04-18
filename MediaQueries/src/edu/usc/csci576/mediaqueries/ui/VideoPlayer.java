@@ -109,10 +109,6 @@ public class VideoPlayer implements Runnable {
 					288, BufferedImage.TYPE_3BYTE_BGR);
 			
 			
-			Mat m1 = ImageHandler.matify(img);
-			Imgproc.Canny(m1, m1, 0, 100);
-			img = ImageHandler.toBufferedImage(m1);
-			
 			imageBox.setIcon(new ImageIcon(img));
 		} else {
 			this.stopVideo();
