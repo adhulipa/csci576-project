@@ -6,6 +6,10 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
 import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 
 public class VideoPlayer implements Runnable {
@@ -97,8 +101,17 @@ public class VideoPlayer implements Runnable {
 		File f = new File(filePathString);
 		if(f.exists() && !f.isDirectory()) {
 			byte[] bytes = ImageHandler.readImageFromFile(filePathString);
+			
+			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+			
 			BufferedImage img = ImageHandler.toBufferedImage(bytes, 352,
-					288, BufferedImage.TYPE_INT_RGB);
+					288, BufferedImage.TYPE_3BYTE_BGR);
+			
+			
+			Mat m1 = ImageHandler.matify(img);
+			Imgproc.Canny(m1, m1, 0, 100);
+			img = ImageHandler.toBufferedImage(m1);
+			
 			imageBox.setIcon(new ImageIcon(img));
 		} else {
 			this.stopVideo();

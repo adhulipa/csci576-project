@@ -20,13 +20,7 @@ public class ViewFrame extends JFrame{
 		this.getContentPane().add(panel);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		
-		this.setLocation(dim.width / 2 - this.getSize().width / 2,
-				dim.height / 2 - this.getSize().height / 2);
-		
-		int x = (int)( Math.random() * (dim.width - 400));
-		int y = (int)( Math.random() * (dim.height - 400));
-		
-		this.setLocation(x, y);
+		this.setLocation(100, 100);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
