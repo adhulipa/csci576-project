@@ -21,12 +21,16 @@ public class AudioPlayer implements Runnable {
 	private String threadName;
 	private String filepath;
 	private String filename;
+	/*
+	 * 0 - STOPPED
+	 * 1 - PLAY
+	 * 2 - PAUSE
+	 */
+	private int state = 0;
 	
 	private FileInputStream inputStream;
 	private AudioInputStream audioInputStream = null;
 	private SourceDataLine dataLine = null;
-	
-	private boolean needInit = true;
 	
 	private final int EXTERNAL_BUFFER_SIZE = 32768; // 4Kb
 	
@@ -75,17 +79,22 @@ public class AudioPlayer implements Runnable {
 	 * play audio
 	 */
 	public void playAudio() {
-		if (needInit == true) {
-			initAudio();
-		}
+
+		if (state == 1)
+			return;
 		
+		if (state == 0)
+			initAudio();
+
 		/* Start the music */
 		dataLine.start();
-		
+
 		if (audioPlayer == null) {
 			audioPlayer = new Thread(this, threadName);
 			audioPlayer.start();
 		}
+
+		state = 1;
 	}
 
 	/**
@@ -93,19 +102,26 @@ public class AudioPlayer implements Runnable {
 	 * 
 	 */
 	public void stopAudio() {
-		needInit = true;
+		if (state == 0)
+			return;
+		
 		audioPlayer = null;
 		dataLine.drain();
 		dataLine.close();
+		
+		state = 0;
 	}
 	
 	/**
 	 * pause the audio playback
 	 */
 	public void pauseAudio() {
-		needInit = false;
-		audioPlayer = null;
-		dataLine.drain();
+		if (state == 1) {
+			audioPlayer = null;
+			dataLine.stop();
+			
+			state = 2;
+		}
 	}
 
 	@Override
@@ -125,8 +141,9 @@ public class AudioPlayer implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			dataLine.drain();
-			dataLine.close();
+			if (state == 1) {
+				stopAudio();
+			}
 		}
 	}
 }
