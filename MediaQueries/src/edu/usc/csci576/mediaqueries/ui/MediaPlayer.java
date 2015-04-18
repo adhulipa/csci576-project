@@ -27,6 +27,7 @@ public class MediaPlayer {
 	}
 	
 	public void setFrameAtIndex(int scrubIndex) {
+		audioPlayer.stopAudio();
 		videoPlayer.setFrameAtIndex(scrubIndex);
 	}
 }
