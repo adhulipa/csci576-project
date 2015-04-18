@@ -53,6 +53,9 @@ public class SceneDetector {
 			}
 		}
 		
+		// Add the final scene
+		scenes.add(new int[]{sceneBeginIdx, numFrames});
+		
 		return scenes;
 	}
 	
@@ -106,8 +109,8 @@ public class SceneDetector {
 		// Invert the invertframe i1,i2
 		// Exting pixels = e1 & di2
 		// Entering pixels = e2 & di1
-		// ECR = max(Xin_n⁄σ_n,Xout_n-1 ⁄σ_n-1 ) (X-in, X-out are entering and exiting px count
-		// where σ_n is num of edge pixels in frame n (i.e. sum(edgeMat))
+		// ECR = max(Xin_nâ�„Ïƒ_n,Xout_n-1 â�„Ïƒ_n-1 ) (X-in, X-out are entering and exiting px count
+		// where Ïƒ_n is num of edge pixels in frame n (i.e. sum(edgeMat))
 		
 		
 		// Step1 get the frames
@@ -324,9 +327,9 @@ public class SceneDetector {
 		// Invert the invertframe i1,i2
 		// Exting pixels = e1 & di2
 		// Entering pixels = e2 & di1
-		// ECR = max(Xin_n⁄σ_n,Xout_n-1 ⁄σ_n-1 ) (X-in, X-out are entering and
+		// ECR = max(Xin_nâ�„Ïƒ_n,Xout_n-1 â�„Ïƒ_n-1 ) (X-in, X-out are entering and
 		// exiting px count
-		// where σ_n is num of edge pixels in frame n (i.e. sum(edgeMat))
+		// where Ïƒ_n is num of edge pixels in frame n (i.e. sum(edgeMat))
 
 		Mat imageFrame1 = ImageHandler.matify(frame1);
 		Mat imageFrame2 = ImageHandler.matify(frame2);
