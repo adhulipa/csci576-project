@@ -32,7 +32,8 @@ public class SceneDetector {
 	}
 	
 	public static List<int[]> getScenes(String filepath, String filename, int numFrames) {
-		
+		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
+
 		List<int[]> scenes = new ArrayList<int[]>();
 		BufferedImage currentFrame, prevFrame;
 		double ecr;

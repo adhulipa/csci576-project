@@ -1,5 +1,70 @@
 package edu.usc.csci576.mediaqueries.data;
 
+import java.io.FileOutputStream;
+import java.io.*;
+import java.util.*;
+
+import edu.usc.csci576.mediaqueries.model.SceneDetector;
+
 public class DataLoader {
-//
+	
+	public static void main(String[] args) {
+		HashMap<Integer, String> map = null;
+		try {
+			FileInputStream fis = new FileInputStream("scenesMap.ser");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			map = (HashMap) ois.readObject();
+			ois.close();
+			fis.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			return;
+		} catch (ClassNotFoundException c) {
+			System.out.println("Class not found");
+			c.printStackTrace();
+			return;
+		}
+		System.out.println("Deserialized HashMap..");
+		
+		
+		
+		// Display content using Iterator
+		Set set = map.entrySet();
+		Iterator iterator = set.iterator();
+		while (iterator.hasNext()) {
+			Map.Entry mentry = (Map.Entry) iterator.next();
+			System.out.print("key: " + mentry.getKey() + " & Value: ");
+			System.out.println(mentry.getValue());
+		}
+
+	}
+	
+	public static void createOfflineDataset() {
+		
+		// Scene Detector for all videos
+		String[] dataset = {"StarCraft", "flowers", "interview", 
+				"movie", "sports", "musicvideo", "traffic"};
+		
+		
+		Map<String, List<int[]>> scenesMap = new HashMap<String, List<int[]>>();
+		
+		for (String item : dataset) {
+			scenesMap.put(item, SceneDetector.getScenes("database/" + item, item, 600));
+			System.out.println("done with " + item);
+		}
+		
+		
+		try {
+			FileOutputStream fos = new FileOutputStream("scenesMap.ser");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(scenesMap);
+			oos.close();
+			fos.close();
+			System.out
+					.printf("Serialized HashMap data is saved in scenesMap.ser");
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		
+	}
 }
