@@ -86,6 +86,8 @@ public class AudioAnalyzer {
 		// TODO: perform template matching on
 		// dmat & qmat
 		// http://docs.opencv.org/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
+
+		
 		
 //		int windowSize = new Double(dsg.getNumFrames() / (double) qsg.getNumFrames()).intValue();
 //		
