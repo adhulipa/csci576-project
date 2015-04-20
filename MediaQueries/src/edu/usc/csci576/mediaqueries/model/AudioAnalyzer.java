@@ -9,26 +9,98 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.DataLine.Info;
 
+import org.opencv.core.Core;
+import org.opencv.core.*;
+
 import com.musicg.wave.*;
 import com.musicg.wave.extension.*;
+import com.musicg.graphic.*;
 
 
 
 public class AudioAnalyzer {
 
 	public static void main(String[] args) throws Exception {
-		
-		Wave wave = new Wave("database/StarCraft/StarCraft.wav");
+	    
+		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
+
+	    Wave wave = new Wave("database/musicvideo/musicvideo.wav");
+		Wave q = new Wave("query/first/first.wav");
 		
 		WaveHeader h = wave.getWaveHeader();
 		
-		System.out.println(h);
-		AudioFormat f = new AudioFormat(h.getSampleRate(), h.getBitsPerSample(), h.getChannels(), true, false);
+		//System.out.println(h);
+		AudioFormat f = new AudioFormat(h.getSampleRate(),
+				h.getBitsPerSample(), h.getChannels(), true, false);
 
-		playBytes(wave.getBytes(), f);
-		
+		// playBytes(wave.getBytes(), f);
+
 		Spectrogram sg = new Spectrogram(wave);
+
+		// Graphic render
+		GraphicRender render = new GraphicRender();
+		// render.setHorizontalMarker(1);
+		// render.setVerticalMarker(1);
+		render.renderWaveform(wave, "offlineData/waveform.jpg");
 		
+		double[][] sgNormData = sg.getNormalizedSpectrogramData();
+		double[][] sgAbsData = sg.getAbsoluteSpectrogramData();
+		render.renderSpectrogramData(sgAbsData, "offlineData/musicvideo/absSpectogram.jpg");
+		render.renderSpectrogramData(sgNormData, "offlineData/musicvideo/normSpectogram.jpg");
+		
+		
+		Spectrogram qsg = q.getSpectrogram();
+		double[][] qnd = qsg.getNormalizedSpectrogramData();
+		double[][] and = qsg.getAbsoluteSpectrogramData();
+		render.renderSpectrogramData(qnd, "offlineData/first/normSpectogram.jpg");
+		render.renderSpectrogramData(and, "offlineData/first/absSpectogram.jpg");
+
+		
+		compareSpectroData(qsg, sg);
+		
+//		for (int i =0; i < sgNormData.length; i++)
+//		System.out.println(
+//				(sgNormData[i].length)
+//				);		
+//		
+		System.out.println("DONE!");
+		
+		
+	}
+
+	private static void compareSpectroData(Spectrogram qsg, Spectrogram dsg) {
+		
+		double[][] qnd = qsg.getNormalizedSpectrogramData();
+		Mat qmat = new Mat(qsg.getFramesPerSecond(), qsg.getNumFrames(), CvType.CV_64F);
+		for (int row = 0; row < qsg.getFramesPerSecond(); row++)
+			qmat.put(row, 0, qnd[row]);
+		
+		double[][] dnd = dsg.getNormalizedSpectrogramData();
+		Mat dmat = new Mat(dsg.getFramesPerSecond(), dsg.getNumFrames(), CvType.CV_64F);
+		for (int row = 0; row < dsg.getFramesPerSecond(); row++)
+			dmat.put(row, 0, dnd[row]);
+		
+		
+		
+		
+		// TODO: perform template matching on
+		// dmat & qmat
+		// http://docs.opencv.org/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
+		
+//		int windowSize = new Double(dsg.getNumFrames() / (double) qsg.getNumFrames()).intValue();
+//		
+//		for (int window = 0; window < dsg.getNumFrames(); window += windowSize) {
+//			
+//		}
+//		
+		System.out.println(
+				dmat.dump()
+				//windowSize
+				//qsg.getNumFrames() + " " + dsg.getNumFrames()
+				
+				
+				
+				);
 		
 	}
 
