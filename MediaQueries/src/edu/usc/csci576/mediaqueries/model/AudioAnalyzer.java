@@ -69,6 +69,22 @@ public class AudioAnalyzer {
 		
 		
 	}
+	
+	
+	
+	private void createConstellationmap() {
+		
+		/* Idea:
+		 * use opencv fn minMaxLoc() to find 
+		 * global min or max in array;
+		 * 
+		 * iterate over each col of spectrodata,
+		 * find max in each col
+		 * keep track of Tuple (col_id, max_val)
+		 * the List<Tuple> above is the constMap
+		 */
+		
+	}
 
 	private static void compareSpectroData(Spectrogram qsg, Spectrogram dsg) {
 		
@@ -81,7 +97,8 @@ public class AudioAnalyzer {
 		Mat dmat = new Mat(dsg.getFramesPerSecond(), dsg.getNumFrames(), CvType.CV_32F);
 		for (int row = 0; row < dsg.getFramesPerSecond(); row++)
 			dmat.put(row, 0, dnd[row]);
-			
+		
+		
 		// TODO: perform template matching on
 		// dmat & qmat
 		// http://docs.opencv.org/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
