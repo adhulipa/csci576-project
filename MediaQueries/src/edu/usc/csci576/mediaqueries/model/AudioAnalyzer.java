@@ -9,8 +9,10 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.DataLine.Info;
 
-import org.opencv.core.Core;
 import org.opencv.core.*;
+import org.opencv.core.Core.MinMaxLocResult;
+import org.opencv.highgui.Highgui;
+import org.opencv.imgproc.Imgproc;
 
 import com.musicg.wave.*;
 import com.musicg.wave.extension.*;
@@ -71,22 +73,24 @@ public class AudioAnalyzer {
 	private static void compareSpectroData(Spectrogram qsg, Spectrogram dsg) {
 		
 		double[][] qnd = qsg.getNormalizedSpectrogramData();
-		Mat qmat = new Mat(qsg.getFramesPerSecond(), qsg.getNumFrames(), CvType.CV_64F);
+		Mat qmat = new Mat(qsg.getFramesPerSecond(), qsg.getNumFrames(), CvType.CV_32F);
 		for (int row = 0; row < qsg.getFramesPerSecond(); row++)
 			qmat.put(row, 0, qnd[row]);
 		
 		double[][] dnd = dsg.getNormalizedSpectrogramData();
-		Mat dmat = new Mat(dsg.getFramesPerSecond(), dsg.getNumFrames(), CvType.CV_64F);
+		Mat dmat = new Mat(dsg.getFramesPerSecond(), dsg.getNumFrames(), CvType.CV_32F);
 		for (int row = 0; row < dsg.getFramesPerSecond(); row++)
 			dmat.put(row, 0, dnd[row]);
-		
-		
-		
-		
+			
 		// TODO: perform template matching on
 		// dmat & qmat
 		// http://docs.opencv.org/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
-
+		
+		Mat result = new Mat();
+		Imgproc.matchTemplate(dmat, qmat, result, Imgproc.TM_SQDIFF_NORMED);
+		
+		//result = Core.sumElems(result).val;
+		
 		
 		
 //		int windowSize = new Double(dsg.getNumFrames() / (double) qsg.getNumFrames()).intValue();
@@ -96,7 +100,8 @@ public class AudioAnalyzer {
 //		}
 //		
 		System.out.println(
-				dmat.dump()
+				result.dump() + "\n" +
+				(Core.sumElems(result).val[0])
 				//windowSize
 				//qsg.getNumFrames() + " " + dsg.getNumFrames()
 				

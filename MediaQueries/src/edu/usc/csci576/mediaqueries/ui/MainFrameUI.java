@@ -81,7 +81,7 @@ public class MainFrameUI extends JFrame {
 		queryImageBox.setIcon(new ImageIcon(originalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 		
-		queryMediaPlayer = new MediaPlayer("Query", "query/first", queryImageBox);
+		queryMediaPlayer = new MediaPlayer("Query", "query/second", queryImageBox);
 		resultMediaPlayer = new MediaPlayer("Result", "database/starcraft", resultImageBox);
 	}
 	
