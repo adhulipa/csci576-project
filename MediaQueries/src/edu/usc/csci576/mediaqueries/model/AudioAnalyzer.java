@@ -1,7 +1,12 @@
 package edu.usc.csci576.mediaqueries.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -9,14 +14,18 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.DataLine.Info;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.opencv.core.*;
 import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.utils.*;
 
 import com.musicg.wave.*;
 import com.musicg.wave.extension.*;
+import com.musicg.fingerprint.FingerprintSimilarity;
 import com.musicg.graphic.*;
+import com.musicg.main.demo.FingerprintDemo;
 
 
 
@@ -29,6 +38,13 @@ public class AudioAnalyzer {
 	    Wave wave = new Wave("database/musicvideo/musicvideo.wav");
 		Wave q = new Wave("query/first/first.wav");
 		
+
+		Spectrogram sg = new Spectrogram(wave);
+		
+		System.out.println(sg.getNumFrames() + " " + sg.getFramesPerSecond());
+		
+		
+		
 		WaveHeader h = wave.getWaveHeader();
 		
 		//System.out.println(h);
@@ -36,8 +52,6 @@ public class AudioAnalyzer {
 				h.getBitsPerSample(), h.getChannels(), true, false);
 
 		// playBytes(wave.getBytes(), f);
-
-		Spectrogram sg = new Spectrogram(wave);
 
 		// Graphic render
 		GraphicRender render = new GraphicRender();
@@ -57,8 +71,18 @@ public class AudioAnalyzer {
 		render.renderSpectrogramData(qnd, "offlineData/first/normSpectogram.jpg");
 		render.renderSpectrogramData(and, "offlineData/first/absSpectogram.jpg");
 
+
+		Map<Integer, Point> dataConstMap = createConstellationmap(sg);
+		Map<Integer, Point> queryConstMap = createConstellationmap(qsg);
 		
-		compareSpectroData(qsg, sg);
+		
+		System.out.println(dataConstMap);
+		System.out.println(queryConstMap);
+		
+		//compareSpectroData(qsg, sg);
+
+		System.exit(1);
+		
 		
 //		for (int i =0; i < sgNormData.length; i++)
 //		System.out.println(
@@ -72,7 +96,7 @@ public class AudioAnalyzer {
 	
 	
 	
-	private void createConstellationmap() {
+ static	private Map<Integer, Point> createConstellationmap(Spectrogram spec) {
 		
 		/* Idea:
 		 * use opencv fn minMaxLoc() to find 
@@ -84,9 +108,35 @@ public class AudioAnalyzer {
 		 * the List<Tuple> above is the constMap
 		 */
 		
+		//double[][] ddat = dataSpec.getNormalizedSpectrogramData();
+		double[][] dat = spec.getAbsoluteSpectrogramData();
+		
+		
+		Mat m = new Mat();
+		Double[] temp;
+
+		MinMaxLocResult res;
+		Map<Integer, Point> constMap = new HashMap<>();
+		
+		
+		
+		for (int i = 0; i < dat.length; i++) {
+
+			m = Converters.vector_double_to_Mat(
+							Arrays.asList(
+									ArrayUtils.toObject(dat[i])
+							)
+						);
+			
+			res = Core.minMaxLoc(m);
+			constMap.put(i, res.maxLoc);
+		}
+		
+		return constMap;
+		
 	}
 
-	private static void compareSpectroData(Spectrogram qsg, Spectrogram dsg) {
+	private static void compareSpectroData(Spectrogram qsg, Spectrogram dsg) throws FileNotFoundException, UnsupportedEncodingException {
 		
 		double[][] qnd = qsg.getNormalizedSpectrogramData();
 		Mat qmat = new Mat(qsg.getFramesPerSecond(), qsg.getNumFrames(), CvType.CV_32F);
@@ -99,33 +149,48 @@ public class AudioAnalyzer {
 			dmat.put(row, 0, dnd[row]);
 		
 		
-		// TODO: perform template matching on
-		// dmat & qmat
-		// http://docs.opencv.org/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
 		
-		Mat result = new Mat();
-		Imgproc.matchTemplate(dmat, qmat, result, Imgproc.TM_SQDIFF_NORMED);
+		PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
+		writer.println(dmat.dump());
+		writer.close();		
 		
-		//result = Core.sumElems(result).val;
+		int windowWidth = qmat.cols();
 		
-		
-		
-//		int windowSize = new Double(dsg.getNumFrames() / (double) qsg.getNumFrames()).intValue();
-//		
-//		for (int window = 0; window < dsg.getNumFrames(); window += windowSize) {
+		Mat sub = new Mat();
+//		for (int i = 0; i+windowWidth<dmat.cols(); i++){
+//			sub = dmat.submat(0, dmat.rows(), i, i+windowWidth);
+//			Mat diff = new Mat();
+//			Core.compare(qmat, sub, diff, Core.CMP_EQ);
 //			
+//			
+//			double d = Core.sumElems(diff).val[0];
+//
+//			System.out.println(
+//					d					
+//					);
+//						
 //		}
-//		
-		System.out.println(
-				result.dump() + "\n" +
-				(Core.sumElems(result).val[0])
-				//windowSize
-				//qsg.getNumFrames() + " " + dsg.getNumFrames()
-				
-				
-				
-				);
 		
+		
+//		
+//		// TODO: perform template matching on
+//		// dmat & qmat
+//		// http://docs.opencv.org/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
+//		
+//		Mat result = new Mat();
+//		Imgproc.matchTemplate(dmat, qmat, result, Imgproc.TM_SQDIFF_NORMED);
+//		
+//		//result = Core.sumElems(result).val;
+//		
+//		
+//		
+////		int windowSize = new Double(dsg.getNumFrames() / (double) qsg.getNumFrames()).intValue();
+////		
+////		for (int window = 0; window < dsg.getNumFrames(); window += windowSize) {
+////			
+////		}
+////		
+
 	}
 
 	private static void playBytes(byte[] bytes, AudioFormat audioFormat) throws Exception{
