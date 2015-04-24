@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>CSCI576_Project_Database</name>
-			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/CSCI576_Project_Database</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
