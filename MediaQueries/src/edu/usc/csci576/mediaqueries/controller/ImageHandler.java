@@ -11,25 +11,25 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
 public class ImageHandler {
-
+	
 	// Convert image to Mat
-		public static Mat matify(BufferedImage im) {
-		    // Convert INT to BYTE
-		    //im = new BufferedImage(im.getWidth(), im.getHeight(),BufferedImage.TYPE_3BYTE_BGR);
-		    // Convert bufferedimage to byte array
-		    byte[] pixels = ((DataBufferByte) im.getRaster().getDataBuffer())
-		            .getData();
+	public static Mat matify(BufferedImage im) {
+		// Convert INT to BYTE
+		// im = new BufferedImage(im.getWidth(),
+		// im.getHeight(),BufferedImage.TYPE_3BYTE_BGR);
+		// Convert bufferedimage to byte array
+		byte[] pixels = ((DataBufferByte) im.getRaster().getDataBuffer())
+				.getData();
 
-		    // Create a Matrix the same size of image
-		    Mat image = new Mat(im.getHeight(), im.getWidth(), CvType.CV_8UC3);
-		    // Fill Matrix with image values
-		    image.put(0, 0, pixels);
+		// Create a Matrix the same size of image
+		Mat image = new Mat(im.getHeight(), im.getWidth(), CvType.CV_8UC3);
+		// Fill Matrix with image values
+		image.put(0, 0, pixels);
 
-		    return image;
+		return image;
 
-		}
-	
-	
+	}
+
 	public static BufferedImage toBufferedImage(Mat m){
 	      int type = BufferedImage.TYPE_BYTE_GRAY;
 	      if ( m.channels() > 1 ) {

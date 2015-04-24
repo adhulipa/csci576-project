@@ -4,12 +4,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.text.Highlighter.HighlightPainter;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -26,9 +28,106 @@ import edu.usc.csci576.mediaqueries.ui.MainFrameUI;
 
 public class RGBHistogram {
 
-	public static void main(String[] args) throws IOException {
-		
+	
+	
+	/**
+	 * 
+	 * @param filename
+	 * @param width
+	 * @param height
+	 * @return List<Mat>
+	 * where Mat is a 3 channel matrix of BGR bytes
+	 * get(0) is blue mat
+	 * get(1) is green mat
+	 * get(2) is red mat
+	 * 
+	 * Each Mat is 288 x 352
+	 * rows = height of img
+	 * cols = width of img
+	 * 
+	 */
+	public static List<Mat> getRGBMat(String filename, int width,
+			int height) {
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );		
+		
+		byte[] raw = ImageHandler.readImageFromFile(filename);
+		BufferedImage img = ImageHandler.toBufferedImage(raw, width, height, 
+				BufferedImage.TYPE_3BYTE_BGR);
+		Mat m = ImageHandler.matify(img);
+		
+		
+		List<Mat> rgb = new ArrayList<Mat>();
+		Core.split(m, rgb);
+		
+		
+		return rgb;
+		
+	}
+	
+	/**
+	 * 
+	 * @param frame
+	 * @param width
+	 * @param height
+	 * @return List<byte[][]> 
+	 * get(0) returns blue hist
+	 * get(1) returns green hist
+	 * get(2) returns red hist
+	 * 
+	 * Each byte[][] is represented as
+	 * byte[width][height]
+	 */
+	
+	public static List<byte[][]> getRGBArrays(String frame, int width,
+			int height) {
+		byte[][] r,g,b;
+		
+		List<byte[][]> hists;
+		
+		r = new byte[height][width];
+		g = new byte[height][width];
+		b = new byte[height][width];
+		
+		byte[] bytes = ImageHandler.readImageFromFile(frame);
+		
+		int ind = 0;
+
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+
+				r[y][x] = bytes[ind];
+				g[y][x] = bytes[ind + height * width];
+				b[y][x] = bytes[ind + height * width * 2];
+
+				ind++;
+			}
+		}
+		
+		hists = new ArrayList<byte[][]>();
+		hists.add(b);
+		hists.add(g);
+		hists.add(r);
+		
+		return hists;
+	}
+	
+	
+	public static void main(String[] args) {
+		List<Mat> rgbmats = getRGBMat("database/flowers/flowers001.rgb", 352, 288);
+		List<byte[][]> rgbarrs = getRGBArrays("database/flowers/flowers001.rgb", 352, 288);
+		
+		Mat bm = rgbmats.get(0);
+		byte[][] ba = rgbarrs.get(0);
+		
+		System.out.println(
+				ba[101][10] + " " +
+				Arrays.toString(bm.get(101, 10))
+				);
+		
+	}
+	
+	public static void main__OLD_TESTS(String[] args) throws IOException {
+		
 		
 		// 3 line - read image
 		byte[] px = ImageHandler.readImageFromFile("database/movie/movie001.rgb");
@@ -55,29 +154,11 @@ public class RGBHistogram {
 				histSize, 
 				ranges);
 		
-		System.out.println(b_hist.cols());
+		System.out.println(b_hist.dump());
 
 		byte[] b = new byte[b_hist.rows()*b_hist.cols() ];
 		//b_hist.get(0, 0, b);
 		//System.out.println(b_hist.type());
-		System.out.println("ssss");
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 	    Mat image = img;
