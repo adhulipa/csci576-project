@@ -75,7 +75,7 @@ public class RGBHistogram {
 	 * get(2) returns red hist
 	 * 
 	 * Each byte[][] is represented as
-	 * byte[width][height]
+	 * byte[height][width]
 	 */
 	
 	public static List<byte[][]> getRGBArrays(String frame, int width,
