@@ -26,7 +26,7 @@ public class VideoPlayer implements Runnable {
 		int lastsep = filepath.lastIndexOf("/");
 		
 		this.threadName = threadName;
-		this.currentFrame = 1;
+		this.setCurrentFrame(1);
 		this.filepath = filepath;
 		this.filename = filepath.substring(lastsep + 1);
 		this.scrubBuffer = populateScrubBuffer(filepath);
@@ -62,7 +62,7 @@ public class VideoPlayer implements Runnable {
 	 * Plays from arbitrary location in video rather than from the beginning
 	 */
 	public void playFromFrame(int frameNum) {
-		currentFrame = frameNum;
+		setCurrentFrame(frameNum);
 		if (videoPlayer == null) {
 	         videoPlayer = new Thread (this, threadName);
 	         videoPlayer.start();
@@ -73,7 +73,7 @@ public class VideoPlayer implements Runnable {
 	 * play video
 	 */
 	public void playVideo() {
-		playFromFrame(currentFrame);
+		playFromFrame(getCurrentFrame());
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class VideoPlayer implements Runnable {
 	 */
 	public void stopVideo() {
 		videoPlayer = null;
-		currentFrame = 1;
+		setCurrentFrame(1);
 		/* also set current frame in UI to 1 */
 		setCurrentFrameToImageBox();
 	}
@@ -96,7 +96,7 @@ public class VideoPlayer implements Runnable {
 	}
 	
 	private void setCurrentFrameToImageBox() {
-		String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, currentFrame);
+		String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, getCurrentFrame());
 		File f = new File(filePathString);
 		if(f.exists() && !f.isDirectory()) {
 			byte[] bytes = ImageHandler.readImageFromFile(filePathString);
@@ -106,6 +106,7 @@ public class VideoPlayer implements Runnable {
 			
 			
 			imageBox.setIcon(new ImageIcon(img));
+			//System.out.println("current frame " + getCurrentFrame());
 		} else {
 			this.stopVideo();
 		}
@@ -121,13 +122,31 @@ public class VideoPlayer implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			currentFrame++;
+			setCurrentFrame(getCurrentFrame() + 1);
 		}
 	}
 
 	public void setFrameAtIndex(int scrubIndex) {
 		pauseVideo();
-		imageBox.setIcon(new ImageIcon(scrubBuffer[scrubIndex - 1]));
+		if(scrubIndex > 0 && scrubIndex <= scrubBuffer.length)
+			imageBox.setIcon(new ImageIcon(scrubBuffer[scrubIndex - 1]));
+		setCurrentFrame(scrubIndex * 30);
+	}
+
+	/**
+	 * @return the currentFrame
+	 */
+	public int getCurrentFrame()
+	{
+		return currentFrame;
+	}
+
+	/**
+	 * @param currentFrame the currentFrame to set
+	 */
+	public void setCurrentFrame(int currentFrame)
+	{
+		this.currentFrame = currentFrame;
 	}
 }
 

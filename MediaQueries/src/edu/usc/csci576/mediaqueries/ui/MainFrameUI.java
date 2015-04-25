@@ -1,6 +1,7 @@
 package edu.usc.csci576.mediaqueries.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Event;
 import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 
@@ -8,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import edu.usc.csci576.mediaqueries.controller.*;
@@ -22,6 +24,9 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
@@ -120,15 +125,68 @@ public class MainFrameUI extends JFrame {
 		matchedVideosLabel.setBounds(469, 11, 96, 22);
 		mainPanel.add(matchedVideosLabel);
 		
-		seekBar = new JSlider(1,20);
-		seekBar.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
+		seekBar = new JSlider(0, 20, 0);
+		final Timer increaseValue = new Timer(50, new ActionListener() {// 50 ms interval in each increase.
+	        public void actionPerformed(ActionEvent e) {
+	            if (seekBar.getMaximum() != seekBar.getValue()) {
+	            	if(resultMediaPlayer.getVideoPlayer().getCurrentFrame() % 30 == 0)
+	            	{
+	            		seekBar.setValue(resultMediaPlayer.getVideoPlayer().getCurrentFrame()/30);
+	            	}
+	            	
+	            } else {
+	                ((Timer) e.getSource()).stop();
+	                resultBtnPlay.setEnabled(true);
+	          		 resultBtnPause.setEnabled(false);
+	          		 resultBtnStop.setEnabled(false);
+	          		 seekBar.setValue(0);
+	            }
+	        }
+	    });
+		seekBar.addMouseListener(new MouseListener()
+		{
+			
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				increaseValue.stop();
 				int scrubIndex = seekBar.getValue();
 				resultMediaPlayer.setFrameAtIndex(scrubIndex);
-				System.out.println(scrubIndex );
+				increaseValue.start();
+				
 			}
+
+			@Override
+			public void mouseClicked(MouseEvent arg0)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0)
+			{
+				// TODO Auto-generated method stub
+				
+			}			
 		});
+		
 		seekBar.setBounds(401, 299, 352, 32);
+		
 		mainPanel.add(seekBar);
 		
 		resultVideoWrapper = new JPanel();
@@ -145,6 +203,10 @@ public class MainFrameUI extends JFrame {
 		resultBtnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resultMediaPlayer.playMedia();
+				increaseValue.start();
+				resultBtnPlay.setEnabled(false);
+				resultBtnPause.setEnabled(true);
+				resultBtnStop.setEnabled(true);
 			}
 		});
 		resultButtonPanel.add(resultBtnPlay);
@@ -153,6 +215,9 @@ public class MainFrameUI extends JFrame {
 		resultBtnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resultMediaPlayer.pauseMedia();
+				increaseValue.stop();
+				resultBtnPlay.setEnabled(true);
+				resultBtnPause.setEnabled(false);
 			}
 		});
 		resultButtonPanel.add(resultBtnPause);
@@ -161,9 +226,17 @@ public class MainFrameUI extends JFrame {
 		resultBtnStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resultMediaPlayer.stopMedia();
+				seekBar.setValue(0);
+				resultBtnPlay.setEnabled(true);
+				resultBtnPause.setEnabled(false);
+				resultBtnStop.setEnabled(false);
 			}
 		});
 		resultButtonPanel.add(resultBtnStop);
+		
+		resultBtnPlay.setEnabled(true);
+		resultBtnPause.setEnabled(false);
+		resultBtnStop.setEnabled(false);
 		
 		resultVideoPanel = new JPanel();
 		resultVideoPanel.setBounds(10, 11, 352, 292);

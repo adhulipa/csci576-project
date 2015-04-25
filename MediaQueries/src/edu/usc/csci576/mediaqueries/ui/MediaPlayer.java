@@ -7,27 +7,44 @@ public class MediaPlayer {
 	private AudioPlayer audioPlayer;
 	
 	public MediaPlayer(String threadName, String filepath, JLabel imgBox) {
-		videoPlayer = new VideoPlayer(threadName, filepath, imgBox);
+		setVideoPlayer(new VideoPlayer(threadName, filepath, imgBox));
 		audioPlayer = new AudioPlayer(threadName, filepath);
 	}
 	
 	public void playMedia() {
-		videoPlayer.playVideo();
+		getVideoPlayer().playVideo();
 		audioPlayer.playAudio();
 	}
 	
 	public void pauseMedia() {
-		videoPlayer.pauseVideo();
+		getVideoPlayer().pauseVideo();
 		audioPlayer.pauseAudio();
 	}
 	
 	public void stopMedia() {
-		videoPlayer.stopVideo();
+		getVideoPlayer().stopVideo();
 		audioPlayer.stopAudio();
 	}
 	
 	public void setFrameAtIndex(int scrubIndex) {
-		audioPlayer.stopAudio();
-		videoPlayer.setFrameAtIndex(scrubIndex);
+		audioPlayer.pauseAudio();
+		getVideoPlayer().setFrameAtIndex(scrubIndex);
+		getVideoPlayer().playVideo();
+	}
+
+	/**
+	 * @return the videoPlayer
+	 */
+	public VideoPlayer getVideoPlayer()
+	{
+		return videoPlayer;
+	}
+
+	/**
+	 * @param videoPlayer the videoPlayer to set
+	 */
+	public void setVideoPlayer(VideoPlayer videoPlayer)
+	{
+		this.videoPlayer = videoPlayer;
 	}
 }
