@@ -13,3 +13,14 @@ Visual Descriptors
 6. Based on audio descriptors
 7. Colorspace histogram
 
+
+4/25/2015
+TODO:
+1) Improve frame comparison
+2) Framework for scene comparison
+	a) Comparison for scene-scene
+	b) Comparison for frame-frame
+
+To investigate:
+Region of interest of frames - offline & generate online images
+Optical flow
