@@ -22,12 +22,29 @@ public class DataLoader {
 	public static void main(String[] args) {
 		
 		createRGBDataset();
-		System.exit(1);
-		HashMap<Integer, String> map = null;
+		//System.exit(1);
+		Map<String, List<List<String>>> map = null;
 		try {
-			FileInputStream fis = new FileInputStream("scenesMap.ser");
+			FileInputStream fis = new FileInputStream("rgbMap.ser");
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			map = (HashMap) ois.readObject();
+			for(String key : map.keySet())
+			{
+				List<List<String>> jsonList = map.get(key);
+				int i = 1;
+				for(List<String> frameData : jsonList)
+				{
+					String filePathString1 = String.format("database/%s/%s%03d.rgb", key, key, i++);
+					
+					List<Mat> rgbmats = RGBHistogram.getRGBMat(filePathString1, 352, 288), rgbmats2 = new ArrayList<Mat>();
+					for(String frameMat : frameData)
+					{
+						Mat m = matFromJson(frameMat);
+						rgbmats2.add(m);
+					}
+					CompareHistogram.compareRGBHistogram(rgbmats, rgbmats2);
+				}
+			}
 			ois.close();
 			fis.close();
 		} catch (IOException ioe) {
@@ -55,15 +72,15 @@ public class DataLoader {
 	
 	public static void createRGBDataset()
 	{
-		String[] dataset = {"StarCraft", "flowers", "interview", 
-				"movie", "sports", "musicvideo", "traffic"};
+		String[] dataset = {"StarCraft"};
+		//, "flowers", "interview", "movie", "sports", "musicvideo", "traffic"
 		
-		Map<String, List<List<Mat>>> rgbMap = new HashMap<String, List<List<Mat>>>();
+//		Map<String, List<List<Mat>>> rgbMap = new HashMap<String, List<List<Mat>>>();
 		Map<String, List<List<String>>> rgbjsonMap = new HashMap<String, List<List<String>>>();
 		
 		for(String item : dataset)
 		{
-			List<List<Mat>> matList = new ArrayList<List<Mat>>();
+//			List<List<Mat>> matList = new ArrayList<List<Mat>>();
 			List<List<String>> matJsonList = new ArrayList<List<String>>();
 			
 			// Each frame
@@ -79,35 +96,43 @@ public class DataLoader {
 				
 				for(Mat mat : rgbmats)
 				{
-					String json = matToJson(mat);					
+					String json = matToJson2(mat);					
 					
 					jsonStrings.add(json);
 				}
 				
-				for(String json : jsonStrings)
-				{
-					rgbmats2.add(matFromJson(json));
-				}
-				CompareHistogram.compareRGBHistogram(rgbmats, rgbmats2);
+//				for(String json : jsonStrings)
+//				{
+//					rgbmats2.add(matFromJson(json));
+//				}
+				//CompareHistogram.compareRGBHistogram(rgbmats, rgbmats2);
 				
 				// Add each frame to current image's matrix list
 				matJsonList.add(jsonStrings);
-				matList.add(rgbmats);
+//				matList.add(rgbmats);
+				
+				
 			}
 			
 			
 			
-			
-			rgbMap.put(item, matList);
+			//rgbMap.put(item, matList);
 			rgbjsonMap.put(item, matJsonList);
 		}
 		
 		
 		
+		writeToFile("rgbMap.ser", rgbjsonMap);
+		
+		
+	}
+
+	private static void writeToFile(String fileName, Object data)
+	{
 		try {
-			FileOutputStream fos = new FileOutputStream("rgbMap.ser");
+			FileOutputStream fos = new FileOutputStream(fileName);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(rgbjsonMap);
+			oos.writeObject(data);
 			oos.close();
 			fos.close();
 			
@@ -119,63 +144,61 @@ public class DataLoader {
 			System.out
 			.printf("Serialized HashMap data is saved in rgbMap.ser");
 		}
-		
-		
 	}
 	
-//	public static String matToJson(Mat mat) {
-//		JsonObject obj = new JsonObject();
-// 
-//		if (mat.isContinuous()) {
-//			StringBuilder builder = new StringBuilder();
-// 
-//			for (int i = 0; i < mat.rows(); i++) {
-//				double[] d = mat.get(i, 0);
-//				builder.append(d[0]);
-//				if (i != mat.rows() - 1) {
-//					builder.append(",");
-//				}
-//			}
-// 
-//			obj.addProperty("rows", mat.rows());
-//			obj.addProperty("cols", mat.cols());
-//			obj.addProperty("type", mat.type());
-//			obj.addProperty("data", builder.toString());
-// 
-//			Gson gson = new Gson();
-//			String json = gson.toJson(obj);
-// 
-//			//System.out.println("opencv_detector json: " + json);
-//			return json;
-//		} else {
-//			System.err.println("opencv_detector Mat not continuous.");
-//		}
-//		return "{}";
-//	}
-// 
-//	public static Mat matFromJson(String json) {
-//		JsonParser parser = new JsonParser();
-//		JsonObject JsonObject = parser.parse(json).getAsJsonObject();
-// 
-//		int rows = JsonObject.get("rows").getAsInt();
-//		int cols = JsonObject.get("cols").getAsInt();
-//		int type = JsonObject.get("type").getAsInt();
-// 
-//		String dataString = JsonObject.get("data").getAsString();
-// 
-//		Mat mat = new Mat(rows, cols, type);
-// 
-//		int rowIndex = 0;
-// 
-//		for (String s : dataString.split(",")) {
-//			mat.put(rowIndex++, 0, Double.parseDouble(s));
-//		}
-// 
-//		return mat;
-// 
-//	}
+	public static String matToJson(Mat mat) {
+		JsonObject obj = new JsonObject();
+ 
+		if (mat.isContinuous()) {
+			StringBuilder builder = new StringBuilder();
+ 
+			for (int i = 0; i < mat.rows(); i++) {
+				double[] d = mat.get(i, 0);
+				builder.append(d[0]);
+				if (i != mat.rows() - 1) {
+					builder.append(",");
+				}
+			}
+ 
+			obj.addProperty("rows", mat.rows());
+			obj.addProperty("cols", mat.cols());
+			obj.addProperty("type", mat.type());
+			obj.addProperty("data", builder.toString());
+ 
+			Gson gson = new Gson();
+			String json = gson.toJson(obj);
+ 
+			//System.out.println("opencv_detector json: " + json);
+			return json;
+		} else {
+			System.err.println("opencv_detector Mat not continuous.");
+		}
+		return "{}";
+	}
+ 
+	public static Mat matFromJson(String json) {
+		JsonParser parser = new JsonParser();
+		JsonObject JsonObject = parser.parse(json).getAsJsonObject();
+ 
+		int rows = JsonObject.get("rows").getAsInt();
+		int cols = JsonObject.get("cols").getAsInt();
+		int type = JsonObject.get("type").getAsInt();
+ 
+		String dataString = JsonObject.get("data").getAsString();
+ 
+		Mat mat = new Mat(rows, cols, type);
+ 
+		int rowIndex = 0;
+ 
+		for (String s : dataString.split(",")) {
+			mat.put(rowIndex++, 0, Double.parseDouble(s));
+		}
+ 
+		return mat;
+ 
+	}
 	
-	public static String matToJson(Mat mat){
+	public static String matToJson2(Mat mat){
 	    JsonObject obj = new JsonObject();
 
 	    if(mat.isContinuous()){
@@ -228,7 +251,7 @@ public class DataLoader {
 	    return "{}";
 	}
 
-	public static Mat matFromJson(String json){
+	public static Mat matFromJson2(String json){
 
 
 	    JsonParser parser = new JsonParser();
