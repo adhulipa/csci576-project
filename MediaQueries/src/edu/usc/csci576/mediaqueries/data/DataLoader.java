@@ -20,16 +20,12 @@ public class DataLoader {
 			map = (HashMap) ois.readObject();
 			List<byte[]> p = map.get("flowers");
 			byte[] frame10 = p.get(399);
-			
-			
-			
 			BufferedImage img2 = ImageHandler.toBufferedImage(frame10, 352,
 					288, BufferedImage.TYPE_INT_RGB);
 			
 			ViewFrame vf = new ViewFrame("My");
 			vf.addImage(img2);
 			vf.setVisible(true);			
-			
 			
 			ois.close();
 			fis.close();
@@ -54,6 +50,34 @@ public class DataLoader {
 			System.out.println(mentry.getValue());
 		}
 
+	}
+	public static HashMap<String, List<int[]>> loadScenes() {
+		HashMap<String, List<int[]>> map = null;
+		try {
+			FileInputStream fis = new FileInputStream("scenesMap.ser");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			map = (HashMap) ois.readObject();
+			ois.close();
+			fis.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (ClassNotFoundException c) {
+			System.out.println("Class not found");
+			c.printStackTrace();
+		}
+		System.out.println("Deserialized HashMap..");
+		
+		
+//		// Display content using Iterator
+//		Set set = map.entrySet();
+//		Iterator iterator = set.iterator();
+//		while (iterator.hasNext()) {
+//			Map.Entry mentry = (Map.Entry) iterator.next();
+//			System.out.print("key: " + mentry.getKey() + " & Value: ");
+//			System.out.println(mentry.getValue());
+//		}
+		
+		return map;
 	}
 	
 	public static void serializeBytes()
