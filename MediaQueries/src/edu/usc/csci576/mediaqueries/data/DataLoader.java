@@ -1,19 +1,36 @@
 package edu.usc.csci576.mediaqueries.data;
 
-import java.io.FileOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 
+import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 import edu.usc.csci576.mediaqueries.model.SceneDetector;
+import edu.usc.csci576.mediaqueries.model.ViewFrame;
 
 public class DataLoader {
 	
 	public static void main(String[] args) {
-		HashMap<Integer, String> map = null;
+		
+		//serializeBytes();
+		HashMap<String, List<byte[]>> map = null;
 		try {
-			FileInputStream fis = new FileInputStream("scenesMap.ser");
+			FileInputStream fis = new FileInputStream("bytesMap.ser");
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			map = (HashMap) ois.readObject();
+			List<byte[]> p = map.get("flowers");
+			byte[] frame10 = p.get(399);
+			
+			
+			
+			BufferedImage img2 = ImageHandler.toBufferedImage(frame10, 352,
+					288, BufferedImage.TYPE_INT_RGB);
+			
+			ViewFrame vf = new ViewFrame("My");
+			vf.addImage(img2);
+			vf.setVisible(true);			
+			
+			
 			ois.close();
 			fis.close();
 		} catch (IOException ioe) {
@@ -39,6 +56,28 @@ public class DataLoader {
 
 	}
 	
+	public static void serializeBytes()
+	{
+		String[] dataset = {"starcraft", "flowers", "interview", "movie", "sports", "musicvideo", "traffic"};
+		
+		Map<String, List<byte[]>> bytesMap = new HashMap<String, List<byte[]>>();
+		
+		for (String item : dataset) {
+			
+			List<byte[]> imageBytes = new ArrayList<byte[]>();
+			for(int i = 1; i <= 600; i++)
+			{
+				String fileName = String.format("%s/%s%03d.rgb", "database/" + item, item, i);
+				imageBytes.add(ImageHandler.readImageFromFile(fileName));
+			}
+			
+			bytesMap.put(item, imageBytes);
+			System.out.println("done with " + item);
+		}
+		
+		writeFile("bytesMap.ser", bytesMap);
+	}
+	
 	public static void createOfflineDataset() {
 		
 		// Scene Detector for all videos
@@ -52,19 +91,25 @@ public class DataLoader {
 			scenesMap.put(item, SceneDetector.getScenes("database/" + item, item, 600));
 			System.out.println("done with " + item);
 		}
-		
-		
+				
+		writeFile("scenesMap.ser", scenesMap);		
+	}
+
+	private static void writeFile(String fileName, Object data)
+	{
 		try {
-			FileOutputStream fos = new FileOutputStream("scenesMap.ser");
+			FileOutputStream fos = new FileOutputStream(fileName);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(scenesMap);
+			oos.writeObject(data);
 			oos.close();
 			fos.close();
-			System.out
-					.printf("Serialized HashMap data is saved in scenesMap.ser");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
-		
+		finally {
+			System.out
+			.printf("Serialized HashMap data is saved in " + fileName + "\n");
+		}
+	
 	}
 }
