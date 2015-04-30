@@ -113,8 +113,7 @@ public class DataLoader {
 				
 				
 			}
-			
-			
+					
 			
 			//rgbMap.put(item, matList);
 			rgbjsonMap.put(item, matJsonList);
