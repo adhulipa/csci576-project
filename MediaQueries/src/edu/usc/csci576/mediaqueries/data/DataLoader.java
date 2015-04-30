@@ -1,6 +1,5 @@
 package edu.usc.csci576.mediaqueries.data;
 
-import java.io.FileOutputStream;
 import java.io.*;
 import java.util.*;
 
@@ -8,8 +7,8 @@ import edu.usc.csci576.mediaqueries.model.SceneDetector;
 
 public class DataLoader {
 	
-	public static void main(String[] args) {
-		HashMap<Integer, String> map = null;
+	public static HashMap<String, List<int[]>> loadScenes() {
+		HashMap<String, List<int[]>> map = null;
 		try {
 			FileInputStream fis = new FileInputStream("scenesMap.ser");
 			ObjectInputStream ois = new ObjectInputStream(fis);
@@ -18,25 +17,23 @@ public class DataLoader {
 			fis.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-			return;
 		} catch (ClassNotFoundException c) {
 			System.out.println("Class not found");
 			c.printStackTrace();
-			return;
 		}
 		System.out.println("Deserialized HashMap..");
 		
 		
+//		// Display content using Iterator
+//		Set set = map.entrySet();
+//		Iterator iterator = set.iterator();
+//		while (iterator.hasNext()) {
+//			Map.Entry mentry = (Map.Entry) iterator.next();
+//			System.out.print("key: " + mentry.getKey() + " & Value: ");
+//			System.out.println(mentry.getValue());
+//		}
 		
-		// Display content using Iterator
-		Set set = map.entrySet();
-		Iterator iterator = set.iterator();
-		while (iterator.hasNext()) {
-			Map.Entry mentry = (Map.Entry) iterator.next();
-			System.out.print("key: " + mentry.getKey() + " & Value: ");
-			System.out.println(mentry.getValue());
-		}
-
+		return map;
 	}
 	
 	public static void createOfflineDataset() {
