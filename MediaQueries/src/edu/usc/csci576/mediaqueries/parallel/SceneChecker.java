@@ -38,8 +38,9 @@ public class SceneChecker implements Callable<Double> {
 		
 		
 		ExecutorService frameCheckExecutor = Executors.newCachedThreadPool();
-		frameCheckExecutor = Executors.newFixedThreadPool(5);
-
+		//frameCheckExecutor = Executors.newFixedThreadPool(5);
+		frameCheckExecutor = Executors.newSingleThreadExecutor();
+		
 		Frame clipFrame = new Frame(clip.getVideoPath() 
 				+ "/" + clip.getVideoName(), clip.getBeginIdx());
 		Frame mainFrame;

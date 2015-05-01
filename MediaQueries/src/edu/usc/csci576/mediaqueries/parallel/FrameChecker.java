@@ -43,6 +43,16 @@ public class FrameChecker implements Callable<Double[]> {
 		List<Mat> hist1 = RGBHistogram.getRGBMat(frame1.getPath(), WIDTH, HEIGHT);
 		List<Mat> hist2 = RGBHistogram.getRGBMat(frame2.getPath(), WIDTH, HEIGHT);
 		
+		// frame1.path = database/StarCraft/StarCraft001.rgb
+//		List<Mat> h1 = DataLoader.deserializeRGBMats(frame1.getPath());
+//		
+//		System.out.println(Arrays.toString(hist1.get(0).get(0, 0)));
+//		
+//		System.out.println(" ");
+//		
+//		System.out.println(Arrays.toString(h1.get(0).get(0, 0)));
+		
+
 //		List<byte[][]> bgrHist = DataLoader.deserializeRGBArrays(
 //				"histogram/"
 //				+ "StarCraft/StarCraft150"

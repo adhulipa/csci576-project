@@ -3,6 +3,8 @@ package edu.usc.csci576.mediaqueries.data;
 import java.io.*;
 import java.util.*;
 
+import org.opencv.core.Mat;
+
 import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.SceneDetector;
 
@@ -10,10 +12,11 @@ public class DataLoader {
 
 	public static void main(String[] args) {
 
-		loadScenes();
-		
+		//loadScenes();
 		// createOfflineDataset();
-		
+		//serializeRGBArrays();
+
+		// desrialize(histogram/traffic/traffic600.histogram)
 		/*
 		 * HashMap<String, List<byte[]>> map = null; try { FileInputStream fis =
 		 * new FileInputStream("bytesMap.ser"); ObjectInputStream ois = new
@@ -61,6 +64,8 @@ public class DataLoader {
 	}
 
 	public static void serializeRGBArrays() {
+		System.out.println("Serializing rgb .... ");
+		
 		String[] dataset = { "StarCraft", "flowers", "interview", "movie",
 				"sports", "musicvideo", "traffic" };
 
@@ -107,6 +112,24 @@ public class DataLoader {
 		System.out.println("Deserialized RGB Arrays..");
 		return bgrHist;
 	}
+	public static List<Mat> deserializeRGBMats(String file) {
+
+		List<byte[][]> bgrHist = deserializeRGBArrays(file);
+		return matify(bgrHist);
+	}
+
+	private static List<Mat> matify(List<byte[][]> bgrHists) {
+		List<Mat> bgrHistsMat = new ArrayList<Mat>(3);
+		
+		for (byte[][] channel : bgrHists) {
+			Mat m = new Mat();
+			for (int row = 0; row < channel.length; row++) {
+				m.put(row, 0, channel[row]);
+			}
+			bgrHistsMat.add(m);
+		}
+		return bgrHistsMat;
+	}
 
 	public static void createOfflineDataset() {
 
@@ -124,7 +147,7 @@ public class DataLoader {
 		writeFile("scenesMap.ser", scenesMap);
 
 		// Create RGB hist data
-		// serializeRGBArrays();
+		serializeRGBArrays();
 
 	}
 
