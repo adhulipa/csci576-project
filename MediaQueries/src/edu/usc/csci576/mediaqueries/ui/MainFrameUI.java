@@ -13,10 +13,13 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import edu.usc.csci576.mediaqueries.controller.*;
+import edu.usc.csci576.mediaqueries.data.ImageHandler;
+
 import javax.swing.JTextField;
 import javax.swing.JList;
 import javax.swing.JSlider;
 import javax.swing.UIManager;
+
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;

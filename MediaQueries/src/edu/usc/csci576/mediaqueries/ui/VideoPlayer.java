@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 
 import org.opencv.core.Core;
 
-import edu.usc.csci576.mediaqueries.controller.ImageHandler;
+import edu.usc.csci576.mediaqueries.data.ImageHandler;
 
 public class VideoPlayer implements Runnable {
 	

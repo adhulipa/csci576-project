@@ -8,7 +8,7 @@ import org.opencv.core.*;
 import org.opencv.core.Core.*;
 import org.opencv.imgproc.Imgproc;
 
-import edu.usc.csci576.mediaqueries.controller.ImageHandler;
+import edu.usc.csci576.mediaqueries.data.ImageHandler;
 import edu.usc.csci576.mediaqueries.ui.ViewFrame;
 
 public class SumOfAbsDiff {

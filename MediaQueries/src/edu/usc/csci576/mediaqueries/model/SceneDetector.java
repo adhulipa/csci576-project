@@ -16,7 +16,7 @@ import org.opencv.core.Core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Algorithm.*;
 
-import edu.usc.csci576.mediaqueries.controller.ImageHandler;
+import edu.usc.csci576.mediaqueries.data.ImageHandler;
 
 public class SceneDetector {
 	public static int SCENE_BEGIN_INDEX = 0;

@@ -1,4 +1,4 @@
-package edu.usc.csci576.mediaqueries.controller;
+package edu.usc.csci576.mediaqueries.data;
 
 import java.awt.image.DataBufferByte;
 import java.awt.image.BufferedImage;

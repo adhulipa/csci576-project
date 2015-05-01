@@ -3,7 +3,6 @@ package edu.usc.csci576.mediaqueries.data;
 import java.io.*;
 import java.util.*;
 
-import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.SceneDetector;
 

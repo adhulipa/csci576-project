@@ -23,7 +23,7 @@ import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 
-import edu.usc.csci576.mediaqueries.controller.ImageHandler;
+import edu.usc.csci576.mediaqueries.data.ImageHandler;
 import edu.usc.csci576.mediaqueries.ui.MainFrameUI;
 
 public class RGBHistogram {
