@@ -1,4 +1,4 @@
-package edu.usc.csci576.mediaqueries.model;
+package edu.usc.csci576.mediaqueries.ui;
 
 
 import java.awt.Component;

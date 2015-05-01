@@ -3,10 +3,13 @@ package edu.usc.csci576.mediaqueries.controller;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import edu.usc.csci576.mediaqueries.data.DataLoader;
+import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.SceneDetector;
 
 
@@ -21,13 +24,15 @@ public class VideoComparator implements Runnable {
 		// AD: Idea
 		/*
 		 * Step1 : iterate over dataset
-		 * Step2 : for each item get scenes & get scens for query
+		 * Step2 : for each item get scenes & get scenes for query
 		 * Step3 : Spawn thread for each frame in scene
 		 * Step4 : Compare query frame with item frame
 		 * 			using compareHist with CV_CORRELL
 		 *  We can use compareHist() to get  percent match of frame.
 		 *  This can be intelligently used to compute macth
 		 */
+		
+		ExecutorService threadpool = Executors.newCachedThreadPool();
 	}
 
 	/**
@@ -57,7 +62,11 @@ public class VideoComparator implements Runnable {
 		int[] arr = new int[]{map.get("StarCraft").size()};
 		List<int[]> scenes = map.get("StarCraft");
 		
-		List<byte[][]> bgrHist = DataLoader.deserializeRGBArrays("StarCraftRGB.hist");
+		List<byte[][]> bgrHist = DataLoader.deserializeRGBArrays(
+				"histogram/"
+				+ "musicvideo/musicvideo030"
+				+ ".histogram");
+
 		System.out.println(Arrays.deepToString(bgrHist.get(0)));
 		
 		

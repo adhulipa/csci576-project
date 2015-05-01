@@ -84,15 +84,23 @@ public class DataLoader {
 		int height = 288;
 
 		for (String item : dataset) {
+			System.out.println("serialising item - " + item);
 			List<byte[][]> bgrArrayList = new ArrayList<byte[][]>();
 			for (int i = 1; i <= 600; i++) {
+
+				System.out.println("serialising - " + item + i);
+				
 				String fileName = String.format("%s/%s%03d.rgb", "database/"
 						+ item, item, i);
 				bgrArrayList = RGBHistogram.getRGBArrays(fileName, width,
 						height);
+				
+				String rgbFilePath = String.format("%s/%s%03d.histogram", "histogram/"
+						+ item, item, i);
+				writeFile(rgbFilePath, bgrArrayList);
+
 			}
 
-			writeFile(item + "RGB.hist", bgrArrayList);
 		}
 
 	}
@@ -134,8 +142,16 @@ public class DataLoader {
 	}
 
 	private static void writeFile(String fileName, Object data) {
+		
+		
+		File file = new File(fileName);
+		
+		if ( !file.exists()){
+			file.getParentFile().mkdirs() ;			
+		}
+		
 		try {
-			FileOutputStream fos = new FileOutputStream(fileName);
+			FileOutputStream fos = new FileOutputStream(file);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(data);
 			oos.close();
