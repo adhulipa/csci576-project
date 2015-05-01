@@ -83,7 +83,7 @@ public class VideoComparator  {
 			resultList.add(result);
 		}
 
-		
+		threadPool.shutdown();
 		
 //		for (int[] e : dataScenes) {
 //			System.out.println(
