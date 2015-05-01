@@ -28,6 +28,7 @@ public class AudioComparator
 				"sports", "musicvideo", "traffic" };
 		
 		String queryWavPath = "queries/Not From Searching Content/HQ4/HQ4.wav"; 
+
 		ArrayList<Future<AudioData>> scores = new ArrayList<Future<AudioData>>();
 		for(String item : dataset)
 		{
