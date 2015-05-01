@@ -57,6 +57,9 @@ public class VideoComparator implements Runnable {
 		int[] arr = new int[]{map.get("StarCraft").size()};
 		List<int[]> scenes = map.get("StarCraft");
 		
+		List<byte[][]> bgrHist = DataLoader.deserializeRGBArrays("StarCraftRGB.hist");
+		System.out.println(Arrays.deepToString(bgrHist.get(0)));
+		
 		
 		for (int[] e : scenes) {
 			System.out.println(

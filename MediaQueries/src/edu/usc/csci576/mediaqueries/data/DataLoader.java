@@ -4,15 +4,21 @@ import java.io.*;
 import java.util.*;
 
 import edu.usc.csci576.mediaqueries.controller.ImageHandler;
+import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.SceneDetector;
 
 public class DataLoader {
-	
+
 	public static void main(String[] args) {
+
 		
-		serializeBytes();
-		System.exit(1);
-		HashMap<String, List<byte[]>> map = null;
+		
+		serializeRGBArrays();
+		
+		
+		
+		
+/*		HashMap<String, List<byte[]>> map = null;
 		try {
 			FileInputStream fis = new FileInputStream("bytesMap.ser");
 			ObjectInputStream ois = new ObjectInputStream(fis);
@@ -30,9 +36,7 @@ public class DataLoader {
 			return;
 		}
 		System.out.println("Deserialized HashMap..");
-		
-		
-		
+
 		// Display content using Iterator
 		Set set = map.entrySet();
 		Iterator iterator = set.iterator();
@@ -41,8 +45,9 @@ public class DataLoader {
 			System.out.print("key: " + mentry.getKey() + " & Value: ");
 			System.out.println(mentry.getValue());
 		}
-
+*/
 	}
+
 	public static HashMap<String, List<int[]>> loadScenes() {
 		HashMap<String, List<int[]>> map = null;
 		try {
@@ -58,61 +63,77 @@ public class DataLoader {
 			c.printStackTrace();
 		}
 		System.out.println("Deserialized HashMap..");
-		
-		
-//		// Display content using Iterator
-//		Set set = map.entrySet();
-//		Iterator iterator = set.iterator();
-//		while (iterator.hasNext()) {
-//			Map.Entry mentry = (Map.Entry) iterator.next();
-//			System.out.print("key: " + mentry.getKey() + " & Value: ");
-//			System.out.println(mentry.getValue());
-//		}
-		
+
+		// // Display content using Iterator
+		// Set set = map.entrySet();
+		// Iterator iterator = set.iterator();
+		// while (iterator.hasNext()) {
+		// Map.Entry mentry = (Map.Entry) iterator.next();
+		// System.out.print("key: " + mentry.getKey() + " & Value: ");
+		// System.out.println(mentry.getValue());
+		// }
+
 		return map;
 	}
-	
-	public static void serializeBytes()
-	{
-		String[] dataset = {"starcraft", "flowers", "interview", "movie", "sports", "musicvideo", "traffic"};
-		
-		Map<String, List<byte[]>> bytesMap = new HashMap<String, List<byte[]>>();
-		
+
+	public static void serializeRGBArrays() {
+		String[] dataset = { "StarCraft", "flowers", "interview", "movie",
+				"sports", "musicvideo", "traffic" };
+
+		int width = 352;
+		int height = 288;
+
 		for (String item : dataset) {
-			
-			List<byte[]> imageBytes = new ArrayList<byte[]>();
-			for(int i = 1; i <= 600; i++)
-			{
-				String fileName = String.format("%s/%s%03d.rgb", "database/" + item, item, i);
-				imageBytes.add(ImageHandler.readImageFromFile(fileName));
+			List<byte[][]> bgrArrayList = new ArrayList<byte[][]>();
+			for (int i = 1; i <= 600; i++) {
+				String fileName = String.format("%s/%s%03d.rgb", "database/"
+						+ item, item, i);
+				bgrArrayList = RGBHistogram.getRGBArrays(fileName, width,
+						height);
 			}
-			
-			bytesMap.put(item, imageBytes);
-			System.out.println("done with " + item);
+
+			writeFile(item + "RGB.hist", bgrArrayList);
 		}
-		
-		writeFile("bytesMap.ser", bytesMap);
-	}
-	
-	public static void createOfflineDataset() {
-		
-		// Scene Detector for all videos
-		String[] dataset = {"StarCraft", "flowers", "interview", 
-				"movie", "sports", "musicvideo", "traffic"};
-		
-		
-		Map<String, List<int[]>> scenesMap = new HashMap<String, List<int[]>>();
-		
-		for (String item : dataset) {
-			scenesMap.put(item, SceneDetector.getScenes("database/" + item, item, 600));
-			System.out.println("done with " + item);
-		}
-				
-		writeFile("scenesMap.ser", scenesMap);		
+
 	}
 
-	private static void writeFile(String fileName, Object data)
-	{
+	public static List<byte[][]> deserializeRGBArrays(String file) {
+
+		List<byte[][]> bgrHist = null;
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			bgrHist = (List<byte[][]>) ois.readObject();
+			ois.close();
+			fis.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (ClassNotFoundException c) {
+			System.out.println("Class not found");
+			c.printStackTrace();
+		}
+		System.out.println("Deserialized HashMap..");
+		return bgrHist;
+	}
+
+	public static void createOfflineDataset() {
+
+		// Scene Detector for all videos
+		String[] dataset = { "StarCraft", "flowers", "interview", "movie",
+				"sports", "musicvideo", "traffic" };
+
+		Map<String, List<int[]>> scenesMap = new HashMap<String, List<int[]>>();
+
+		for (String item : dataset) {
+			scenesMap.put(item,
+					SceneDetector.getScenes("database/" + item, item, 600));
+			System.out.println("done with " + item);
+		}
+
+		writeFile("scenesMap.ser", scenesMap);
+	}
+
+	private static void writeFile(String fileName, Object data) {
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -121,11 +142,10 @@ public class DataLoader {
 			fos.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
+		} finally {
+			System.out.printf("Serialized HashMap data is saved in " + fileName
+					+ "\n");
 		}
-		finally {
-			System.out
-			.printf("Serialized HashMap data is saved in " + fileName + "\n");
-		}
-	
+
 	}
 }
