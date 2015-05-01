@@ -95,4 +95,9 @@ public class Scene {
 	public void setBeginIdx(int beginIdx) {
 		this.beginIdx = beginIdx;
 	}
+
+	public String getFullPath() {
+		
+		return videoPath + videoName;
+	}
 }

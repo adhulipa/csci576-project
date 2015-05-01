@@ -33,17 +33,19 @@ public class CompareFrames  {
 	}
 
 
-	/*
+	/**
 	 * @param hist1
 	 * @param hist2
+	 * @param CV_COMP_TYPE - use Imgproc.CV_COMP_CORREL
 	 * @return boolean
+	 * 
 	 * 
 	 * Pass 2 RGB histograms from RGBHistogram.java and if comparison is successful
 	 * based on our heuristic this function will return true.
 	 * 
 	 */
 	public static double[] compareRGBHistogram(List<Mat> hist1, 
-			List<Mat> hist2, int CV_COMP_TYPE) {
+			List<Mat> hist2) {
 		
 		
 		Mat b1 = new Mat(288, 352, CvType.CV_32F);
@@ -62,15 +64,15 @@ public class CompareFrames  {
 		hist2.get(1).convertTo(g2, CvType.CV_32F);
 		hist2.get(2).convertTo(r2, CvType.CV_32F);
 		
-		double b_ret = Imgproc.compareHist(b1, b2, CV_COMP_TYPE);
-		double g_ret = Imgproc.compareHist(g1, g2, CV_COMP_TYPE);
-		double r_ret = Imgproc.compareHist(r1, r2, CV_COMP_TYPE);
+		double b_ret = Imgproc.compareHist(b1, b2, Imgproc.CV_COMP_CORREL);
+		double g_ret = Imgproc.compareHist(g1, g2, Imgproc.CV_COMP_CORREL);
+		double r_ret = Imgproc.compareHist(r1, r2, Imgproc.CV_COMP_CORREL);
 		
-		
-		System.out.println(r_ret);
-		System.out.println(g_ret);
-		System.out.println(b_ret);
-		
+//		
+//		System.out.println(r_ret);
+//		System.out.println(g_ret);
+//		System.out.println(b_ret);
+//		
 		return new double[]{r_ret, g_ret, b_ret};
 	}
 	
@@ -88,8 +90,7 @@ public class CompareFrames  {
 		//List<Mat> rgbmats2 = RGBHistogram.getRGBMat("database/flowers/flowers001.rgb", 352, 288);
 		
 		
-		double[] diffs = compareRGBHistogram(rgbmats1, rgbmats2, 
-				Imgproc.CV_COMP_CORREL);
+		double[] diffs = compareRGBHistogram(rgbmats1, rgbmats2);
 		
 		System.out.println(Arrays.toString(diffs));
 		

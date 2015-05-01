@@ -70,7 +70,6 @@ public class RGBHistogram {
 	 */
 	public static List<Mat> getRGBMat(String frame, int width,
 			int height) {
-		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );		
 		
 		byte[] raw = ImageHandler.readImageFromFile(frame);
 		BufferedImage img = ImageHandler.toBufferedImage(raw, width, height, 
