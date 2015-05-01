@@ -27,8 +27,30 @@ import edu.usc.csci576.mediaqueries.controller.ImageHandler;
 import edu.usc.csci576.mediaqueries.ui.MainFrameUI;
 
 public class RGBHistogram {
-
 	
+	private int WIDTH = 352;
+	private int HEIGHT = 288;
+	
+	private List<Mat> bgrMat;
+	private List<byte[][]> bgrArrays;
+	
+	public RGBHistogram(String filename) {
+		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );		
+		
+		byte[] raw = ImageHandler.readImageFromFile(filename);
+		BufferedImage img = ImageHandler.toBufferedImage(raw, WIDTH, HEIGHT, 
+				BufferedImage.TYPE_3BYTE_BGR);
+		Mat m = ImageHandler.matify(img);
+		Core.split(m, bgrMat);
+	}
+	
+	public void asArrays() {
+		// TODO
+	}
+	
+	public void asMat() {
+		// TODO
+	}
 	
 	/**
 	 * 
