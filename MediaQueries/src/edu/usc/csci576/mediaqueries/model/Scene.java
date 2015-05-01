@@ -14,12 +14,14 @@ public class Scene {
 	 *      ^filepath^     ^filename^
 	*/
 	
-	private String videoPath;
-	private String videoName;
+	protected String videoPath;
+	protected String videoName;
 	
 	private int beginIdx;
 	private int endIdx;
-		
+	
+	protected Scene(){}
+	
 	public Scene(String videoPath, String videoName, Integer[] indices) {
 		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		

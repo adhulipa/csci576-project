@@ -47,8 +47,8 @@ public class VideoComparator  {
 	public static void main(String[] args) {
 		System.out.println("Started comparator...");
 		
-		ExecutorService threadPool = Executors.newCachedThreadPool();
-		threadPool = Executors.newSingleThreadExecutor();
+		ExecutorService sceneCheckExecutor = Executors.newCachedThreadPool();
+		sceneCheckExecutor = Executors.newSingleThreadExecutor();
 		
 		// query vide stuff
 		String queryPath = "query/Q4";
@@ -79,11 +79,11 @@ public class VideoComparator  {
 		for (Integer[] sceneIndices : dataScenes) {
 			targetScene = new Scene(dataPath, dataFile, sceneIndices);
 			sceneChecker = new SceneChecker(targetScene, firstQueryScene);
-			result = threadPool.submit(sceneChecker);
+			result = sceneCheckExecutor.submit(sceneChecker);
 			resultList.add(result);
 		}
 
-		threadPool.shutdown();
+		sceneCheckExecutor.shutdown();
 		
 //		for (int[] e : dataScenes) {
 //			System.out.println(

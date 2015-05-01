@@ -37,16 +37,16 @@ public class SceneChecker implements Callable<Double> {
 		 */
 		
 		
-		ExecutorService threadPool = Executors.newCachedThreadPool();
-		threadPool = Executors.newSingleThreadExecutor();
+		ExecutorService frameCheckExecutor = Executors.newCachedThreadPool();
+		frameCheckExecutor = Executors.newFixedThreadPool(5);
 
 		Frame clipFrame = new Frame(clip.getVideoPath() 
 				+ "/" + clip.getVideoName(), clip.getBeginIdx());
 		Frame mainFrame;
 		FrameChecker frameChecker;
 		
-		List<Future<Double>> frameCheckResults = new ArrayList<Future<Double>>();
-		Future<Double> result;
+		List<Future<Double[]>> frameCheckResults = new ArrayList<Future<Double[]>>();
+		Future<Double[]> result;
 		
 		for (int frameIdx = mainScene.getBeginIdx(); 
 				frameIdx <= mainScene.getEndIdx();
@@ -56,17 +56,31 @@ public class SceneChecker implements Callable<Double> {
 			
 			frameChecker = new FrameChecker(mainFrame, clipFrame);
 			
-			result = threadPool.submit(frameChecker);
+			result = frameCheckExecutor.submit(frameChecker);
 			frameCheckResults.add(result);
 		}
 		
-		for (Future<Double> r : frameCheckResults) {
-			if (r.get() > 95) {
-				System.out.println(r.get() + " good match found");
-			}
+		Future<Double[]> r;
+		
+		// Format of r -- frameChekcResult is
+		// Double[] 
+		//-- Double[0] - databaseVideoFrameIdx
+		//-- Double[1] - queryVideoFrameIdx
+		//-- Double[2] - matchPercent
+		// TODO: Use better data struture
+		
+		for (int i = 0; i < frameCheckResults.size(); i++) {
+			r = frameCheckResults.get(i);
+			
+				System.out.println(
+						r.get()[0] + " " +
+						r.get()[1] + " " + 
+						r.get()[2]
+						);
+			
 		}
 		
-		
+		frameCheckExecutor.shutdown();
 		
 				
 //		System.out.println(
