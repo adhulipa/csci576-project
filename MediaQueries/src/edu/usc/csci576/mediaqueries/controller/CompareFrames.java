@@ -12,9 +12,27 @@ import org.opencv.imgproc.Imgproc;
 
 import edu.usc.csci576.mediaqueries.data.ImageHandler;
 import edu.usc.csci576.mediaqueries.model.RGBHistogram;
+import edu.usc.csci576.mediaqueries.model.Scene;
 import edu.usc.csci576.mediaqueries.ui.ViewFrame;
 
-public class CompareHistogram {
+public class CompareFrames  {
+	
+	public static void main(String[] args) {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		
+		Scene q, d;
+		
+		sceneComparator();
+		
+	}
+	
+	
+	private static void sceneComparator() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	/*
 	 * @param hist1
 	 * @param hist2
@@ -56,7 +74,7 @@ public class CompareHistogram {
 		return new double[]{r_ret, g_ret, b_ret};
 	}
 	
-	public static void main(String[] args) {
+	public static void TestHarness_main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
 		String q = "database/starcraft/StarCraft035.rgb";

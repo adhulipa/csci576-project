@@ -10,45 +10,30 @@ public class DataLoader {
 
 	public static void main(String[] args) {
 
+		loadScenes();
 		
+		// createOfflineDataset();
 		
-		serializeRGBArrays();
-		
-		
-		
-		
-/*		HashMap<String, List<byte[]>> map = null;
-		try {
-			FileInputStream fis = new FileInputStream("bytesMap.ser");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			map = (HashMap) ois.readObject();
-			List<byte[]> p = map.get("starcraft");
-			byte[] frame10 = p.get(10);
-			ois.close();
-			fis.close();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-			return;
-		} catch (ClassNotFoundException c) {
-			System.out.println("Class not found");
-			c.printStackTrace();
-			return;
-		}
-		System.out.println("Deserialized HashMap..");
-
-		// Display content using Iterator
-		Set set = map.entrySet();
-		Iterator iterator = set.iterator();
-		while (iterator.hasNext()) {
-			Map.Entry mentry = (Map.Entry) iterator.next();
-			System.out.print("key: " + mentry.getKey() + " & Value: ");
-			System.out.println(mentry.getValue());
-		}
-*/
+		/*
+		 * HashMap<String, List<byte[]>> map = null; try { FileInputStream fis =
+		 * new FileInputStream("bytesMap.ser"); ObjectInputStream ois = new
+		 * ObjectInputStream(fis); map = (HashMap) ois.readObject();
+		 * List<byte[]> p = map.get("starcraft"); byte[] frame10 = p.get(10);
+		 * ois.close(); fis.close(); } catch (IOException ioe) {
+		 * ioe.printStackTrace(); return; } catch (ClassNotFoundException c) {
+		 * System.out.println("Class not found"); c.printStackTrace(); return; }
+		 * System.out.println("Deserialized HashMap..");
+		 * 
+		 * // Display content using Iterator Set set = map.entrySet(); Iterator
+		 * iterator = set.iterator(); while (iterator.hasNext()) { Map.Entry
+		 * mentry = (Map.Entry) iterator.next(); System.out.print("key: " +
+		 * mentry.getKey() + " & Value: ");
+		 * System.out.println(mentry.getValue()); }
+		 */
 	}
 
-	public static HashMap<String, List<int[]>> loadScenes() {
-		HashMap<String, List<int[]>> map = null;
+	public static HashMap<String, List<Integer[]>> loadScenes() {
+		HashMap<String, List<Integer[]>> map = null;
 		try {
 			FileInputStream fis = new FileInputStream("scenesMap.ser");
 			ObjectInputStream ois = new ObjectInputStream(fis);
@@ -61,7 +46,7 @@ public class DataLoader {
 			System.out.println("Class not found");
 			c.printStackTrace();
 		}
-		System.out.println("Deserialized HashMap..");
+		System.out.println("LoadScenes Deserialized scenes map..");
 
 		// // Display content using Iterator
 		// Set set = map.entrySet();
@@ -88,14 +73,14 @@ public class DataLoader {
 			for (int i = 1; i <= 600; i++) {
 
 				System.out.println("serialising - " + item + i);
-				
+
 				String fileName = String.format("%s/%s%03d.rgb", "database/"
 						+ item, item, i);
 				bgrArrayList = RGBHistogram.getRGBArrays(fileName, width,
 						height);
-				
-				String rgbFilePath = String.format("%s/%s%03d.histogram", "histogram/"
-						+ item, item, i);
+
+				String rgbFilePath = String.format("%s/%s%03d.histogram",
+						"histogram/" + item, item, i);
 				writeFile(rgbFilePath, bgrArrayList);
 
 			}
@@ -119,7 +104,7 @@ public class DataLoader {
 			System.out.println("Class not found");
 			c.printStackTrace();
 		}
-		System.out.println("Deserialized HashMap..");
+		System.out.println("Deserialized RGB Arrays..");
 		return bgrHist;
 	}
 
@@ -129,26 +114,28 @@ public class DataLoader {
 		String[] dataset = { "StarCraft", "flowers", "interview", "movie",
 				"sports", "musicvideo", "traffic" };
 
-		Map<String, List<int[]>> scenesMap = new HashMap<String, List<int[]>>();
+		Map<String, List<Integer[]>> scenesMap = new HashMap<String, List<Integer[]>>();
 
 		for (String item : dataset) {
 			scenesMap.put(item,
 					SceneDetector.getScenes("database/" + item, item, 600));
-			System.out.println("done with " + item);
+			System.out.println("done with " + item + " scenes");
 		}
-
 		writeFile("scenesMap.ser", scenesMap);
+
+		// Create RGB hist data
+		// serializeRGBArrays();
+
 	}
 
 	private static void writeFile(String fileName, Object data) {
-		
-		
+
 		File file = new File(fileName);
-		
-		if ( !file.exists()){
-			file.getParentFile().mkdirs() ;			
+
+		if (!file.exists()) {
+			file.getParentFile().mkdirs();
 		}
-		
+
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);

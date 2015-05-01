@@ -149,21 +149,6 @@ public class AudioAnalyzer {
 		dwriter.close();
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		WaveHeader h = dwave.getWaveHeader();
 
 		System.out.println(h);

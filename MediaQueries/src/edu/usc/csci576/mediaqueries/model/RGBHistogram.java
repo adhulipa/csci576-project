@@ -68,11 +68,11 @@ public class RGBHistogram {
 	 * cols = width of img
 	 * 
 	 */
-	public static List<Mat> getRGBMat(String filename, int width,
+	public static List<Mat> getRGBMat(String frame, int width,
 			int height) {
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );		
 		
-		byte[] raw = ImageHandler.readImageFromFile(filename);
+		byte[] raw = ImageHandler.readImageFromFile(frame);
 		BufferedImage img = ImageHandler.toBufferedImage(raw, width, height, 
 				BufferedImage.TYPE_3BYTE_BGR);
 		Mat m = ImageHandler.matify(img);

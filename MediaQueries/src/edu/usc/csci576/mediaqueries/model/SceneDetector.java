@@ -31,10 +31,17 @@ public class SceneDetector {
 		return frame;
 	}
 	
-	public static List<int[]> getScenes(String filepath, String filename, int numFrames) {
+	/**
+	 * getScenes("database/musicvideo", "musicvideo", 600);
+	 * @param filepath
+	 * @param filename
+	 * @param numFrames
+	 * @return
+	 */
+	public static List<Integer[]> getScenes(String filepath, String filename, int numFrames) {
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-		List<int[]> scenes = new ArrayList<int[]>();
+		List<Integer[]> scenes = new ArrayList<Integer[]>();
 		BufferedImage currentFrame, prevFrame;
 		double ecr;
 		
@@ -46,7 +53,7 @@ public class SceneDetector {
 			prevFrame = readFrame(filepath, filename, currentFrameIdx-1);
 			ecr = computerECR(currentFrame, prevFrame);
 			if (ecr > 0.6) {
-				int[] scene = new int[2];
+				Integer[] scene = new Integer[2];
 				scene[SceneDetector.SCENE_BEGIN_INDEX] = sceneBeginIdx;
 				scene[SceneDetector.SCENE_END_INDEX] = currentFrameIdx-1;
 				scenes.add(scene);
@@ -55,7 +62,7 @@ public class SceneDetector {
 		}
 		
 		// Add the final scene
-		scenes.add(new int[]{sceneBeginIdx, numFrames});
+		scenes.add(new Integer[]{sceneBeginIdx, numFrames});
 		
 		return scenes;
 	}
@@ -67,9 +74,9 @@ public class SceneDetector {
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 		
 		
-		List<int[]> scenes = getScenes("database/musicvideo", "musicvideo", 600);
+		List<Integer[]> scenes = getScenes("database/musicvideo", "musicvideo", 600);
 		
-		for (int[] each : scenes) {
+		for (Integer[] each : scenes) {
 			System.out.print(Arrays.toString(each) + " ");
 		}
 		
