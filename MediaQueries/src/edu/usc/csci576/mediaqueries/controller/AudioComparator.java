@@ -53,5 +53,7 @@ public class AudioComparator
 				e.printStackTrace();
 			}
 		}
+		
+		audioCheckExecutor.shutdown();
 	}
 }
