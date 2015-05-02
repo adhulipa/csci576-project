@@ -16,7 +16,7 @@ import edu.usc.csci576.mediaqueries.data.DataLoader;
 import edu.usc.csci576.mediaqueries.model.Frame;
 import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 
-public class FrameChecker implements Callable<Double[]> {
+public class FrameChecker implements Callable<FCResultType> {
 
 	private int WIDTH = 352;
 	private int HEIGHT = 288;
@@ -32,7 +32,7 @@ public class FrameChecker implements Callable<Double[]> {
 	}
 	
 	@Override
-	public Double[] call() throws Exception {
+	public FCResultType call() throws Exception {
 		
 		String hist1Path = String.format("histogram/%s/%s%03d.histogram",
 				frame1.getVideoName(), frame1.getVideoName(), frame1.getFrameIdx());
@@ -91,8 +91,11 @@ public class FrameChecker implements Callable<Double[]> {
 				new LinkedHashMap<Pair<String,String>, Double>();
 		resultMap.put(framePair,  matchPercent);
 		
+		FCResultType resultData = new FCResultType(frame1.getFrameIdx(), frame2.getFrameIdx(), 
+				matchPercent, frame1.getVideoName());
+		
 //		return resultMap;
-		return result;
+		return resultData;
 		
 	}
 }
