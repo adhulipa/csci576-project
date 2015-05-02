@@ -18,7 +18,7 @@ import edu.usc.csci576.mediaqueries.model.Frame;
 import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.Scene;
 
-public class SceneChecker implements Callable<Double> {
+public class SceneChecker implements Callable<SCResultType> {
 
 	/*
 	 * Helps search for clip inside a scene
@@ -34,7 +34,7 @@ public class SceneChecker implements Callable<Double> {
 	}
 
 	@Override
-	public Double call() throws Exception {
+	public SCResultType call() throws Exception {
 		// TODO
 		/*
 		 * This should implement
@@ -44,7 +44,7 @@ public class SceneChecker implements Callable<Double> {
 		
 		
 		ExecutorService frameCheckExecutor = Executors.newCachedThreadPool();
-		//frameCheckExecutor = Executors.newFixedThreadPool(5);
+		frameCheckExecutor = Executors.newFixedThreadPool(5);
 		//frameCheckExecutor = Executors.newSingleThreadExecutor();
 		
 		
@@ -74,7 +74,7 @@ public class SceneChecker implements Callable<Double> {
 			result = frameCheckExecutor.submit(frameChecker);
 			frameCheckResults.add(result);
 		}
-
+		
 		Future<FCResultType> r;
 		
 		FCResultType comprator = new FCResultType();
@@ -86,8 +86,10 @@ public class SceneChecker implements Callable<Double> {
 		}
 		
 		String id = "Sc[" + this.mainScene.getBeginIdx() + "-" + this.mainScene.getEndIdx() + "]";
-		for (int i = 0; i < 4; i++)
-			System.out.println(id + " "  + resultsHeap.poll());
+
+//		for (int i = 0; i < 4; i++)
+//			System.out.println(id + " "  + resultsHeap.poll());
+		
 		
 		
 		// Now, get the best matched frames
@@ -95,17 +97,68 @@ public class SceneChecker implements Callable<Double> {
 		// Call this the candidata scene
 		// Compare each frame of clip with each of the candidates
 		// return top matching score 
-		
-		
-		
-		
-		
-		
-		
-		// shutdown
-		frameCheckExecutor.shutdown();
-		frameCheckExecutor.awaitTermination(Long.MAX_VALUE , TimeUnit.NANOSECONDS);
 
-		return 0.0;
+		int bestMatchedFrameIx = resultsHeap.poll().getTargetFrameIdx();
+		int numMainFrames = mainScene.getEndIdx() - mainScene.getBeginIdx() + 1;
+		int numClipFrames = clip.getEndIdx() - clip.getBeginIdx() + 1;
+		int numCompStarted = 0;
+		
+		int maxComp = Math.min(numClipFrames, numMainFrames);
+		
+		frameCheckResults = 
+				new ArrayList<Future<FCResultType>>();
+		
+		
+		
+		int mfIdx = bestMatchedFrameIx;
+		int cfIdx = clip.getBeginIdx();
+		
+		while (numCompStarted <= maxComp 
+				&& mfIdx >= mainScene.getBeginIdx() && mfIdx <= mainScene.getEndIdx()
+				&& cfIdx >= clip.getBeginIdx() && cfIdx <= clip.getEndIdx()) {
+			mainFrame = new Frame(mainScene.getFullPath(),
+					mainScene.getVideoName(), mfIdx);
+			clipFrame = new Frame(clip.getVideoPath(),
+					clip.getVideoName(), cfIdx);
+			
+			frameChecker = new FrameChecker(mainFrame, clipFrame);
+			
+			result = frameCheckExecutor.submit(frameChecker);
+			frameCheckResults.add(result);
+			
+			numCompStarted++;
+			mfIdx++;
+			cfIdx++;
+		}
+		
+		// Check results
+		FCResultType item;
+		double matchPercent = 0;
+		for (int i = 0; i < frameCheckResults.size(); i++) {
+			
+			item = frameCheckResults.get(i).get();
+			matchPercent += item.getMatchpercent();
+			/*System.out.println(
+					
+					item.getTargetVideoName() + "" + item.getTargetFrameIdx() +
+					" matched " + item.getClipFrameIdx() + " by "  + item.getMatchpercent()
+					
+					);*/
+		}
+		
+		
+		matchPercent = matchPercent / maxComp;
+		System.out.println("matched percentage of clip sncee in mainscene -" + 
+		mainScene.getVideoName() + " [" + mainScene.getBeginIdx() + " - " + mainScene.getEndIdx() + "]" + clip.getFullPath() + " by " + matchPercent);
+		
+		SCResultType sceneCheckResult = new SCResultType();
+		sceneCheckResult.setClip(clip);
+		sceneCheckResult.setTargetScene(mainScene);
+		sceneCheckResult.setNumFramesMatched(maxComp);
+		sceneCheckResult.setMatchPercent(matchPercent);
+		
+		frameCheckExecutor.shutdown();
+		
+		return sceneCheckResult;
 	}
 }
