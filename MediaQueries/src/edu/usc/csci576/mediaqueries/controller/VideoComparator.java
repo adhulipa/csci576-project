@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -15,6 +17,7 @@ import edu.usc.csci576.mediaqueries.data.DataLoader;
 import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.Scene;
 import edu.usc.csci576.mediaqueries.model.SceneDetector;
+import edu.usc.csci576.mediaqueries.parallel.FCResultType;
 import edu.usc.csci576.mediaqueries.parallel.SCResultType;
 import edu.usc.csci576.mediaqueries.parallel.SceneChecker;
 
@@ -46,7 +49,7 @@ public class VideoComparator  {
 		
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		System.out.println("Started comparator...");
 		
 		ExecutorService sceneCheckExecutor = Executors.newFixedThreadPool(5);
@@ -67,42 +70,45 @@ public class VideoComparator  {
 		HashMap<String, List<Integer[]>> sceneMap = DataLoader.loadScenes();
 		List<Integer[]> dataScenes = sceneMap.get(dataFile);
 		
-		/* List<byte[][]> bgrHist = DataLoader.deserializeRGBArrays(
-				"histogram/"
-				+ "StarCraft/StarCraft150"
-				+ ".histogram");
-		*/
-		
-		// Idea: get first scene fo query
-		// Try to match with some scene in database
-		// Do this in parallel
-		Scene firstQueryScene = new Scene(queryPath, queryFile, queryScenes.get(0));
+		/* Idea: get first scene fo query
+		 * Try to match with some scene in database
+		 * Do this in parallel
+		 * Stage 1:-
+		 */
+		Scene firstQueryScene = new Scene(queryPath, queryFile, queryScenes.get(0), Scene.FIRST_SCENE);
 		Scene targetScene;
 		SceneChecker sceneChecker;
 		List<Future<SCResultType>> resultList = new ArrayList<Future<SCResultType>>();
 		Future<SCResultType> result;
+		Integer[] sceneIndices;
 		
-		for (Integer[] sceneIndices : dataScenes) {
-			targetScene = new Scene(dataPath, dataFile, sceneIndices);
-			sceneChecker = new SceneChecker(targetScene, firstQueryScene);
+		for (int i = 0; i < dataScenes.size(); i++) {
+			sceneIndices = dataScenes.get(i); 
+			targetScene = new Scene(dataPath, dataFile, sceneIndices, i);
+			sceneChecker = new SceneChecker(targetScene, firstQueryScene, SceneChecker.COMPARE_FIRST_TO_ONE);
 			result = sceneCheckExecutor.submit(sceneChecker);
 			resultList.add(result);
 		}
+		
+		/*
+		 * Intermediate stage
+		 * Find best scene
+		 */
+		
+//		SCResultType comprator = new SCResultType();
+//		PriorityQueue<SCResultType> resultsHeap= new PriorityQueue<>(comprator);
+//		for (Future<SCResultType> each : resultList) {
+//			resultsHeap.offer(each.get());
+//		}
+//		
+//		resultsHeap.poll().getTargetScene();
+		
+		/* 
+		 * Stage 2
+		 */
 
 		sceneCheckExecutor.shutdown();
 
-		
-		
-		
-//		for (int[] e : dataScenes) {
-//			System.out.println(
-//					
-//					Arrays.toString(e)
-//					
-//					);
-//			
-//		}
-		
 	}
 	
 	
