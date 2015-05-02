@@ -22,26 +22,26 @@ public class VideoPlayer implements Runnable {
 	private BufferedImage[] scrubBuffer;
 	private JLabel imageBox;
 	
-	public VideoPlayer(String threadName, String filepath, JLabel imgBox) {
+	public VideoPlayer(String threadName, String filepath, String fileName, JLabel imgBox) {
 		
-		int lastsep = filepath.lastIndexOf("/");
+//		int lastsep = filepath.lastIndexOf("/");
 		
 		this.threadName = threadName;
 		this.setCurrentFrame(1);
 		this.filepath = filepath;
-		this.filename = filepath.substring(lastsep + 1);
-		this.scrubBuffer = populateScrubBuffer(filepath);
+		this.filename = fileName;
+		this.scrubBuffer = populateScrubBuffer();
 		this.imageBox = imgBox;
 	}
 
-	private BufferedImage[] populateScrubBuffer(String filepath) {
+	private BufferedImage[] populateScrubBuffer() {
 		
 		int frame = 1;
 		int i = 0;
 		BufferedImage[] sb = new BufferedImage[20];
 		while (frame <= 600) {
 			
-			String filePathString = String.format("%s/%s%03d.rgb", filepath, filename, frame);
+			String filePathString = String.format("%s/%s%03d.rgb", this.filepath, this.filename, frame);
 			File f = new File(filePathString);
 			BufferedImage img;
 			
