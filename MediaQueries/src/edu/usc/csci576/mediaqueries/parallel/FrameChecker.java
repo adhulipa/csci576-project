@@ -24,9 +24,6 @@ public class FrameChecker implements Callable<Double[]> {
 	private Frame frame1;
 	private Frame frame2;
 	
-	private List<Mat> hist1;
-	private List<Mat> hist2;
-	
 	public FrameChecker(Frame mainFrame, Frame clipFrame) {
 
 		frame2 = clipFrame;
@@ -37,14 +34,26 @@ public class FrameChecker implements Callable<Double[]> {
 	@Override
 	public Double[] call() throws Exception {
 		
-		//System.out.println(frame1.getPath());
+		String hist1Path = String.format("histogram/%s/%s%03d.histogram",
+				frame1.getVideoName(), frame1.getVideoName(), frame1.getFrameIdx());
 		
-		// Compare using RGBHistograms
-		List<Mat> hist1 = RGBHistogram.getRGBMat(frame1.getPath(), WIDTH, HEIGHT);
-		List<Mat> hist2 = RGBHistogram.getRGBMat(frame2.getPath(), WIDTH, HEIGHT);
+		// Compare using RGBHistograms		
+		// List<Mat> hist1 = RGBHistogram.getRGBMat(frame1.getPath(), WIDTH, HEIGHT);
 		
 		// frame1.path = database/StarCraft/StarCraft001.rgb
-//		List<Mat> h1 = DataLoader.deserializeRGBMats(frame1.getPath());
+		List<Mat> hist1 = frame1.getRgbHist();
+		List<Mat> hist2 = frame2.getRgbHist();
+		
+		if (hist1 == null) {
+			hist1 = RGBHistogram.getRGBMat(frame1.getPath(), Frame.WIDTH, Frame.HEIGHT);
+		}
+		
+		if (hist2 == null) {
+			hist2 = RGBHistogram.getRGBMat(frame2.getPath(), Frame.WIDTH, Frame.HEIGHT);
+		}
+
+		
+		
 //		
 //		System.out.println(Arrays.toString(hist1.get(0).get(0, 0)));
 //		

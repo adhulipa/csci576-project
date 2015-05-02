@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.opencv.core.Mat;
+
 import edu.usc.csci576.mediaqueries.controller.CompareFrames;
 import edu.usc.csci576.mediaqueries.model.Frame;
 import edu.usc.csci576.mediaqueries.model.RGBHistogram;
@@ -39,10 +41,14 @@ public class SceneChecker implements Callable<Double> {
 		
 		ExecutorService frameCheckExecutor = Executors.newCachedThreadPool();
 		//frameCheckExecutor = Executors.newFixedThreadPool(5);
-		frameCheckExecutor = Executors.newSingleThreadExecutor();
+		//frameCheckExecutor = Executors.newSingleThreadExecutor();
 		
-		Frame clipFrame = new Frame(clip.getVideoPath() 
-				+ "/" + clip.getVideoName(), clip.getBeginIdx());
+		Frame clipFrame = new Frame(clip.getVideoPath(),
+				clip.getVideoName(), clip.getBeginIdx());
+		
+		List<Mat> clipHist = RGBHistogram.getRGBMat(clipFrame.getPath(), Frame.WIDTH, Frame.HEIGHT);
+		clipFrame.setRgbHist(clipHist);
+		
 		Frame mainFrame;
 		FrameChecker frameChecker;
 		
@@ -52,8 +58,8 @@ public class SceneChecker implements Callable<Double> {
 		for (int frameIdx = mainScene.getBeginIdx(); 
 				frameIdx <= mainScene.getEndIdx();
 				frameIdx++) {
-			mainFrame = new Frame(mainScene.getFullPath()
-					+ "/" + mainScene.getVideoName(), frameIdx);
+			mainFrame = new Frame(mainScene.getFullPath(),
+					mainScene.getVideoName(), frameIdx);
 			
 			frameChecker = new FrameChecker(mainFrame, clipFrame);
 			

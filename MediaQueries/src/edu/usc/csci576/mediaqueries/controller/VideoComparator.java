@@ -48,7 +48,7 @@ public class VideoComparator  {
 		System.out.println("Started comparator...");
 		
 		ExecutorService sceneCheckExecutor = Executors.newCachedThreadPool();
-		sceneCheckExecutor = Executors.newSingleThreadExecutor();
+		//sceneCheckExecutor = Executors.newSingleThreadExecutor();
 		
 		// query vide stuff
 		String queryPath = "query/Q4";
