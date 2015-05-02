@@ -16,17 +16,21 @@ public class Scene {
 	
 	protected String videoPath;
 	protected String videoName;
-	
+	public static int FIRST_SCENE;
 	private int beginIdx;
 	private int endIdx;
 	
+	private int scenePosition;
+	
 	protected Scene(){}
 	
-	public Scene(String videoPath, String videoName, Integer[] indices) {
+	public Scene(String videoPath, String videoName, Integer[] indices, int scenePositionInListOfScenes) {
 		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
 		this.setVideoPath(videoPath);
 		this.setVideoName(videoName);
+		
+		this.scenePosition = scenePositionInListOfScenes;
 		
 		setBeginIdx(indices[0]);
 		setEndIdx(indices[1]);
