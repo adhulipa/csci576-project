@@ -1,11 +1,15 @@
 package edu.usc.csci576.mediaqueries.parallel;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.opencv.core.Mat;
 
@@ -43,17 +47,21 @@ public class SceneChecker implements Callable<Double> {
 		//frameCheckExecutor = Executors.newFixedThreadPool(5);
 		//frameCheckExecutor = Executors.newSingleThreadExecutor();
 		
+		
+		// This is only checking for the fist frame
 		Frame clipFrame = new Frame(clip.getVideoPath(),
 				clip.getVideoName(), clip.getBeginIdx());
 		
-		List<Mat> clipHist = RGBHistogram.getRGBMat(clipFrame.getPath(), Frame.WIDTH, Frame.HEIGHT);
+		List<Mat> clipHist = 
+				RGBHistogram.getRGBMat(clipFrame.getPath(), Frame.WIDTH, Frame.HEIGHT);
 		clipFrame.setRgbHist(clipHist);
 		
 		Frame mainFrame;
 		FrameChecker frameChecker;
 		
-		List<Future<Double[]>> frameCheckResults = new ArrayList<Future<Double[]>>();
-		Future<Double[]> result;
+		List<Future<FCResultType>> frameCheckResults = 
+				new ArrayList<Future<FCResultType>>();
+		Future<FCResultType> result;
 		
 		for (int frameIdx = mainScene.getBeginIdx(); 
 				frameIdx <= mainScene.getEndIdx();
@@ -66,44 +74,38 @@ public class SceneChecker implements Callable<Double> {
 			result = frameCheckExecutor.submit(frameChecker);
 			frameCheckResults.add(result);
 		}
+
+		Future<FCResultType> r;
 		
-		Future<Double[]> r;
-		
-		// Format of r -- frameChekcResult is
-		// Double[] 
-		//-- Double[0] - databaseVideoFrameIdx
-		//-- Double[1] - queryVideoFrameIdx
-		//-- Double[2] - matchPercent
-		// TODO: Use better data struture
+		FCResultType comprator = new FCResultType();
+		PriorityQueue<FCResultType> resultsHeap= new PriorityQueue<>(comprator);
 		
 		for (int i = 0; i < frameCheckResults.size(); i++) {
 			r = frameCheckResults.get(i);
-			
-				System.out.println(
-						r.get()[0] + " " +
-						r.get()[1] + " " + 
-						r.get()[2]
-						);
-			
+			resultsHeap.offer(r.get());			
 		}
 		
+		String id = "Sc[" + this.mainScene.getBeginIdx() + "-" + this.mainScene.getEndIdx() + "]";
+		for (int i = 0; i < 4; i++)
+			System.out.println(id + " "  + resultsHeap.poll());
+		
+		
+		// Now, get the best matched frames
+		// Find scene to which these frames belong
+		// Call this the candidata scene
+		// Compare each frame of clip with each of the candidates
+		// return top matching score 
+		
+		
+		
+		
+		
+		
+		
+		// shutdown
 		frameCheckExecutor.shutdown();
-		
-				
-//		System.out.println(
-//				"Comparing Scene - "
-//				+ mainScene.getVideoName() + "[" 
-//		+ mainScene.getBeginIdx()
-//		+ " to "
-//		+ mainScene.getEndIdx() + "] "
-//		+ " & ["
-//		+ clip.getVideoName() + " - "
-//				+ clip.getBeginIdx() + " - " + clip.getEndIdx()  + "]"
-//		);
-		
-		
-		
-		
+		frameCheckExecutor.awaitTermination(Long.MAX_VALUE , TimeUnit.NANOSECONDS);
+
 		return 0.0;
 	}
 }
