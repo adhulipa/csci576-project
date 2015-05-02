@@ -22,12 +22,12 @@ public class AudioComparator
 	 */
 	public static void main(String[] args)
 	{
-		ExecutorService audioCheckExecutor = Executors.newSingleThreadExecutor();
+		ExecutorService audioCheckExecutor = Executors.newCachedThreadPool();
 		
 		String[] dataset = { "starcraft", "flowers", "interview", "movie",
 				"sports", "musicvideo", "traffic" };
 		
-		String queryWavPath = "queries/From Searching Content/Q5/Q5.wav"; 
+		String queryWavPath = "queries/Not From Searching Content/HQ4/HQ4.wav"; 
 		ArrayList<Future<AudioData>> scores = new ArrayList<Future<AudioData>>();
 		for(String item : dataset)
 		{
