@@ -94,7 +94,7 @@ public class MainFrameUI extends JFrame {
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 		
 		queryMediaPlayer = new MediaPlayer("Query", "query/From Searching Content/Q4", "Q4_", queryImageBox);
-		resultMediaPlayer = new MediaPlayer("Result", "database/sports", "sports", resultImageBox);
+		resultMediaPlayer = new MediaPlayer("Result", "database/interview", "interview", resultImageBox);
 	}
 	
 	/**
