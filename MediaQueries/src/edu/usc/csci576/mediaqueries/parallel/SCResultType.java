@@ -10,6 +10,8 @@ public class SCResultType  implements Comparable<SCResultType>, Comparator<SCRes
 	private Scene clip;
 	private int numFramesMatched;
 	private double matchPercent;
+	private int bestMatchedFrameIdx;
+	
 	/**
 	 * @return the targetScene
 	 */
@@ -81,9 +83,16 @@ public class SCResultType  implements Comparable<SCResultType>, Comparator<SCRes
 	@Override
 	public int compare(SCResultType o1, SCResultType o2) {
 		return o1.compareTo(o2);
+	}
+	
+	public void setBestMatchedFrameIdx(int bestMatchedFrameIx) {
+		
+		this.bestMatchedFrameIdx = bestMatchedFrameIx;
 	}	
 	
-	
+	public int getBestMatchedFrameIdx() {
+		return this.bestMatchedFrameIdx;
+	}
 	
 	
 }
