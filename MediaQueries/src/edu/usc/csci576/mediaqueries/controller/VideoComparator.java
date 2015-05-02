@@ -5,10 +5,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -52,7 +55,7 @@ public class VideoComparator  {
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		System.out.println("Started comparator...");
 		
-		ExecutorService sceneCheckExecutor = Executors.newFixedThreadPool(150);
+		ExecutorService sceneCheckExecutor = Executors.newFixedThreadPool(2);
 		//sceneCheckExecutor = Executors.newSingleThreadExecutor();
 		
 		// query vide stuff
@@ -94,14 +97,16 @@ public class VideoComparator  {
 		 * Intermediate stage
 		 * Find best scene
 		 */
+		// TODO: Possible thread erros in this code
+		// Think about thread safe data structs or practices
+		Queue<SCResultType> resultsHeap= new PriorityBlockingQueue<SCResultType>();
+		for (Future<SCResultType> each : resultList) {
+			resultsHeap.offer(each.get());
+		}
 		
-//		SCResultType comprator = new SCResultType();
-//		PriorityQueue<SCResultType> resultsHeap= new PriorityQueue<>(comprator);
-//		for (Future<SCResultType> each : resultList) {
-//			resultsHeap.offer(each.get());
-//		}
-//		
-//		resultsHeap.poll().getTargetScene();
+		Scene bestMatchedScene = resultsHeap.poll().getTargetScene();
+		
+		System.out.println(bestMatchedScene.getBeginIdx() + "-" + bestMatchedScene.getEndIdx() + " ---- best scene" );
 		
 		/* 
 		 * Stage 2

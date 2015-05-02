@@ -35,7 +35,7 @@ public class RGBHistogram {
 	private List<byte[][]> bgrArrays;
 	
 	public RGBHistogram(String filename) {
-		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );		
+		///System.loadLibrary( Core.NATIVE_LIBRARY_NAME );		
 		
 		byte[] raw = ImageHandler.readImageFromFile(filename);
 		BufferedImage img = ImageHandler.toBufferedImage(raw, WIDTH, HEIGHT, 

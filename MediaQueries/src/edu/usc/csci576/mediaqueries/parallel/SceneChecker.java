@@ -5,11 +5,13 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import javax.activity.InvalidActivityException;
@@ -214,9 +216,7 @@ public class SceneChecker implements Callable<SCResultType> {
 		}
 		
 		Future<FCResultType> r;
-		
-		FCResultType comprator = new FCResultType();
-		PriorityQueue<FCResultType> resultsHeap= new PriorityQueue<>(comprator);
+		Queue<FCResultType> resultsHeap= new PriorityBlockingQueue<FCResultType>();
 		
 		for (int i = 0; i < frameCheckResults.size(); i++) {
 			r = frameCheckResults.get(i);
