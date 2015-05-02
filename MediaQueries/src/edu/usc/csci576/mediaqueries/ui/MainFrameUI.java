@@ -83,7 +83,7 @@ public class MainFrameUI extends JFrame {
 
 	protected void displayImages() {
 		byte[] bytes = ImageHandler.readImageFromFile("database/sports/sports150.rgb");
-		byte[] qbytes = ImageHandler.readImageFromFile("query/Q4/Q4_050.rgb");
+		byte[] qbytes = ImageHandler.readImageFromFile("query/first/first001.rgb");
 		
 		BufferedImage originalImg = ImageHandler.toBufferedImage(bytes, 352,
 				288, BufferedImage.TYPE_INT_RGB);
@@ -93,8 +93,8 @@ public class MainFrameUI extends JFrame {
 		queryImageBox.setIcon(new ImageIcon(qoriginalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 		
-		queryMediaPlayer = new MediaPlayer("Query", "query/Q4", queryImageBox);
-		resultMediaPlayer = new MediaPlayer("Result", "database/sports", resultImageBox);
+		queryMediaPlayer = new MediaPlayer("Query", "query/first", queryImageBox);
+		resultMediaPlayer = new MediaPlayer("Result", "database/interview", resultImageBox);
 	}
 	
 	/**

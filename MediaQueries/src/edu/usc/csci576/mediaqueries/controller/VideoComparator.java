@@ -52,7 +52,7 @@ public class VideoComparator  {
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		System.out.println("Started comparator...");
 		
-		ExecutorService sceneCheckExecutor = Executors.newFixedThreadPool(5);
+		ExecutorService sceneCheckExecutor = Executors.newFixedThreadPool(150);
 		//sceneCheckExecutor = Executors.newSingleThreadExecutor();
 		
 		// query vide stuff
