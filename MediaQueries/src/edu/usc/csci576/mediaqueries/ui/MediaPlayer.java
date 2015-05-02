@@ -6,8 +6,8 @@ public class MediaPlayer {
 	private VideoPlayer videoPlayer;
 	private AudioPlayer audioPlayer;
 	
-	public MediaPlayer(String threadName, String filepath, JLabel imgBox) {
-		setVideoPlayer(new VideoPlayer(threadName, filepath, imgBox));
+	public MediaPlayer(String threadName, String filepath, String fileName, JLabel imgBox) {
+		setVideoPlayer(new VideoPlayer(threadName, filepath, fileName, imgBox));
 		audioPlayer = new AudioPlayer(threadName, filepath);
 	}
 	
@@ -28,8 +28,10 @@ public class MediaPlayer {
 	
 	public void setFrameAtIndex(int scrubIndex) {
 		audioPlayer.pauseAudio();
+		audioPlayer.setFrameAtIndex(scrubIndex);
 		getVideoPlayer().setFrameAtIndex(scrubIndex);
-		getVideoPlayer().playVideo();
+		audioPlayer.playAudio();
+		getVideoPlayer().playVideo();		
 	}
 
 	/**
