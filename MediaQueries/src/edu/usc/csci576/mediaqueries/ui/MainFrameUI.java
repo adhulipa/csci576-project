@@ -83,7 +83,7 @@ public class MainFrameUI extends JFrame {
 
 	protected void displayImages() {
 		byte[] bytes = ImageHandler.readImageFromFile("database/sports/sports150.rgb");
-		byte[] qbytes = ImageHandler.readImageFromFile("query/Q4/Q4_050.rgb");
+		byte[] qbytes = ImageHandler.readImageFromFile("queries/From Searching Content/Q4/Q4_050.rgb");
 		
 		BufferedImage originalImg = ImageHandler.toBufferedImage(bytes, 352,
 				288, BufferedImage.TYPE_INT_RGB);
@@ -93,8 +93,8 @@ public class MainFrameUI extends JFrame {
 		queryImageBox.setIcon(new ImageIcon(qoriginalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 		
-		queryMediaPlayer = new MediaPlayer("Query", "query/Q4", queryImageBox);
-		resultMediaPlayer = new MediaPlayer("Result", "database/sports", resultImageBox);
+		queryMediaPlayer = new MediaPlayer("Query", "database/musicvideo", "musicvideo", 600, queryImageBox);
+		resultMediaPlayer = new MediaPlayer("Result", "database/sports", "sports", 600, resultImageBox);
 	}
 	
 	/**
@@ -133,64 +133,64 @@ public class MainFrameUI extends JFrame {
 		mainPanel.add(matchedVideosLabel);
 		
 		seekBar = new JSlider(0, 20, 0);
-		final Timer increaseValue = new Timer(50, new ActionListener() {// 50 ms interval in each increase.
-	        public void actionPerformed(ActionEvent e) {
-	            if (seekBar.getMaximum() != seekBar.getValue()) {
-	            	if(resultMediaPlayer.getVideoPlayer().getCurrentFrame() % 30 == 0)
-	            	{
-	            		seekBar.setValue(resultMediaPlayer.getVideoPlayer().getCurrentFrame()/30);
-	            	}
-	            	
-	            } else {
-	                ((Timer) e.getSource()).stop();
-	                resultBtnPlay.setEnabled(true);
-	          		 resultBtnPause.setEnabled(false);
-	          		 resultBtnStop.setEnabled(false);
-	          		 seekBar.setValue(0);
-	            }
-	        }
-	    });
-		seekBar.addMouseListener(new MouseListener()
-		{
-			
-			@Override
-			public void mouseReleased(MouseEvent e)
-			{
-				increaseValue.stop();
-				int scrubIndex = seekBar.getValue();
-				resultMediaPlayer.setFrameAtIndex(scrubIndex);
-				increaseValue.start();
-				
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent arg0)
-			{
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0)
-			{
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0)
-			{
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0)
-			{
-				// TODO Auto-generated method stub
-				
-			}			
-		});
+//		final Timer increaseValue = new Timer(50, new ActionListener() {// 50 ms interval in each increase.
+//	        public void actionPerformed(ActionEvent e) {
+//	            if (seekBar.getMaximum() != seekBar.getValue()) {
+//	            	if(resultMediaPlayer.getVideoPlayer().getCurrentFrame() % 30 == 0)
+//	            	{
+//	            		seekBar.setValue(resultMediaPlayer.getVideoPlayer().getCurrentFrame()/30);
+//	            	}
+//	            	
+//	            } else {
+//	                ((Timer) e.getSource()).stop();
+//	                resultBtnPlay.setEnabled(true);
+//	          		 resultBtnPause.setEnabled(false);
+//	          		 resultBtnStop.setEnabled(false);
+//	          		 seekBar.setValue(0);
+//	            }
+//	        }
+//	    });
+//		seekBar.addMouseListener(new MouseListener()
+//		{
+//			
+//			@Override
+//			public void mouseReleased(MouseEvent e)
+//			{
+//				increaseValue.stop();
+//				int scrubIndex = seekBar.getValue();
+//				resultMediaPlayer.setFrameAtIndex(scrubIndex);
+//				increaseValue.start();
+//				
+//			}
+//
+//			@Override
+//			public void mouseClicked(MouseEvent arg0)
+//			{
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void mouseEntered(MouseEvent arg0)
+//			{
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void mouseExited(MouseEvent arg0)
+//			{
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void mousePressed(MouseEvent arg0)
+//			{
+//				// TODO Auto-generated method stub
+//				
+//			}			
+//		});
 		
 		seekBar.setBounds(401, 299, 352, 32);
 		
@@ -210,7 +210,7 @@ public class MainFrameUI extends JFrame {
 		resultBtnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resultMediaPlayer.playMedia();
-				increaseValue.start();
+//				increaseValue.start();
 				resultBtnPlay.setEnabled(false);
 				resultBtnPause.setEnabled(true);
 				resultBtnStop.setEnabled(true);
@@ -222,7 +222,7 @@ public class MainFrameUI extends JFrame {
 		resultBtnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resultMediaPlayer.pauseMedia();
-				increaseValue.stop();
+//				increaseValue.stop();
 				resultBtnPlay.setEnabled(true);
 				resultBtnPause.setEnabled(false);
 			}

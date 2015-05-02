@@ -3,11 +3,11 @@ package edu.usc.csci576.mediaqueries.ui;
 import javax.swing.JLabel;
 
 public class MediaPlayer {
-	private VideoPlayer videoPlayer;
+	private VideoPlayer2 videoPlayer;
 	private AudioPlayer audioPlayer;
 	
-	public MediaPlayer(String threadName, String filepath, JLabel imgBox) {
-		setVideoPlayer(new VideoPlayer(threadName, filepath, imgBox));
+	public MediaPlayer(String threadName, String filepath, String fileName, int totalFrames, JLabel imgBox) {
+		setVideoPlayer(new VideoPlayer2(threadName, filepath, fileName, totalFrames, imgBox));
 		audioPlayer = new AudioPlayer(threadName, filepath);
 	}
 	
@@ -26,16 +26,16 @@ public class MediaPlayer {
 		audioPlayer.stopAudio();
 	}
 	
-	public void setFrameAtIndex(int scrubIndex) {
-		audioPlayer.pauseAudio();
-		getVideoPlayer().setFrameAtIndex(scrubIndex);
-		getVideoPlayer().playVideo();
-	}
+//	public void setFrameAtIndex(int scrubIndex) {
+//		audioPlayer.pauseAudio();
+//		getVideoPlayer().setFrameAtIndex(scrubIndex);
+//		getVideoPlayer().playVideo();
+//	}
 
 	/**
 	 * @return the videoPlayer
 	 */
-	public VideoPlayer getVideoPlayer()
+	public VideoPlayer2 getVideoPlayer()
 	{
 		return videoPlayer;
 	}
@@ -43,7 +43,7 @@ public class MediaPlayer {
 	/**
 	 * @param videoPlayer the videoPlayer to set
 	 */
-	public void setVideoPlayer(VideoPlayer videoPlayer)
+	public void setVideoPlayer(VideoPlayer2 videoPlayer)
 	{
 		this.videoPlayer = videoPlayer;
 	}
