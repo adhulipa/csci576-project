@@ -182,7 +182,7 @@ public class SceneChecker implements Callable<SCResultType> {
 
 	
 	private SCResultType doFirstFrameComparison() throws InterruptedException, ExecutionException {
-		frameCheckExecutor = Executors.newFixedThreadPool(5);
+		frameCheckExecutor = Executors.newFixedThreadPool(10);
 		//frameCheckExecutor = Executors.newSingleThreadExecutor();
 		
 		

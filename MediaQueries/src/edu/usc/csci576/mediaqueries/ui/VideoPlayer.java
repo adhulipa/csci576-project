@@ -2,6 +2,7 @@ package edu.usc.csci576.mediaqueries.ui;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -118,7 +119,8 @@ public class VideoPlayer implements Runnable {
 		while(videoPlayer == thisThread) {
 			setCurrentFrameToImageBox();
 			try {
-				Thread.sleep(25);
+				//Thread.sleep(21);
+				TimeUnit.MICROSECONDS.sleep(21349);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
