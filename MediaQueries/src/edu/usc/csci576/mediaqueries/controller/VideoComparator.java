@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -14,6 +15,7 @@ import edu.usc.csci576.mediaqueries.data.DataLoader;
 import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.Scene;
 import edu.usc.csci576.mediaqueries.model.SceneDetector;
+import edu.usc.csci576.mediaqueries.parallel.SCResultType;
 import edu.usc.csci576.mediaqueries.parallel.SceneChecker;
 
 
@@ -47,12 +49,16 @@ public class VideoComparator  {
 	public static void main(String[] args) {
 		System.out.println("Started comparator...");
 		
-		ExecutorService sceneCheckExecutor = Executors.newCachedThreadPool();
+		ExecutorService sceneCheckExecutor = Executors.newFixedThreadPool(5);
 		//sceneCheckExecutor = Executors.newSingleThreadExecutor();
 		
 		// query vide stuff
 		String queryPath = "query/Q4";
 		String queryFile = "Q4_";
+		
+		//queryPath = "query/first";
+		//queryFile = "first";
+		
 		List<Integer[]> queryScenes = SceneDetector.getScenes(queryPath, queryFile, 150);
 		
 		// database stuff
@@ -73,8 +79,8 @@ public class VideoComparator  {
 		Scene firstQueryScene = new Scene(queryPath, queryFile, queryScenes.get(0));
 		Scene targetScene;
 		SceneChecker sceneChecker;
-		List<Future<Double>> resultList = new ArrayList<Future<Double>>();
-		Future<Double> result;
+		List<Future<SCResultType>> resultList = new ArrayList<Future<SCResultType>>();
+		Future<SCResultType> result;
 		
 		for (Integer[] sceneIndices : dataScenes) {
 			targetScene = new Scene(dataPath, dataFile, sceneIndices);
@@ -84,6 +90,9 @@ public class VideoComparator  {
 		}
 
 		sceneCheckExecutor.shutdown();
+
+		
+		
 		
 //		for (int[] e : dataScenes) {
 //			System.out.println(
