@@ -127,7 +127,15 @@ public class VideoPlayer implements Runnable {
 			setCurrentFrame(getCurrentFrame() + 1);
 		}
 	}
-
+	
+	public void setVideoPath(String filepath, String fileName) {
+		/* If the video is running stop it */
+		stopVideo();
+		this.filepath = filepath;
+		this.filename = fileName;
+		setCurrentFrameToImageBox();
+	}
+	
 	public void setFrameAtIndex(int scrubIndex) {
 		pauseVideo();
 		if(scrubIndex > 0 && scrubIndex <= scrubBuffer.length)

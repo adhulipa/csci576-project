@@ -41,7 +41,11 @@ public class AudioPlayer implements Runnable {
 		this.filepath = filepath;
 		this.filename = filepath.substring(lastsep + 1);
 	}
-	
+	public void setAudioPath(String filepath, String fileName) {
+		stopAudio();
+		this.filepath = filepath;
+		this.filename = fileName;
+	}
 	private void initAudio() {
 		String filePathString = String.format("%s/%s.wav", filepath, filename);
 		

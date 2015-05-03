@@ -173,8 +173,8 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 			int bestMacthedFrameIdxInScene = bestSceneResult
 					.getBestMatchedFrameIdx();
 
-			System.out.println(bestMatchedScene.getBeginIdx() + "-"
-					+ bestMatchedScene.getEndIdx() + " ---- best scene in " + databaseVideoName);
+			//System.out.println(bestMatchedScene.getBeginIdx() + "-"
+			//		+ bestMatchedScene.getEndIdx() + " ---- best scene in " + databaseVideoName);
 
 			/*
 			 * Stage 2 Compare all scenes from bestmatched scene to end of query
@@ -192,7 +192,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 
 			resultList = new ArrayList<Future<SCResultType>>();
 			result = null;
-			System.out.println("Running all scene comparisons");
+			//System.out.println("Running all scene comparisons");
 
 			//sceneCheckExecutor.shutdown();
 			//sceneCheckExecutor = Executors.newFixedThreadPool(1);
@@ -209,9 +209,9 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 						bestMacthedFrameIdxInScene);
 
 				result = sceneCheckExecutor.submit(sceneChecker);
-				System.out.println("submitted comp for q[" + qs.getBeginIdx()
-						+ "-" + qs.getEndIdx() + "]" + "ds[" + ds.getBeginIdx()
-						+ "-" + ds.getEndIdx() + "]");
+				//System.out.println("submitted comp for q[" + qs.getBeginIdx()
+				//		+ "-" + qs.getEndIdx() + "]" + "ds[" + ds.getBeginIdx()
+				//		+ "-" + ds.getEndIdx() + "]");
 				resultList.add(result);
 
 				qidx++;
@@ -236,8 +236,8 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 			}
 			totalMatchPercent /= resultList.size();
 
-			System.out.println("total match of video " + databaseVideoName + " to query "
-					+ totalMatchPercent);
+			//System.out.println("total match of video " + databaseVideoName + " to query "
+			//		+ totalMatchPercent);
 
 			sceneCheckExecutor.shutdown();
 			
@@ -327,7 +327,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 
 		resultList = new ArrayList<Future<SCResultType>>();
 		result = null;
-		System.out.println("Running all scene comparisons");
+//		System.out.println("Running all scene comparisons");
 
 		sceneCheckExecutor.shutdown();
 		sceneCheckExecutor = Executors.newFixedThreadPool(1);
@@ -342,9 +342,9 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 					SceneChecker.COMPARE_IN_ORDER, bestMacthedFrameIdxInScene);
 
 			result = sceneCheckExecutor.submit(sceneChecker);
-			System.out.println("submitted comp for q[" + qs.getBeginIdx() + "-"
-					+ qs.getEndIdx() + "]" + "ds[" + ds.getBeginIdx() + "-"
-					+ ds.getEndIdx() + "]");
+//			System.out.println("submitted comp for q[" + qs.getBeginIdx() + "-"
+//					+ qs.getEndIdx() + "]" + "ds[" + ds.getBeginIdx() + "-"
+//					+ ds.getEndIdx() + "]");
 			resultList.add(result);
 
 			qidx++;
@@ -369,8 +369,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 		}
 		totalMatchPercent /= resultList.size();
 
-		System.out
-				.println("total match of video to query " + totalMatchPercent);
+		//System.out.println("total match of video to query " + totalMatchPercent);
 
 		sceneCheckExecutor.shutdown();
 

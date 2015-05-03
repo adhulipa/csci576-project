@@ -33,7 +33,11 @@ public class MediaPlayer {
 		//audioPlayer.playAudio();
 		getVideoPlayer().playVideo();		
 	}
-
+	
+	public void setMediaPath(String filepath, String fileName) {
+		getVideoPlayer().setVideoPath(filepath, fileName);
+		audioPlayer.setAudioPath(filepath, fileName);
+	}
 	/**
 	 * @return the videoPlayer
 	 */
