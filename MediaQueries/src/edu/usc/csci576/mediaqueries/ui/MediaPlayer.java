@@ -28,9 +28,9 @@ public class MediaPlayer {
 	
 	public void setFrameAtIndex(int scrubIndex) {
 		audioPlayer.pauseAudio();
-		//audioPlayer.setFrameAtIndex(scrubIndex);
+		audioPlayer.setFrameAtIndex(scrubIndex);
 		getVideoPlayer().setFrameAtIndex(scrubIndex);
-		//audioPlayer.playAudio();
+		audioPlayer.playAudio();
 		getVideoPlayer().playVideo();		
 	}
 	

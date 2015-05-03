@@ -10,14 +10,15 @@ import java.io.InputStream;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.DataLine.Info;
 
-public class AudioPlayer implements Runnable {
+public class AudioPlayer
+		{
 	
-	private Thread audioPlayer;
 	private String threadName;
 	private String filepath;
 	private String filename;
@@ -30,7 +31,8 @@ public class AudioPlayer implements Runnable {
 	
 	private FileInputStream inputStream;
 	private AudioInputStream audioInputStream = null;
-	private SourceDataLine dataLine = null;
+
+	private Clip clip = null;
 	
 	private final int EXTERNAL_BUFFER_SIZE = 32768; // 4Kb
 	
@@ -61,6 +63,7 @@ public class AudioPlayer implements Runnable {
 			try {
 				InputStream bufferedIn = new BufferedInputStream(inputStream);
 				audioInputStream = AudioSystem.getAudioInputStream(bufferedIn);
+				
 			} catch (UnsupportedAudioFileException e) {
 				 e.printStackTrace();
 			} catch (IOException e) {
@@ -71,9 +74,9 @@ public class AudioPlayer implements Runnable {
 			Info info = new Info(SourceDataLine.class, audioFormat);
 			
 			try {
-				dataLine = (SourceDataLine) AudioSystem.getLine(info);
-				dataLine.open(audioFormat, this.EXTERNAL_BUFFER_SIZE);
-			} catch (LineUnavailableException e) {
+				clip = AudioSystem.getClip();
+				clip.open(audioInputStream);
+			} catch (LineUnavailableException | IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -91,12 +94,9 @@ public class AudioPlayer implements Runnable {
 			initAudio();
 
 		/* Start the music */
-		dataLine.start();
 
-		if (audioPlayer == null) {
-			audioPlayer = new Thread(this, threadName);
-			audioPlayer.start();
-		}
+		clip.start();
+
 
 		state = 1;
 	}
@@ -106,12 +106,13 @@ public class AudioPlayer implements Runnable {
 	 * 
 	 */
 	public void stopAudio() {
+
 		if (state == 0)
 			return;
 		
-		audioPlayer = null;
-		dataLine.drain();
-		dataLine.close();
+		clip.stop();
+		clip.drain();
+		clip.close();
 		
 		state = 0;
 	}
@@ -121,33 +122,20 @@ public class AudioPlayer implements Runnable {
 	 */
 	public void pauseAudio() {
 		if (state == 1) {
-			audioPlayer = null;
-			dataLine.stop();
+
+			clip.stop();
 			
 			state = 2;
 		}
 	}
 
-	@Override
-	public void run() {
-		Thread thisThread = Thread.currentThread();
-		int readBytes = 0;
-		byte[] audioBuffer = new byte[this.EXTERNAL_BUFFER_SIZE];
-
-		try {
-			while (readBytes != -1 && audioPlayer == thisThread) {
-				readBytes = audioInputStream.read(audioBuffer, 0,
-						audioBuffer.length);
-				if (readBytes >= 0) {
-					dataLine.write(audioBuffer, 0, readBytes);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (state == 1) {
-				stopAudio();
-			}
-		}
+	public void setFrameAtIndex(int scrubIndex)
+	{
+		System.out.println(scrubIndex);
+		
+	// Convert scrubIndex (which is video position in seconds) to microseconds
+		clip.setMicrosecondPosition(scrubIndex * 1000000);		
+		
 	}
 }
+
