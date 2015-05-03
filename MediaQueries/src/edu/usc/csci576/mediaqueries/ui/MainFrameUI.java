@@ -333,9 +333,9 @@ public class MainFrameUI extends JFrame {
 		resultRGBPanel.add(resultRGBTextLabel);
 		mainPanel.add(resultRGBPanel);
 		
-		JList list = new JList();
-		list.setBounds(43, 44, 235, 100);
-		mainPanel.add(list);
+		JList queryList = new JList();
+		queryList.setBounds(43, 44, 235, 100);
+		mainPanel.add(queryList);
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
