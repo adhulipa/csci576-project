@@ -20,9 +20,11 @@ public class Scene {
 	private int beginIdx;
 	private int endIdx;
 	
-	private int scenePosition;
+	public final int scenePosition;
 	
-	protected Scene(){}
+	protected Scene(){
+		this.scenePosition = -1;
+	}
 	
 	public Scene(String videoPath, String videoName, Integer[] indices, int scenePositionInListOfScenes) {
 		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);

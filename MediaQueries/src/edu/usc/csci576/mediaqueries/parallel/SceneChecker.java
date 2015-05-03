@@ -5,11 +5,13 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import javax.activity.InvalidActivityException;
@@ -62,7 +64,7 @@ public class SceneChecker implements Callable<SCResultType> {
 			break;
 		case SceneChecker.COMPARE_IN_ORDER:
 			if (bestMatchedFrameIdx < 0) {
-				throw  new ConfigurationException();
+				bestMatchedFrameIdx = mainScene.getBeginIdx();
 			}
 			finalResult = doFrameForFrameComparison(bestMatchedFrameIdx );
 			break;
@@ -182,7 +184,7 @@ public class SceneChecker implements Callable<SCResultType> {
 
 	
 	private SCResultType doFirstFrameComparison() throws InterruptedException, ExecutionException {
-		frameCheckExecutor = Executors.newFixedThreadPool(10);
+		frameCheckExecutor = Executors.newFixedThreadPool(1);
 		//frameCheckExecutor = Executors.newSingleThreadExecutor();
 		
 		
@@ -214,9 +216,7 @@ public class SceneChecker implements Callable<SCResultType> {
 		}
 		
 		Future<FCResultType> r;
-		
-		FCResultType comprator = new FCResultType();
-		PriorityQueue<FCResultType> resultsHeap= new PriorityQueue<>(comprator);
+		Queue<FCResultType> resultsHeap= new PriorityBlockingQueue<FCResultType>();
 		
 		for (int i = 0; i < frameCheckResults.size(); i++) {
 			r = frameCheckResults.get(i);
@@ -287,6 +287,7 @@ public class SceneChecker implements Callable<SCResultType> {
 		sceneCheckResult.setTargetScene(mainScene);
 		sceneCheckResult.setNumFramesMatched(maxComp);
 		sceneCheckResult.setMatchPercent(matchPercent);
+		sceneCheckResult.setBestMatchedFrameIdx(bestMatchedFrameIx);
 		
 		frameCheckExecutor.shutdown();
 		
@@ -299,6 +300,10 @@ public class SceneChecker implements Callable<SCResultType> {
 		// Call this the candidata scene
 		// Compare each frame of clip with each of the candidates
 		// return top matching score 
+	
+		System.out.println("scene fbf comparison");
+		
+		frameCheckExecutor = Executors.newFixedThreadPool(1);
 		
 		int numMainFrames = mainScene.getEndIdx() - mainScene.getBeginIdx() + 1;
 		int numClipFrames = clip.getEndIdx() - clip.getBeginIdx() + 1;
@@ -338,19 +343,17 @@ public class SceneChecker implements Callable<SCResultType> {
 		for (int i = 0; i < frameCheckResults.size(); i++) {
 			
 			item = frameCheckResults.get(i).get();
+			
+			
 			matchPercent += item.getMatchpercent();
-			/*System.out.println(
-					
-					item.getTargetVideoName() + "" + item.getTargetFrameIdx() +
-					" matched " + item.getClipFrameIdx() + " by "  + item.getMatchpercent()
-					
-					);*/
+
 		}
 		
 		
 		matchPercent = matchPercent / maxComp;
-		System.out.println("matched percentage of clip sncee in mainscene -" + 
-		mainScene.getVideoName() + " [" + mainScene.getBeginIdx() + " - " + mainScene.getEndIdx() + "]" + clip.getFullPath() + " by " + matchPercent);
+		System.out.println(" FbF comp matched percentage of clip sncee in mainscene -" + 
+		mainScene.getVideoName() + " [" + mainScene.getBeginIdx() + 
+		" - " + mainScene.getEndIdx() + "]" + clip.getFullPath() + " by " + matchPercent);
 		
 		SCResultType sceneCheckResult = new SCResultType();
 		sceneCheckResult.setClip(clip);
