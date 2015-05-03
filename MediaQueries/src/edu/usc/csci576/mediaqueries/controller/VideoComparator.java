@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -76,7 +77,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 				new ExecutorCompletionService<Pair<String, Double>>(
 				executor);
 		int remainingFutures = databaseVideos.length;
-		Map<String, Double> result = new HashMap<String, Double>();
+		Map<String, Double> result = new TreeMap<String, Double>();
 		List<Future<Pair<String, Double>>> matchResults = new ArrayList<>();
 		Future<Pair<String, Double>> future; 
 		

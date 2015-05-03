@@ -17,4 +17,8 @@ public class VideoCompareResult {
 	Scene bestMatchedScene;
 	int bestMacthedFrame;
 	
+	public Map<String, Double> getScoreMap() {
+		return scoresMap;
+	}
+	
 }

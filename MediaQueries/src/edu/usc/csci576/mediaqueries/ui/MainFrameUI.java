@@ -343,6 +343,9 @@ public class MainFrameUI extends JFrame {
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				SwingWorker searchWorker = new MediaSearchWorker(resultList, "query/Q4", "Q4_");
+				searchWorker.execute();
 //				SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
 //				    @Override
 //				    public ImageIcon[] doInBackground() {
