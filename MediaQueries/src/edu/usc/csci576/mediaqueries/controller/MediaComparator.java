@@ -12,8 +12,8 @@ public static void main(String[] args) throws InterruptedException, ExecutionExc
 		
 		String databaseDirString = "database/";
 		String[] databaseVideoNames = new String[]{"StarCraft", "flowers", "traffic", "musicvideo", "movie", "interview", "sports" };
-		String queryDir = "query/Q5";
-		String queryVideoString = "Q5_";
+		String queryDir = "query/second";
+		String queryVideoString = "second";
 		
 		VideoComparator videoTask = new VideoComparator(databaseDirString,
 				databaseVideoNames, queryDir, queryVideoString);

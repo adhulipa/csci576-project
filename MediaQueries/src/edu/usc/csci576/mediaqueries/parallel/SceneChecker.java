@@ -278,8 +278,8 @@ public class SceneChecker implements Callable<SCResultType> {
 			frameCheckResults.add(result);
 			
 			numCompStarted++;
-			mfIdx++;
-			cfIdx++;
+			mfIdx += 10;
+			cfIdx += 10;
 		}
 		
 		// Check results
