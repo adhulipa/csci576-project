@@ -22,7 +22,7 @@ public class AudioComparator
 	 */
 	public static void main(String[] args)
 	{
-		ExecutorService audioCheckExecutor = Executors.newCachedThreadPool();
+		ExecutorService audioCheckExecutor = Executors.newFixedThreadPool(1);
 		
 		String[] dataset = { "starcraft", "flowers", "interview", "movie",
 				"sports", "musicvideo", "traffic" };

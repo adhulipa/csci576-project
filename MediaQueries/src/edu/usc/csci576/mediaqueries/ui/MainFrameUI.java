@@ -94,7 +94,7 @@ public class MainFrameUI extends JFrame {
 
 	protected void displayImages() {
 		byte[] bytes = ImageHandler.readImageFromFile("database/sports/sports150.rgb");
-		byte[] qbytes = ImageHandler.readImageFromFile("query/From Searching Content/Q4/Q4_050.rgb");
+		byte[] qbytes = ImageHandler.readImageFromFile("query/Q4/Q4_050.rgb");
 		
 		BufferedImage originalImg = ImageHandler.toBufferedImage(bytes, 352,
 				288, BufferedImage.TYPE_INT_RGB);
@@ -104,7 +104,7 @@ public class MainFrameUI extends JFrame {
 		queryImageBox.setIcon(new ImageIcon(qoriginalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 		
-		queryMediaPlayer = new MediaPlayer("Query", "query/From Searching Content/Q4", "Q4_", queryImageBox);
+		queryMediaPlayer = new MediaPlayer("Query", "query/Q4", "Q4_", queryImageBox);
 		resultMediaPlayer = new MediaPlayer("Result", "database/interview", "interview", resultImageBox);
 	}
 	
@@ -125,12 +125,12 @@ public class MainFrameUI extends JFrame {
 		mainPanel.setLayout(null);
 		
 		queryTextField = new JTextField();
-		queryTextField.setBounds(43, 299, 174, 32);
+		queryTextField.setBounds(43, 155, 235, 32);
 		mainPanel.add(queryTextField);
 		queryTextField.setColumns(10);
 		
 		JLabel queryTextLabel = new JLabel("Query:");
-		queryTextLabel.setBounds(43, 267, 62, 22);
+		queryTextLabel.setBounds(43, 11, 62, 22);
 		mainPanel.add(queryTextLabel);
 		
 		resultList = new JList<String>();
@@ -324,7 +324,7 @@ public class MainFrameUI extends JFrame {
 		mainPanel.add(queryRGBPanel);
 
 		resultRGBPanel = new JPanel();
-		resultRGBPanel.setBounds(800, 251, 400, 250);		
+		resultRGBPanel.setBounds(800, 267, 400, 250);		
 		resultRGBBox = new JLabel();
 		resultRGBPanel.add(resultRGBBox, BorderLayout.CENTER);		
 		resultRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo201.rgb", 352, 288)));
@@ -332,6 +332,19 @@ public class MainFrameUI extends JFrame {
 		resultRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
 		resultRGBPanel.add(resultRGBTextLabel);
 		mainPanel.add(resultRGBPanel);
+		
+		JList list = new JList();
+		list.setBounds(43, 44, 235, 100);
+		mainPanel.add(list);
+		
+		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnSearch.setBounds(43, 210, 89, 23);
+		mainPanel.add(btnSearch);
 		
 		
 		

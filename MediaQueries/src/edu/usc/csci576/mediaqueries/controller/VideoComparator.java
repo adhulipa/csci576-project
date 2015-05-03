@@ -45,7 +45,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 	 * queryVideo should be of the form "query/first/first"
 	 * 
 	 * @param databaseDirString
-	 * databaseDirString shoulb be of form "database/"
+	 * databaseDirString should be of form "database/"
 	 * 
 	 * @param databaseVideoNames
 	 * expected form is String[]{"StarCraft","traffic","flowers"}
