@@ -1,10 +1,14 @@
 package edu.usc.csci576.mediaqueries.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Event;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -61,6 +66,12 @@ public class MainFrameUI extends JFrame {
 	private JSlider seekBar;
 	private MediaPlayer queryMediaPlayer;
 	private MediaPlayer resultMediaPlayer;
+	private JPanel queryRGBPanel;
+	private JLabel queryRGBBox;
+	private JLabel queryRGBTextLabel;
+	private JLabel resultRGBBox;
+	private Container resultRGBPanel;
+	private JLabel resultRGBTextLabel;
 	
 	/**
 	 * Launch the application.
@@ -103,7 +114,7 @@ public class MainFrameUI extends JFrame {
 	public MainFrameUI() {
 		super("Media Queries");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 10, 784, 757);
+		setBounds(50, 00, 1300, 757);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -300,5 +311,30 @@ public class MainFrameUI extends JFrame {
 		queryVideoPanel.setLayout(new BorderLayout(0, 0));
 		queryImageBox = new JLabel();
 		queryVideoPanel.add(queryImageBox, BorderLayout.CENTER);
+		
+		queryRGBPanel = new JPanel();
+		queryRGBPanel.setBounds(800, 11, 400, 250);
+		
+		queryRGBBox = new JLabel();
+		queryRGBPanel.add(queryRGBBox, BorderLayout.CENTER);		
+		queryRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo200.rgb", 352, 288)));
+		queryRGBTextLabel = new JLabel("Query RGB Histogram");
+		queryRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+		queryRGBPanel.add(queryRGBTextLabel);
+		mainPanel.add(queryRGBPanel);
+
+		resultRGBPanel = new JPanel();
+		resultRGBPanel.setBounds(800, 251, 400, 250);		
+		resultRGBBox = new JLabel();
+		resultRGBPanel.add(resultRGBBox, BorderLayout.CENTER);		
+		resultRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo201.rgb", 352, 288)));
+		resultRGBTextLabel = new JLabel("Result RGB Histogram");
+		resultRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+		resultRGBPanel.add(resultRGBTextLabel);
+		mainPanel.add(resultRGBPanel);
+		
+		
+		
+		
 	}
 }

@@ -133,7 +133,7 @@ public class RGBHistogram {
 	}
 	
 	
-	public static void main(String[] args) {
+	public static void main_new(String[] args) {
 		List<Mat> rgbmats = getRGBMat("database/flowers/flowers001.rgb", 352, 288);
 		List<byte[][]> rgbarrs = getRGBArrays("database/flowers/flowers001.rgb", 352, 288);
 		
@@ -147,7 +147,7 @@ public class RGBHistogram {
 		
 	}
 	
-	public static void main__OLD_TESTS(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
 		
 		
 		// 3 line - read image
