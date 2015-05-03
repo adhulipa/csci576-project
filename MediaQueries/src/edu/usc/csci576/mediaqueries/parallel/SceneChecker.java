@@ -47,6 +47,16 @@ public class SceneChecker implements Callable<SCResultType> {
 
 	}
 
+	public SceneChecker(Scene ds, Scene qs, int compareInOrder,
+			int bestMatchedFrameIdxInScene) {
+		
+		this.mainScene = ds;
+		this.clip = qs;
+		this.comparisonType = compareInOrder;
+		this.frameCheckExecutor = Executors.newCachedThreadPool();
+		this.bestMatchedFrameIdx = bestMatchedFrameIdxInScene;
+	}
+
 	@Override
 	public SCResultType call() throws Exception {
 		// TODO
@@ -282,6 +292,8 @@ public class SceneChecker implements Callable<SCResultType> {
 		System.out.println("matched percentage of clip sncee in mainscene -" + 
 		mainScene.getVideoName() + " [" + mainScene.getBeginIdx() + " - " + mainScene.getEndIdx() + "]" + clip.getFullPath() + " by " + matchPercent);
 		
+		System.out.println("best matched frameIdx " + bestMatchedFrameIx);
+		
 		SCResultType sceneCheckResult = new SCResultType();
 		sceneCheckResult.setClip(clip);
 		sceneCheckResult.setTargetScene(mainScene);
@@ -303,7 +315,7 @@ public class SceneChecker implements Callable<SCResultType> {
 	
 		System.out.println("scene fbf comparison");
 		
-		frameCheckExecutor = Executors.newFixedThreadPool(1);
+		frameCheckExecutor = Executors.newFixedThreadPool(5);
 		
 		int numMainFrames = mainScene.getEndIdx() - mainScene.getBeginIdx() + 1;
 		int numClipFrames = clip.getEndIdx() - clip.getBeginIdx() + 1;
@@ -350,7 +362,9 @@ public class SceneChecker implements Callable<SCResultType> {
 		}
 		
 		
-		matchPercent = matchPercent / maxComp;
+		matchPercent = matchPercent / numCompStarted;
+		
+		
 		System.out.println(" FbF comp matched percentage of clip sncee in mainscene -" + 
 		mainScene.getVideoName() + " [" + mainScene.getBeginIdx() + 
 		" - " + mainScene.getEndIdx() + "]" + clip.getFullPath() + " by " + matchPercent);

@@ -81,11 +81,7 @@ public class FrameChecker implements Callable<FCResultType> {
 			matchPercent += d;
 		matchPercent = (matchPercent / 3.0) * 100.0;
 		
-		Double[] result = new Double[]{
-				Double.valueOf(frame1.getFrameIdx()),
-				Double.valueOf(frame2.getFrameIdx()),
-				matchPercent};
-		
+	
 		Pair<String, String> framePair = Pair.of(frame1.getPath(), frame2.getPath());
 		Map<Pair<String, String>, Double> resultMap = 
 				new LinkedHashMap<Pair<String,String>, Double>();
