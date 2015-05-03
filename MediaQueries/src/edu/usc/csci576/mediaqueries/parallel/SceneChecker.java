@@ -303,7 +303,7 @@ public class SceneChecker implements Callable<SCResultType> {
 	
 		System.out.println("scene fbf comparison");
 		
-		//frameCheckExecutor = Executors.newFixedThreadPool(1);
+		frameCheckExecutor = Executors.newFixedThreadPool(1);
 		
 		int numMainFrames = mainScene.getEndIdx() - mainScene.getBeginIdx() + 1;
 		int numClipFrames = clip.getEndIdx() - clip.getBeginIdx() + 1;
