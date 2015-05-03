@@ -53,7 +53,7 @@ public class SceneChecker implements Callable<SCResultType> {
 		this.mainScene = ds;
 		this.clip = qs;
 		this.comparisonType = compareInOrder;
-		this.frameCheckExecutor = Executors.newCachedThreadPool();
+		this.frameCheckExecutor = Executors.newFixedThreadPool(2);
 		this.bestMatchedFrameIdx = bestMatchedFrameIdxInScene;
 	}
 
@@ -239,7 +239,17 @@ public class SceneChecker implements Callable<SCResultType> {
 		// Compare each frame of clip with each of the candidates
 		// return top matching score 
 		
-		int bestMatchedFrameIx = resultsHeap.poll().getTargetFrameIdx();
+		
+		FCResultType bestResult = resultsHeap.poll();
+		bestResult.getMatchpercent();
+		
+		/* If match percent is ver low. Return
+		 * as is. Dont computa full scnene match
+		 * TODO
+		 */
+		
+		
+		int bestMatchedFrameIx = bestResult.getTargetFrameIdx();
 		int numMainFrames = mainScene.getEndIdx() - mainScene.getBeginIdx() + 1;
 		int numClipFrames = clip.getEndIdx() - clip.getBeginIdx() + 1;
 		int numCompStarted = 0;
@@ -315,7 +325,7 @@ public class SceneChecker implements Callable<SCResultType> {
 	
 		System.out.println("scene fbf comparison");
 		
-		frameCheckExecutor = Executors.newFixedThreadPool(5);
+		frameCheckExecutor = Executors.newFixedThreadPool(2);
 		
 		int numMainFrames = mainScene.getEndIdx() - mainScene.getBeginIdx() + 1;
 		int numClipFrames = clip.getEndIdx() - clip.getBeginIdx() + 1;

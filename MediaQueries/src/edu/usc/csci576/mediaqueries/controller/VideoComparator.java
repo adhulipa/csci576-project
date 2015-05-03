@@ -61,6 +61,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 			String[] databaseVideoNames, String queryDir, String queryVideoString) {
 		databaseDir = databaseDirString;
 		queryVideo = queryVideoString;
+		queryVideoDir = queryDir;
 		databaseVideos = databaseVideoNames;
 	}
 
@@ -70,7 +71,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 		// Setup
 		VideoCompareResult videoCompareResult = null;
 		ExecutorService executor = Executors
-				.newFixedThreadPool(7);
+				.newFixedThreadPool(2);
 		CompletionService<Pair<String, Double>> videoComparatorService = 
 				new ExecutorCompletionService<Pair<String, Double>>(
 				executor);
