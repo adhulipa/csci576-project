@@ -20,12 +20,16 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 	private JList<String> list;
 	String databaseDirString = "database/";
 	String[] databaseVideoNames = new String[]{"StarCraft", "flowers", "traffic", "musicvideo", "movie", "interview", "sports" };
-	String queryDir = "query/Q5";
+	String queryVideoDir = "query/Q5";
 	String queryVideoName = "Q5_";
+	String queryAudioDir = "query/Q5";
+	String queryAudioName = "Q5_";
 	
-	public MediaSearchWorker(JList resultList, String queryDir, String queryVideoName) {
-		this.queryDir = queryDir;
+	public MediaSearchWorker(JList resultList, String queryVideoDir, String queryVideoName, String queryAudioDir, String queryAudioName) {
+		this.queryVideoDir = queryVideoDir;
 		this.queryVideoName = queryVideoName;
+		this.queryAudioDir = queryAudioDir;
+		this.queryAudioName = queryAudioName;
 		this.list = resultList;
 		
 	}
@@ -34,7 +38,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 	protected Map<String, Double> doInBackground()  {
 		
 		MediaComparator mediaComparator = new MediaComparator();
-		VideoCompareResult result = mediaComparator.run(queryDir, queryVideoName, databaseDirString, databaseVideoNames, databaseDirString);
+		VideoCompareResult result = mediaComparator.run(queryVideoDir, queryVideoName, databaseDirString, databaseVideoNames, databaseDirString);
 		
 		mediaComparator = null;
 		
@@ -49,7 +53,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 			Vector<String> listData = new Vector<String>();
 			
 			for (String key : result.keySet()) {
-				listData.add(key + " - " + String.format("%.2f", result.get(key)) + "%");
+				listData.add(key + ": " + String.format("%.2f", result.get(key)) + "%");
 			}
 			
 			list.setListData(listData);

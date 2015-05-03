@@ -36,6 +36,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -127,14 +130,95 @@ public class MainFrameUI extends JFrame {
 		contentPane.add(mainPanel, BorderLayout.CENTER);
 		mainPanel.setLayout(null);
 		
-		queryTextField = new JTextField();
-		queryTextField.setBounds(43, 155, 235, 32);
-		mainPanel.add(queryTextField);
-		queryTextField.setColumns(10);
-		
 		JLabel queryTextLabel = new JLabel("Query:");
 		queryTextLabel.setBounds(43, 11, 62, 22);
 		mainPanel.add(queryTextLabel);
+		
+		queryTextField = new JTextField();
+		queryTextField.setBounds(43, 45, 235, 32);
+		mainPanel.add(queryTextField);
+		queryTextField.setColumns(1);
+		
+		JButton btnSearch = new JButton("Search");
+		btnSearch.setBounds(43, 100, 89, 23);
+		mainPanel.add(btnSearch);
+		
+		final JLabel msgLabel = new JLabel();
+		msgLabel.setBounds(44, 130, 300, 22);
+		mainPanel.add(msgLabel);
+		
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				msgLabel.setText("");
+				String query = queryTextField.getText();
+				
+				String []queryElements = new String[2];
+				if(query == null || query.length() == 0 || (queryElements = query.split(" ")).length != 2)
+				{
+					String text = "Usage: C:\\Videos\\queryVideo C:\\Videos\\queryAudio.wav";
+					msgLabel.setText(text);
+					return;
+				}	
+				
+				Path queryVideoPath = Paths.get(queryElements[0]);
+				Path queryAudioPath = Paths.get(queryElements[1]);
+				
+				String queryVideoPathStr = queryVideoPath.getParent() == null ? Paths.get("").toAbsolutePath().toString() : queryVideoPath.getParent().toString();
+				String queryAudioPathStr = queryAudioPath.getParent() == null ? Paths.get("").toAbsolutePath().toString() : queryAudioPath.getParent().toString();
+				String queryVideoNameStr = queryVideoPath.getFileName() == null ? null : queryVideoPath.getFileName().toString();
+				String queryAudioNameStr = queryAudioPath.getFileName() == null ? null : queryAudioPath.getFileName().toString();
+					
+				if(queryVideoPath.getFileName() == null || queryAudioPath.getFileName() == null)
+				{
+					String text = "Usage: C:\\Videos\\queryVideo C:\\Videos\\queryAudio.wav";
+					msgLabel.setText(text);
+					return;
+				}
+				
+				File vidFile = new File(queryElements[0] + "001.rgb");
+				File audFile = new File(queryElements[1]);
+				
+				if(vidFile.exists() && !vidFile.isDirectory() && audFile.exists() && !audFile.isDirectory())
+				{
+					SwingWorker<Map<String, Double>, Void> searchWorker = 
+							new MediaSearchWorker(resultList, queryVideoPathStr, queryVideoNameStr, queryAudioPathStr, queryAudioNameStr);
+					searchWorker.execute();
+				}
+//				SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
+//				    @Override
+//				    public ImageIcon[] doInBackground() {
+//				        final ImageIcon[] innerImgs = new ImageIcon[nimgs];
+//				        for (int i = 0; i < nimgs; i++) {
+//				            innerImgs[i] = loadImage(i+1);
+//				        }
+//				        return innerImgs;
+//				    }
+//
+//				    @Override
+//				    public void done() {
+//				        //Remove the "Loading images" label.
+//				        animator.removeAll();
+//				        loopslot = -1;
+//				        try {
+//				            imgs = get();
+//				        } catch (InterruptedException ignore) {}
+//				        catch (java.util.concurrent.ExecutionException e) {
+//				            String why = null;
+//				            Throwable cause = e.getCause();
+//				            if (cause != null) {
+//				                why = cause.getMessage();
+//				            } else {
+//				                why = e.getMessage();
+//				            }
+//				            System.err.println("Error retrieving file: " + why);
+//				        }
+//				    }
+//				};
+
+			}
+		});
+		
+		
 		
 		resultList = new JList<String>();
 		resultList.setBounds(469, 44, 235, 110);
@@ -336,52 +420,11 @@ public class MainFrameUI extends JFrame {
 		resultRGBPanel.add(resultRGBTextLabel);
 		mainPanel.add(resultRGBPanel);
 		
-		JList queryList = new JList();
-		queryList.setBounds(43, 44, 235, 100);
-		mainPanel.add(queryList);
+//		JList queryList = new JList();
+//		queryList.setBounds(43, 44, 235, 100);
+//		mainPanel.add(queryList);
 		
-		JButton btnSearch = new JButton("Search");
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				SwingWorker searchWorker = new MediaSearchWorker(resultList, "query/Q4", "Q4_");
-				searchWorker.execute();
-//				SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
-//				    @Override
-//				    public ImageIcon[] doInBackground() {
-//				        final ImageIcon[] innerImgs = new ImageIcon[nimgs];
-//				        for (int i = 0; i < nimgs; i++) {
-//				            innerImgs[i] = loadImage(i+1);
-//				        }
-//				        return innerImgs;
-//				    }
-//
-//				    @Override
-//				    public void done() {
-//				        //Remove the "Loading images" label.
-//				        animator.removeAll();
-//				        loopslot = -1;
-//				        try {
-//				            imgs = get();
-//				        } catch (InterruptedException ignore) {}
-//				        catch (java.util.concurrent.ExecutionException e) {
-//				            String why = null;
-//				            Throwable cause = e.getCause();
-//				            if (cause != null) {
-//				                why = cause.getMessage();
-//				            } else {
-//				                why = e.getMessage();
-//				            }
-//				            System.err.println("Error retrieving file: " + why);
-//				        }
-//				    }
-//				};
 
-			}
-		});
-		btnSearch.setBounds(43, 210, 89, 23);
-		mainPanel.add(btnSearch);
-		
 		
 		
 		
