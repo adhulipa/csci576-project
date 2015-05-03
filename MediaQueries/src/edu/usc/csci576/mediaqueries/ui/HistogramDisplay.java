@@ -45,7 +45,7 @@ public class HistogramDisplay
 		Imgproc.calcHist(channels, new MatOfInt(2), new Mat(), b_hist, histSize,
 				histRange, accumulate);
 
-		int hist_w = 200;
+		int hist_w = 400;
 		int hist_h = 150;
 		long bin_w;
 		bin_w = Math.round((double) (hist_w / 200));

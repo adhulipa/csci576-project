@@ -41,8 +41,15 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 	private static String databaseDir;
 
 	/**
+	 * 
+	 * @param queryDir
+	 * querydDir - "query/Q3"
+	 * querydDir - "query/first"
+	 * 
 	 * @param queryVideo
-	 * queryVideo should be of the form "query/first/first"
+	 * queryVideo should be of the form 
+	 * "Q3_"
+	 * "first"
 	 * 
 	 * @param databaseDirString
 	 * databaseDirString should be of form "database/"
@@ -50,7 +57,8 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 	 * @param databaseVideoNames
 	 * expected form is String[]{"StarCraft","traffic","flowers"}
 	 */
-	public VideoComparator(String databaseDirString, String[] databaseVideoNames, String queryVideoString) {
+	public VideoComparator(String databaseDirString, 
+			String[] databaseVideoNames, String queryDir, String queryVideoString) {
 		databaseDir = databaseDirString;
 		queryVideo = queryVideoString;
 		databaseVideos = databaseVideoNames;
@@ -245,19 +253,12 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 		System.out.println("Started comparator...");
 
 		
-		
-		
-		
-		System.out.println("DONE!!");
-		
-		System.exit(1);
-		
 		ExecutorService sceneCheckExecutor = Executors.newFixedThreadPool(5);
 		// sceneCheckExecutor = Executors.newSingleThreadExecutor();
 
 		// query vide stuff
-		String queryPath = "query/Q3";
-		String queryName = "Q3_";
+		String queryPath = "query/Q4";
+		String queryName = "Q4_";
 
 		// queryPath = "query/first";
 		// queryFile = "first";
@@ -267,7 +268,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 
 		// database stuff
 		String dataPath = "database/";
-		String dataName = "traffic";
+		String dataName = "StarCraft";
 		HashMap<String, List<Integer[]>> sceneMap = DataLoader.loadScenes();
 		List<Integer[]> dataScenes = sceneMap.get(dataName);
 

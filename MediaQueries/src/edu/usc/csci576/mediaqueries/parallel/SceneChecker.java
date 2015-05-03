@@ -327,6 +327,14 @@ public class SceneChecker implements Callable<SCResultType> {
 		= new ArrayList<Future<FCResultType>>();
 		
 		
+		// if bestMacthedFrame is not in this scene,
+		// then compare from first frame of this scene
+		
+		if (bestMatchedFrameIx < mainScene.getBeginIdx() 
+				|| bestMatchedFrameIx > mainScene.getEndIdx()) {
+			bestMatchedFrameIx = mainScene.getBeginIdx();
+		}
+		
 		
 		int mfIdx = bestMatchedFrameIx;
 		int cfIdx = clip.getBeginIdx();
