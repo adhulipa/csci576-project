@@ -232,7 +232,7 @@ public class MainFrameUI extends JFrame {
 		mainPanel.add(matchedVideosLabel);
 		
 		seekBar = new JSlider(0, 20, 0);
-		final Timer increaseValue = new Timer(50, new ActionListener() {// 50 ms interval in each increase.
+		final Timer increaseValue = new Timer(0, new ActionListener() {// 50 ms interval in each increase.
 	        public void actionPerformed(ActionEvent e) {
 	            if (seekBar.getMaximum() != seekBar.getValue()) {
 	            	if(resultMediaPlayer.getVideoPlayer().getCurrentFrame() % 30 == 0)
