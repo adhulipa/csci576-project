@@ -70,7 +70,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 		// Setup
 		VideoCompareResult videoCompareResult = null;
 		ExecutorService executor = Executors
-				.newFixedThreadPool(databaseVideos.length);
+				.newFixedThreadPool(7);
 		CompletionService<Pair<String, Double>> videoComparatorService = 
 				new ExecutorCompletionService<Pair<String, Double>>(
 				executor);
@@ -194,8 +194,8 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 			result = null;
 			System.out.println("Running all scene comparisons");
 
-			sceneCheckExecutor.shutdown();
-			sceneCheckExecutor = Executors.newFixedThreadPool(1);
+			//sceneCheckExecutor.shutdown();
+			//sceneCheckExecutor = Executors.newFixedThreadPool(1);
 
 			while (numComp < maxComps && qidx < numQuerScenes
 					&& didx < numDataScenes) {

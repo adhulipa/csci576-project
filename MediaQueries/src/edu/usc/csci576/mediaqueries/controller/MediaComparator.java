@@ -24,5 +24,7 @@ public class MediaComparator {
 		VideoCompareResult compare = result.get();
 		
 		System.out.println(compare.scoresMap);
+		
+		worker.shutdown();
 	}
 }
