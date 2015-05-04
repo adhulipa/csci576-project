@@ -24,13 +24,11 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 	String[] databaseVideoNames = new String[]{"StarCraft", "flowers", "traffic", "musicvideo", "movie", "interview", "sports" };
 	String queryVideoDir = "query/Q5";
 	String queryVideoName = "Q5_";
-	String queryAudioDir = "query/Q5";
-	String queryAudioName = "Q5_";
+	String queryAudioName = "Q5.wav";
 	
-	public MediaSearchWorker(JList<String> resultList, JLabel wheelImg, String queryVideoDir, String queryVideoName, String queryAudioDir, String queryAudioName) {
+	public MediaSearchWorker(JList<String> resultList, JLabel wheelImg, String queryVideoDir, String queryVideoName, String queryAudioName) {
 		this.queryVideoDir = queryVideoDir;
 		this.queryVideoName = queryVideoName;
-		this.queryAudioDir = queryAudioDir;
 		this.queryAudioName = queryAudioName;
 		this.list = resultList;
 		this.wheelImg = wheelImg;
