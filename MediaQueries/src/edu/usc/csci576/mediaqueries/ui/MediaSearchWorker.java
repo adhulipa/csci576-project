@@ -102,7 +102,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 			}
 			
 			list.setListData(listData);
-			list.setSelectedIndex(0);
+//			list.setSelectedIndex(0);
 			
 			
 			

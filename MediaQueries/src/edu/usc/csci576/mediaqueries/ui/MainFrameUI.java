@@ -215,8 +215,13 @@ public class MainFrameUI extends JFrame {
 		resultList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
+					
 					String selection = resultList.getSelectedValue().split(":")[0];
 					System.out.println(selection);
+					int idx = resultData.get(selection).getBestMatchedFrameIdx();
+					resultMediaPlayer = new MediaPlayer("Result", "database/"+selection, selection, resultImageBox);
+					resultMediaPlayer.getVideoPlayer().setCurrentFrame(idx);
+					seekBar.setValue(idx/30);
 				}
 			}
 		});
