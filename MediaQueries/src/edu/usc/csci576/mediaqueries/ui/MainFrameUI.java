@@ -42,6 +42,7 @@ import java.util.Map;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.ListSelectionModel;
 
 public class MainFrameUI extends JFrame {
 
@@ -54,7 +55,6 @@ public class MainFrameUI extends JFrame {
 	private JList<String> resultList;
 	private JLabel matchedVideosLabel;
 	private JPanel resultVideoWrapper;
-	private JPanel visualDescriptorGraphPanel;
 	private JPanel queryVideoWrapper;
 	private JPanel queryButtonsPanel;
 	private JButton queryBtnPlay;
@@ -120,7 +120,7 @@ public class MainFrameUI extends JFrame {
 	public MainFrameUI() {
 		super("Media Queries");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(50, 00, 1300, 757);
+		setBounds(50, 00, 805, 755);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -236,6 +236,7 @@ public class MainFrameUI extends JFrame {
 		
 		
 		resultList = new JList<String>();
+		resultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		resultList.setBounds(469, 44, 235, 110);
 		String[] ResultListData = {"Mov 1 - 90%","Mov 31 - 87%","Mov 11 - 61%","Mov 12 - 14%"};
 		resultList.setListData(ResultListData);
@@ -365,11 +366,6 @@ public class MainFrameUI extends JFrame {
 		resultVideoPanel.setLayout(new BorderLayout(0, 0));
 		resultImageBox = new JLabel();
 		resultVideoPanel.add(resultImageBox, BorderLayout.NORTH);
-
-		visualDescriptorGraphPanel = new JPanel();
-		visualDescriptorGraphPanel.setBackground(Color.WHITE);
-		visualDescriptorGraphPanel.setBounds(469, 188, 235, 100);
-		mainPanel.add(visualDescriptorGraphPanel);
 		
 		queryVideoWrapper = new JPanel();
 		queryVideoWrapper.setBounds(10, 342, 369, 358);
@@ -415,7 +411,7 @@ public class MainFrameUI extends JFrame {
 		queryVideoPanel.add(queryImageBox, BorderLayout.CENTER);
 		
 		queryRGBPanel = new JPanel();
-		queryRGBPanel.setBounds(800, 11, 400, 250);
+		queryRGBPanel.setBounds(43, 181, 300, 100);
 		
 		queryRGBBox = new JLabel();
 		queryRGBPanel.add(queryRGBBox, BorderLayout.CENTER);		
@@ -426,7 +422,7 @@ public class MainFrameUI extends JFrame {
 		mainPanel.add(queryRGBPanel);
 
 		resultRGBPanel = new JPanel();
-		resultRGBPanel.setBounds(800, 267, 400, 250);		
+		resultRGBPanel.setBounds(453, 181, 300, 100);		
 		resultRGBBox = new JLabel();
 		resultRGBPanel.add(resultRGBBox, BorderLayout.CENTER);		
 		resultRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo201.rgb", 352, 288)));

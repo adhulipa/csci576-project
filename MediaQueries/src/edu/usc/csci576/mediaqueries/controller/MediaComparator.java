@@ -42,9 +42,8 @@ public MediaCompareResult run(String queryDir, String queryVideoString, String d
 		VideoComparator videoTask = new VideoComparator(databaseDirString,
 				databaseVideoNames, queryDir, queryVideoString);
 		
-		ExecutorService worker = Executors.newSingleThreadExecutor();
+		ExecutorService worker = Executors.newFixedThreadPool(1);
 		Future<MediaCompareResult> result = worker.submit(videoTask);
-		
 		MediaCompareResult compare = null;
 		try {
 		

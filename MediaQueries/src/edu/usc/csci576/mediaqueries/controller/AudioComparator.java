@@ -26,7 +26,7 @@ public class AudioComparator
 	{
 		ExecutorService audioCheckExecutor = Executors.newFixedThreadPool(1);
 		
-		String[] dataset = { "starcraft", "flowers", "interview", "movie",
+		String[] dataset = { "StarCraft", "flowers", "interview", "movie",
 				"sports", "musicvideo", "traffic" };
 
 		ArrayList<Future<AudioData>> scores = new ArrayList<Future<AudioData>>();
@@ -70,7 +70,7 @@ public class AudioComparator
 	 */
 	public static void main(String[] args)
 	{
-		ArrayList<AudioComparatorResult> audioResult = getSimilarAudios("query/Not From Searching Content/HQ4/HQ4.wav");
+		ArrayList<AudioComparatorResult> audioResult = getSimilarAudios("query/HQ4/HQ4.wav");
 		Collections.sort(audioResult, new AudioComparatorResult());
 		for(AudioComparatorResult res : audioResult)
 		{
