@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 import edu.usc.csci576.mediaqueries.controller.*;
 import edu.usc.csci576.mediaqueries.data.ImageHandler;
+import edu.usc.csci576.mediaqueries.parallel.SCResultType;
 
 import javax.swing.JTextField;
 import javax.swing.JList;
@@ -77,6 +78,9 @@ public class MainFrameUI extends JFrame {
 	private JLabel resultRGBBox;
 	private Container resultRGBPanel;
 	private JLabel resultRGBTextLabel;
+	
+	
+	private Map<String, SCResultType> resultData = null;
 	
 	/**
 	 * Launch the application.
@@ -185,13 +189,11 @@ public class MainFrameUI extends JFrame {
 				
 				if(vidFile.exists() && !vidFile.isDirectory() && audFile.exists() && !audFile.isDirectory())
 				{
-					SwingWorker<Map<String, Double>, Void> searchWorker = 
-							new MediaSearchWorker(resultList,
-														 wheelImg,
-														 queryVideoPathStr, 
-														 queryVideoNameStr, 
-														 queryAudioPathStr, 
-														 queryAudioNameStr);
+					SwingWorker searchWorker = 
+							new MediaSearchWorker(
+							resultList, resultData, wheelImg, queryVideoPathStr,
+							queryVideoNameStr, queryAudioPathStr,
+							queryAudioNameStr);
 					searchWorker.execute();
 				}
 				else

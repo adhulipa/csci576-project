@@ -12,10 +12,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingWorker;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import edu.usc.csci576.mediaqueries.controller.MediaComparator;
 import edu.usc.csci576.mediaqueries.controller.VideoCompareResult;
+import edu.usc.csci576.mediaqueries.parallel.SCResultType;
 
-public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
+public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCResultType>>, Void> {
 
 	
 	private JList<String> list;
@@ -27,7 +30,11 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 	String queryAudioDir = "query/Q5";
 	String queryAudioName = "Q5_";
 	
-	public MediaSearchWorker(JList<String> resultList, JLabel wheelImg, String queryVideoDir, String queryVideoName, String queryAudioDir, String queryAudioName) {
+	public MediaSearchWorker(JList<String> resultList, 
+			Map<String, SCResultType> resultData, JLabel wheelImg,
+			String queryVideoDir, String queryVideoName, String queryAudioDir,
+			String queryAudioName) {
+		
 		this.queryVideoDir = queryVideoDir;
 		this.queryVideoName = queryVideoName;
 		this.queryAudioDir = queryAudioDir;
@@ -39,7 +46,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 	}
 	
 	@Override
-	protected Map<String, Double> doInBackground()  {
+	protected Map<String, Pair<Double, SCResultType>> doInBackground()  {
 		
 		wheelImg.setVisible(true);
 		MediaComparator mediaComparator = new MediaComparator();
@@ -48,9 +55,22 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 		mediaComparator = null;
 		
 		// Use the fllowing for scnes Indices etc
-		// result.getBestMatchedScene();
 		
-		return result.getScoresMap();
+		Map<String, SCResultType> sceneScoreMap = result.getBestMatchedScene();
+		Map<String, Double> scoreMap = result.getScoresMap();
+		
+		Map<String, Pair<Double, SCResultType>> finalResult = new HashMap<>();
+		for (String key : scoreMap .keySet()) {
+			Double score = scoreMap.get(key);
+			SCResultType sceneResult = sceneScoreMap.get(key);
+			
+			Pair value = Pair.of(score, sceneResult);
+			finalResult.put(key, value);
+		}
+		
+		
+		
+		return finalResult;
 		
 	}
 	
@@ -58,15 +78,18 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 	protected void done() {
 		try {
 			
-			Map<String, Double> result = get();
+			Map<String, Pair<Double, SCResultType>> result = get();
 			Vector<String> listData = new Vector<String>();
 			
 			for (String key : result.keySet()) {
-				listData.add(key + ": " + String.format("%.2f", result.get(key)) + "%");
+				listData.add(
+						key + ": " + String.format("%.2f", 
+								result.get(key).getLeft()) + "%");
 			}
 			
 			list.setListData(listData);
-			list.setSelectedIndex(2);
+			list.setSelectedIndex(0);
+			
 			
 			
 		} catch (InterruptedException e) {
