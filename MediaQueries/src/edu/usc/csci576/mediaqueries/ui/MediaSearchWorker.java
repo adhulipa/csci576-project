@@ -29,6 +29,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 	String queryVideoName = "Q5_";
 	String queryAudioDir = "query/Q5";
 	String queryAudioName = "Q5_";
+	Map<String, SCResultType> resultData;
 	
 	public MediaSearchWorker(JList<String> resultList, 
 			Map<String, SCResultType> resultData, JLabel wheelImg,
@@ -43,6 +44,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 		
 		this.list = resultList;
 		this.wheelImg = wheelImg;
+		this.resultData = resultData;
 		
 		
 	}
@@ -89,11 +91,14 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 			
 			Map<String, Pair<Double, SCResultType>> result = get();
 			Vector<String> listData = new Vector<String>();
-			
+
 			for (String key : result.keySet()) {
 				listData.add(
 						key + ": " + String.format("%.2f", 
 								result.get(key).getLeft()) + "%");
+				
+				resultData.put(key, result.get(key).getRight());
+				
 			}
 			
 			list.setListData(listData);

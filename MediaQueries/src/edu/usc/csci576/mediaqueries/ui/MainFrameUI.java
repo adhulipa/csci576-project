@@ -39,6 +39,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.event.ChangeListener;
@@ -191,6 +192,7 @@ public class MainFrameUI extends JFrame {
 				
 				if(vidFile.exists() && !vidFile.isDirectory() && audFile.exists() && !audFile.isDirectory())
 				{
+					resultData = new HashMap<String, SCResultType>();
 					SwingWorker searchWorker = 
 							new MediaSearchWorker(
 							resultList, resultData, wheelImg, queryVideoPathStr,
