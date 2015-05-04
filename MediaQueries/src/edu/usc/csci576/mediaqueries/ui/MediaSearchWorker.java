@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingWorker;
 
@@ -18,6 +19,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 
 	
 	private JList<String> list;
+	private JLabel wheelImg;
 	String databaseDirString = "database/";
 	String[] databaseVideoNames = new String[]{"StarCraft", "flowers", "traffic", "musicvideo", "movie", "interview", "sports" };
 	String queryVideoDir = "query/Q5";
@@ -25,18 +27,20 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 	String queryAudioDir = "query/Q5";
 	String queryAudioName = "Q5_";
 	
-	public MediaSearchWorker(JList resultList, String queryVideoDir, String queryVideoName, String queryAudioDir, String queryAudioName) {
+	public MediaSearchWorker(JList<String> resultList, JLabel wheelImg, String queryVideoDir, String queryVideoName, String queryAudioDir, String queryAudioName) {
 		this.queryVideoDir = queryVideoDir;
 		this.queryVideoName = queryVideoName;
 		this.queryAudioDir = queryAudioDir;
 		this.queryAudioName = queryAudioName;
 		this.list = resultList;
+		this.wheelImg = wheelImg;
 		
 	}
 	
 	@Override
 	protected Map<String, Double> doInBackground()  {
 		
+		wheelImg.setVisible(true);
 		MediaComparator mediaComparator = new MediaComparator();
 		VideoCompareResult result = mediaComparator.run(queryVideoDir, queryVideoName, databaseDirString, databaseVideoNames, databaseDirString);
 		
@@ -66,6 +70,9 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally
+		{
+			wheelImg.setVisible(false);
 		}
 	}
 

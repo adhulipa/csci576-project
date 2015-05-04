@@ -143,19 +143,25 @@ public class MainFrameUI extends JFrame {
 		btnSearch.setBounds(43, 100, 89, 23);
 		mainPanel.add(btnSearch);
 		
+		final JLabel wheelImg = new JLabel();
+		wheelImg.setBounds(150, 100, 40, 40);
+		wheelImg.setIcon(new ImageIcon("ajax-loader.gif"));
+		mainPanel.add(wheelImg);
+		wheelImg.setVisible(false);
+		
 		final JLabel msgLabel = new JLabel();
-		msgLabel.setBounds(44, 130, 300, 22);
+		msgLabel.setBounds(44, 130, 400, 40);
 		mainPanel.add(msgLabel);
 		
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				msgLabel.setText("");
+				String text = "<html>Usage (Enter ABCDVideo for video file name ABCDVideo001.rgb)<br>C:\\Videos\\ABCDVideo C:\\Videos\\ABCDAudio.wav</html>";
 				String query = queryTextField.getText();
 				
 				String []queryElements = new String[2];
 				if(query == null || query.length() == 0 || (queryElements = query.split(" ")).length != 2)
 				{
-					String text = "Usage: C:\\Videos\\queryVideo C:\\Videos\\queryAudio.wav";
 					msgLabel.setText(text);
 					return;
 				}	
@@ -168,9 +174,8 @@ public class MainFrameUI extends JFrame {
 				String queryVideoNameStr = queryVideoPath.getFileName() == null ? null : queryVideoPath.getFileName().toString();
 				String queryAudioNameStr = queryAudioPath.getFileName() == null ? null : queryAudioPath.getFileName().toString();
 					
-				if(queryVideoPath.getFileName() == null || queryAudioPath.getFileName() == null)
+				if(queryVideoNameStr == null || queryVideoNameStr == null)
 				{
-					String text = "Usage: C:\\Videos\\queryVideo C:\\Videos\\queryAudio.wav";
 					msgLabel.setText(text);
 					return;
 				}
@@ -181,8 +186,18 @@ public class MainFrameUI extends JFrame {
 				if(vidFile.exists() && !vidFile.isDirectory() && audFile.exists() && !audFile.isDirectory())
 				{
 					SwingWorker<Map<String, Double>, Void> searchWorker = 
-							new MediaSearchWorker(resultList, queryVideoPathStr, queryVideoNameStr, queryAudioPathStr, queryAudioNameStr);
+							new MediaSearchWorker(resultList,
+														 wheelImg,
+														 queryVideoPathStr, 
+														 queryVideoNameStr, 
+														 queryAudioPathStr, 
+														 queryAudioNameStr);
 					searchWorker.execute();
+				}
+				else
+				{					
+					msgLabel.setText(text);
+					return;
 				}
 //				SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
 //				    @Override
