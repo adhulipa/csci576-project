@@ -14,7 +14,8 @@ public class SCResultType  implements Comparable<SCResultType>, Comparator<SCRes
 	
 	private float audioMostSimilarTimePosition;
 	private float audioMostSimilarFramePosition;
-	
+	private float audioSimilarity;
+	private float audioScore;
 	
 	
 	/**
@@ -122,6 +123,18 @@ public class SCResultType  implements Comparable<SCResultType>, Comparator<SCRes
 	public void setAudioMostSimilarFramePosition(
 			float audioMostSimilarFramePosition) {
 		this.audioMostSimilarFramePosition = audioMostSimilarFramePosition;
+	}
+	public float getAudioSimilarity() {
+		return audioSimilarity;
+	}
+	public void setAudioSimilarity(float audioSimilarity) {
+		this.audioSimilarity = audioSimilarity;
+	}
+	public float getAudioScore() {
+		return audioScore;
+	}
+	public void setAudioScore(float audioScore) {
+		this.audioScore = audioScore;
 	}
 	
 	

@@ -121,6 +121,12 @@ public VideoCompareResult run(String queryDir, String queryVideoString, String d
 				comparisonResults.bestMatchedSceneResults.get(key)
 				.setAudioMostSimilarFramePosition(audioTimePos);
 				
+				comparisonResults.bestMatchedSceneResults.get(key)
+				.setAudioScore(audioResult.getScore());
+				
+				comparisonResults.bestMatchedSceneResults.get(key)
+				.setAudioSimilarity(audioResult.getSimilarity());
+				
 			}
 			
 			
