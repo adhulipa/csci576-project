@@ -2,24 +2,17 @@ package edu.usc.csci576.mediaqueries.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.opencv.core.Core;
-
 import com.musicg.fingerprint.FingerprintSimilarity;
-import com.musicg.wave.Wave;
-
 import edu.usc.csci576.mediaqueries.model.AudioComparatorResult;
 import edu.usc.csci576.mediaqueries.model.AudioData;
 import edu.usc.csci576.mediaqueries.parallel.AudioChecker;
 
-public class AudioComparator
-{
+public class AudioComparator {
 
 	public static ArrayList<AudioComparatorResult> getSimilarAudios(
 			String queryWavPath)

@@ -35,6 +35,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 		this.list = resultList;
 		this.wheelImg = wheelImg;
 		
+		
 	}
 	
 	@Override

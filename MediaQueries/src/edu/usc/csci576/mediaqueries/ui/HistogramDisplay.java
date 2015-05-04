@@ -45,17 +45,19 @@ public class HistogramDisplay
 		Imgproc.calcHist(channels, new MatOfInt(0), new Mat(), b_hist, histSize,
 				histRange, accumulate);
 
-		int hist_w = 400;
-		int hist_h = 150;
+		int hist_w = 300;
+		int hist_h = 100;
 		long bin_w;
 		bin_w = Math.round((double) (hist_w / 200));
 
-		Mat histImage = new Mat(hist_h, hist_w, CvType.CV_8UC3);
+		Mat histImage = new Mat(hist_h, hist_w, CvType.CV_8UC3, new Scalar(255,255,255));
 
 		Core.normalize(r_hist, r_hist, 3, histImage.rows(), Core.NORM_MINMAX);
 		Core.normalize(g_hist, g_hist, 3, histImage.rows(), Core.NORM_MINMAX);
 		Core.normalize(b_hist, b_hist, 3, histImage.rows(), Core.NORM_MINMAX);
 
+		
+		// Scalar (b, g, r)
 		for (int i = 1; i < 256; i++)
 		{
 
@@ -65,7 +67,7 @@ public class HistogramDisplay
 							- Math.round(r_hist.get(i - 1, 0)[0])),
 					new Point(bin_w * (i), hist_h
 							- Math.round(Math.round(r_hist.get(i, 0)[0]))),
-					new Scalar(255, 0, 0), 2, 8, 0);
+					new Scalar(51, 51, 255), 2, 8, 0);
 
 			Core.line(
 					histImage,
@@ -73,7 +75,7 @@ public class HistogramDisplay
 							- Math.round(g_hist.get(i - 1, 0)[0])),
 					new Point(bin_w * (i), hist_h
 							- Math.round(Math.round(g_hist.get(i, 0)[0]))),
-					new Scalar(0, 255, 0), 2, 8, 0);
+					new Scalar(0, 204, 0), 2, 8, 0);
 
 			Core.line(
 					histImage,
@@ -81,7 +83,7 @@ public class HistogramDisplay
 							- Math.round(b_hist.get(i - 1, 0)[0])),
 					new Point(bin_w * (i), hist_h
 							- Math.round(Math.round(b_hist.get(i, 0)[0]))),
-					new Scalar(0, 0, 255), 2, 8, 0);
+					new Scalar(255, 153, 51), 2, 8, 0);
 
 		}
 
