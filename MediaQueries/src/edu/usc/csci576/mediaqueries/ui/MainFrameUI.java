@@ -164,6 +164,26 @@ public class MainFrameUI extends JFrame {
 		msgLabel.setBounds(44, 130, 400, 40);
 		mainPanel.add(msgLabel);
 		
+		queryRGBPanel = new JPanel();
+		queryRGBPanel.setBounds(43, 181, 300, 100);		
+		queryRGBBox = new JLabel();
+		queryRGBPanel.add(queryRGBBox, BorderLayout.CENTER);		
+		queryRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo555.rgb", 352, 288, 100, 300, 0, 0)));
+		queryRGBTextLabel = new JLabel("Query RGB Histogram");
+		queryRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+		queryRGBPanel.add(queryRGBTextLabel);
+		mainPanel.add(queryRGBPanel);
+
+		resultRGBPanel = new JPanel();
+		resultRGBPanel.setBounds(453, 181, 300, 100);		
+		resultRGBBox = new JLabel();
+		resultRGBPanel.add(resultRGBBox, BorderLayout.CENTER);		
+		resultRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo556.rgb", 352, 288, 100, 300, 0, 0)));
+		resultRGBTextLabel = new JLabel("Result RGB Histogram");
+		resultRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+		resultRGBPanel.add(resultRGBTextLabel);
+		mainPanel.add(resultRGBPanel);
+		
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				msgLabel.setText("");
@@ -241,6 +261,14 @@ public class MainFrameUI extends JFrame {
 																queryAudioPathStr, 
 																queryAudioNameStr.substring(0, queryAudioNameStr.indexOf('.')), 
 																queryImageBox);
+					
+					resultRGBBox.setIcon(new ImageIcon(
+							HistogramDisplay.getImage(
+									"database/"+selection+"/"+selection+
+									String.format("%03d", idx)
+									+".rgb", 352, 288, 100, 300, 
+									resultData.get(selection).getAudioSimilarity(),
+									1.0)));
 				}
 			}
 		});
@@ -364,9 +392,7 @@ public class MainFrameUI extends JFrame {
 		});
 		resultButtonPanel.add(resultBtnStop);
 		
-		resultBtnPlay.setEnabled(true);
-		resultBtnPause.setEnabled(false);
-		resultBtnStop.setEnabled(false);
+		
 		
 		resultVideoPanel = new JPanel();
 		resultVideoPanel.setBounds(10, 11, 352, 292);
@@ -390,6 +416,9 @@ public class MainFrameUI extends JFrame {
 		queryBtnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				queryMediaPlayer.playMedia();
+				queryBtnPlay.setEnabled(false);
+				queryBtnPause.setEnabled(true);
+				queryBtnStop.setEnabled(true);
 			}
 			
 		});
@@ -400,6 +429,8 @@ public class MainFrameUI extends JFrame {
 		queryBtnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				queryMediaPlayer.pauseMedia();
+				queryBtnPlay.setEnabled(true);
+				queryBtnPause.setEnabled(false);
 			}
 		});
 		
@@ -408,6 +439,9 @@ public class MainFrameUI extends JFrame {
 		queryBtnStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				queryMediaPlayer.stopMedia();
+				queryBtnPlay.setEnabled(true);
+				queryBtnPause.setEnabled(false);
+				queryBtnStop.setEnabled(false);
 			}
 		});
 
@@ -419,26 +453,16 @@ public class MainFrameUI extends JFrame {
 		queryImageBox = new JLabel();
 		queryVideoPanel.add(queryImageBox, BorderLayout.CENTER);
 		
-		queryRGBPanel = new JPanel();
-		queryRGBPanel.setBounds(43, 181, 300, 100);
 		
-		queryRGBBox = new JLabel();
-		queryRGBPanel.add(queryRGBBox, BorderLayout.CENTER);		
-		queryRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo555.rgb", 352, 288, 100, 300, 0, 0)));
-		queryRGBTextLabel = new JLabel("Query RGB Histogram");
-		queryRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-		queryRGBPanel.add(queryRGBTextLabel);
-		mainPanel.add(queryRGBPanel);
-
-		resultRGBPanel = new JPanel();
-		resultRGBPanel.setBounds(453, 181, 300, 100);		
-		resultRGBBox = new JLabel();
-		resultRGBPanel.add(resultRGBBox, BorderLayout.CENTER);		
-		resultRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo556.rgb", 352, 288, 100, 300, 0, 0)));
-		resultRGBTextLabel = new JLabel("Result RGB Histogram");
-		resultRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-		resultRGBPanel.add(resultRGBTextLabel);
-		mainPanel.add(resultRGBPanel);
+		
+		
+		resultBtnPlay.setEnabled(true);
+		resultBtnPause.setEnabled(false);
+		resultBtnStop.setEnabled(false);
+		
+		queryBtnPlay.setEnabled(true);
+		queryBtnPause.setEnabled(false);
+		queryBtnStop.setEnabled(false);
 		
 	}
 }
