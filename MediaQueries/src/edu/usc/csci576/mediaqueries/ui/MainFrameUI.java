@@ -269,18 +269,29 @@ public class MainFrameUI extends JFrame {
 									+".rgb", 352, 288, 100, 300, 
 									resultData.get(selection).getAudioSimilarity(),
 									1.0)));
+					
+					queryRGBBox.setIcon(new ImageIcon(
+							HistogramDisplay.getImage(
+									query, 352, 288, 100, 300, 
+									0.0,
+									1.0)));
+					
+					
+					queryRGBBox.setVisible(true);
+					resultRGBBox.setVisible(true);
+					
 				}
 			}
 		});
 		
 		resultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		resultList.setBounds(469, 44, 235, 110);
+		resultList.setBounds(469, 30, 235, 140);
 		//String[] ResultListData = {"Mov 1 - 90%","Mov 31 - 87%","Mov 11 - 61%","Mov 12 - 14%"};
 		//resultList.setListData(ResultListData);
 		mainPanel.add(resultList);
 		
 		matchedVideosLabel = new JLabel("Matched Videos");
-		matchedVideosLabel.setBounds(469, 11, 96, 22);
+		matchedVideosLabel.setBounds(469, 6, 125, 22);
 		mainPanel.add(matchedVideosLabel);
 		
 		seekBar = new JSlider(0, 20, 0);
@@ -463,6 +474,10 @@ public class MainFrameUI extends JFrame {
 		queryBtnPlay.setEnabled(true);
 		queryBtnPause.setEnabled(false);
 		queryBtnStop.setEnabled(false);
+		
+		queryRGBBox.setVisible(false);
+		resultRGBBox.setVisible(false);
+		
 		
 	}
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.TreeMap;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
@@ -91,14 +93,22 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 			
 			Map<String, Pair<Double, SCResultType>> result = get();
 			Vector<String> listData = new Vector<String>();
-
+			
+			Queue<Pair> listDataSorted = new PriorityQueue<>();
+			
 			for (String key : result.keySet()) {
-				listData.add(
-						key + ": " + String.format("%.2f", 
-								result.get(key).getLeft()) + "%");
+				//listData.add(key + ": " + String.format("%.2f",result.get(key).getLeft()) + "%");
+				
+				Pair<Double, String> val = Pair.of(result.get(key).getLeft(), key);
+				
+				listDataSorted.add(val);
 				
 				resultData.put(key, result.get(key).getRight());
 				
+			}
+			
+			for (Pair each : listDataSorted) {
+				listData.add(each.getRight() + ": " + String.format("%.2f", each.getLeft()) + "%");
 			}
 			
 			list.setListData(listData);
