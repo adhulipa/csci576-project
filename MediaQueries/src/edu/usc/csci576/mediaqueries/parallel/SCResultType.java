@@ -12,6 +12,11 @@ public class SCResultType  implements Comparable<SCResultType>, Comparator<SCRes
 	private double matchPercent;
 	private int bestMatchedFrameIdx;
 	
+	private float audioMostSimilarTimePosition;
+	private float audioMostSimilarFramePosition;
+	
+	
+	
 	/**
 	 * @return the targetScene
 	 */
@@ -92,6 +97,31 @@ public class SCResultType  implements Comparable<SCResultType>, Comparator<SCRes
 	
 	public int getBestMatchedFrameIdx() {
 		return this.bestMatchedFrameIdx;
+	}
+	/**
+	 * @return the audioMostSimilarTimePosition
+	 */
+	public float getAudioMostSimilarTimePosition() {
+		return audioMostSimilarTimePosition;
+	}
+	/**
+	 * @param audioMostSimilarTimePosition the audioMostSimilarTimePosition to set
+	 */
+	public void setAudioMostSimilarTimePosition(float audioMostSimilarTimePosition) {
+		this.audioMostSimilarTimePosition = audioMostSimilarTimePosition;
+	}
+	/**
+	 * @return the audioMostSimilarFramePosition
+	 */
+	public float getAudioMostSimilarFramePosition() {
+		return audioMostSimilarFramePosition;
+	}
+	/**
+	 * @param audioMostSimilarFramePosition the audioMostSimilarFramePosition to set
+	 */
+	public void setAudioMostSimilarFramePosition(
+			float audioMostSimilarFramePosition) {
+		this.audioMostSimilarFramePosition = audioMostSimilarFramePosition;
 	}
 	
 	

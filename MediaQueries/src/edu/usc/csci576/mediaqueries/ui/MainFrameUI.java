@@ -81,11 +81,12 @@ public class MainFrameUI extends JFrame {
 	
 	
 	private Map<String, SCResultType> resultData = null;
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {

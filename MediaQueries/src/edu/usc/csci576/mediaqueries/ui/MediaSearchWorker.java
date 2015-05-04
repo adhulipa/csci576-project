@@ -101,6 +101,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 			
 			
 			
+			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
