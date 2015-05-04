@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import edu.usc.csci576.mediaqueries.parallel.SCResultType;
 
 import edu.usc.csci576.mediaqueries.model.AudioComparatorResult;
 
@@ -27,7 +28,11 @@ public static void main(String[] args) throws InterruptedException, ExecutionExc
 		VideoCompareResult compare = result.get();
 		
 		System.out.println(compare.scoresMap);
-		
+		System.out.println(
+				"bestFrame " + compare.bestMatchedSceneResults
+
+				
+				);
 		worker.shutdown();
 		
 		return;
@@ -62,7 +67,9 @@ public VideoCompareResult run(String queryDir, String queryVideoString, String d
 		}
 		
 		System.out.println(compare.scoresMap);
-		
+		System.out.println(
+				"bestFrame " + compare.getBestMatchedScene()
+				);
 		worker.shutdown();
 		
 		return compare;

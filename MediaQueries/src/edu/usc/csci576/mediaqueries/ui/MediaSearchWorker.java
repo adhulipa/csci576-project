@@ -46,7 +46,11 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 		
 		mediaComparator = null;
 		
-		return result.getScoreMap();
+		// Use the fllowing for scnes Indices etc
+		// result.getBestMatchedScene();
+		
+		return result.getScoresMap();
+		
 	}
 	
 	@Override

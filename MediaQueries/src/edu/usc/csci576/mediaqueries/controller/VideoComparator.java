@@ -73,12 +73,17 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 		// Setup
 		VideoCompareResult videoCompareResult = null;
 		ExecutorService executor = Executors
-				.newFixedThreadPool(2);
+				.newFixedThreadPool(3);
 		CompletionService<Pair<String, SCResultType>> videoComparatorService = 
 				new ExecutorCompletionService<Pair<String, SCResultType>>(
 				executor);
 		int remainingFutures = databaseVideos.length;
-		Map<String, Double> result = new TreeMap<String, Double>();
+		
+		
+		
+		Map<String, Double> resultScores = new TreeMap<String, Double>();
+		Map<String, SCResultType> bestMatchedSceneResults = new TreeMap<String, SCResultType>();
+		
 		List<Future<Pair<String, SCResultType>>> matchResults = new ArrayList<>();
 		Future<Pair<String, SCResultType>> future; 
 		
@@ -96,12 +101,15 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 			
 			// get the result -- Double representing matchPercent
 			Pair<String, SCResultType> retval = future.get();
-			result.put(retval.getLeft(), retval.getRight().getMatchPercent());
+			resultScores.put(retval.getLeft(), retval.getRight().getMatchPercent());
+			bestMatchedSceneResults.put(retval.getLeft(), 
+					retval.getRight());
 		}
 		
 		// finish and return
 		videoCompareResult = new VideoCompareResult();
-		videoCompareResult.scoresMap = result;
+		videoCompareResult.scoresMap = resultScores;
+		videoCompareResult.bestMatchedSceneResults = bestMatchedSceneResults;
 		executor.shutdown();
 		
 		return videoCompareResult;
@@ -119,16 +127,6 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 
 		@Override
 		public Pair<String, SCResultType> call() throws Exception {
-			
-			if (databaseVideos == null) {
-				databaseVideos = new String[]{"StarCraft","traffic","flowers"};
-			}
-			if (queryVideoDir == null) {
-				queryVideoDir = "query/Q4";
-			}
-			if (queryVideo == null) {
-				queryVideo = "Q4_";
-			}
 			
 			System.out.println("Started comparator with " + databaseVideoName);
 
@@ -251,8 +249,9 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 			Collections.max(scenesResultList);
 			
 			
-			
-			return Pair.of(databaseVideoName, Collections.max(scenesResultList));
+			System.out.println("For " + databaseVideoName + bestSceneResult.getBestMatchedFrameIdx());
+
+			return Pair.of(databaseVideoName, bestSceneResult);
 		}
 
 	}

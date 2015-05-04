@@ -3,22 +3,19 @@ package edu.usc.csci576.mediaqueries.controller;
 import java.util.Map;
 
 import edu.usc.csci576.mediaqueries.model.Scene;
+import edu.usc.csci576.mediaqueries.parallel.SCResultType;
 
 public class VideoCompareResult {
 
 	Map<String, Double> scoresMap;
+	Map<String, SCResultType> bestMatchedSceneResults;
 	
-	/*
-	 * Can extend these to arays
-	 * to get data for each video
-	 */
 	
-	String bestMacthedVideoName;
-	Scene bestMatchedScene;
-	int bestMacthedFrame;
-	
-	public Map<String, Double> getScoreMap() {
-		return scoresMap;
+	public Map<String, SCResultType> getBestMatchedScene() {
+		return bestMatchedSceneResults;
 	}
 	
+	public Map<String, Double> getScoresMap() {
+		return scoresMap;
+	}
 }

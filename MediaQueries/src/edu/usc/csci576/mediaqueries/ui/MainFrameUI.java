@@ -99,8 +99,8 @@ public class MainFrameUI extends JFrame {
 	}
 
 	protected void displayImages() {
-		byte[] bytes = ImageHandler.readImageFromFile("database/sports/sports150.rgb");
-		byte[] qbytes = ImageHandler.readImageFromFile("query/Q4/Q4_050.rgb");
+		byte[] bytes = ImageHandler.readImageFromFile("database/flowers/flowers061.rgb");
+		byte[] qbytes = ImageHandler.readImageFromFile("query/Q5/Q5_001.rgb");
 		
 		BufferedImage originalImg = ImageHandler.toBufferedImage(bytes, 352,
 				288, BufferedImage.TYPE_INT_RGB);
@@ -238,8 +238,8 @@ public class MainFrameUI extends JFrame {
 		resultList = new JList<String>();
 		resultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		resultList.setBounds(469, 44, 235, 110);
-		String[] ResultListData = {"Mov 1 - 90%","Mov 31 - 87%","Mov 11 - 61%","Mov 12 - 14%"};
-		resultList.setListData(ResultListData);
+		//String[] ResultListData = {"Mov 1 - 90%","Mov 31 - 87%","Mov 11 - 61%","Mov 12 - 14%"};
+		//resultList.setListData(ResultListData);
 		mainPanel.add(resultList);
 		
 		matchedVideosLabel = new JLabel("Matched Videos");
