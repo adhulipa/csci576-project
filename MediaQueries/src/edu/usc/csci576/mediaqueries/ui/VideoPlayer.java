@@ -108,9 +108,10 @@ public class VideoPlayer implements Runnable {
 			
 			imageBox.setIcon(new ImageIcon(img));
 			//System.out.println("current frame " + getCurrentFrame());
-		} else {
-			this.stopVideo();
-		}
+		} 
+//		else {
+//			this.stopVideo();
+//		}
 	}
 	
 	@Override
