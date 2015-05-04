@@ -2,6 +2,7 @@ package edu.usc.csci576.mediaqueries.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,13 +74,13 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 		VideoCompareResult videoCompareResult = null;
 		ExecutorService executor = Executors
 				.newFixedThreadPool(2);
-		CompletionService<Pair<String, Double>> videoComparatorService = 
-				new ExecutorCompletionService<Pair<String, Double>>(
+		CompletionService<Pair<String, SCResultType>> videoComparatorService = 
+				new ExecutorCompletionService<Pair<String, SCResultType>>(
 				executor);
 		int remainingFutures = databaseVideos.length;
 		Map<String, Double> result = new TreeMap<String, Double>();
-		List<Future<Pair<String, Double>>> matchResults = new ArrayList<>();
-		Future<Pair<String, Double>> future; 
+		List<Future<Pair<String, SCResultType>>> matchResults = new ArrayList<>();
+		Future<Pair<String, SCResultType>> future; 
 		
 		// For a thread for each video comparator
 		for (String video : databaseVideos) {
@@ -94,8 +95,8 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 			remainingFutures--;
 			
 			// get the result -- Double representing matchPercent
-			Pair<String, Double> retval = future.get();
-			result.put(retval.getLeft(), retval.getRight());
+			Pair<String, SCResultType> retval = future.get();
+			result.put(retval.getLeft(), retval.getRight().getMatchPercent());
 		}
 		
 		// finish and return
@@ -106,7 +107,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 		return videoCompareResult;
 	}
 
-	private class SingleVideoComparator implements Callable<Pair<String,Double>> {
+	private class SingleVideoComparator implements Callable<Pair<String,SCResultType>> {
 
 		private static final int SCENE_CHECKER_THREADS = 3;
 		private String databaseVideoName;
@@ -117,7 +118,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 		}
 
 		@Override
-		public Pair<String, Double> call() throws Exception {
+		public Pair<String, SCResultType> call() throws Exception {
 			
 			if (databaseVideos == null) {
 				databaseVideos = new String[]{"StarCraft","traffic","flowers"};
@@ -224,13 +225,16 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 			/*
 			 * Fetch the results now
 			 */
-
 			Double totalMatchPercent = 0.0;
 			// sceneCheckExecutor.awaitTermination(Long.MAX_VALUE,
 			// TimeUnit.NANOSECONDS);
 
+			List<SCResultType> scenesResultList = Collections.synchronizedList(
+					new ArrayList<SCResultType>());
+			
 			for (int i = 0; i < resultList.size(); i++) {
 				SCResultType scRes = resultList.get(i).get();
+				scenesResultList.add(scRes);
 
 				// synchronized(sceneCheckExecutor) {
 				totalMatchPercent += scRes.getMatchPercent();
@@ -243,8 +247,12 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 
 			sceneCheckExecutor.shutdown();
 			
+			// Formulate result and return
+			Collections.max(scenesResultList);
 			
-			return Pair.of(databaseVideoName, totalMatchPercent);
+			
+			
+			return Pair.of(databaseVideoName, Collections.max(scenesResultList));
 		}
 
 	}
@@ -389,7 +397,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 	 *            the queryVideoFile to set
 	 */
 	public void setQueryVideoFile(String queryVideoFile) {
-		this.queryVideo = queryVideoFile;
+		VideoComparator.queryVideo = queryVideoFile;
 	}
 
 }
