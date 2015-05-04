@@ -387,7 +387,7 @@ public class MainFrameUI extends JFrame {
 		
 		queryRGBBox = new JLabel();
 		queryRGBPanel.add(queryRGBBox, BorderLayout.CENTER);		
-		queryRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo200.rgb", 352, 288)));
+		queryRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo555.rgb", 352, 288, 100, 300)));
 		queryRGBTextLabel = new JLabel("Query RGB Histogram");
 		queryRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
 		queryRGBPanel.add(queryRGBTextLabel);
@@ -397,19 +397,11 @@ public class MainFrameUI extends JFrame {
 		resultRGBPanel.setBounds(453, 181, 300, 100);		
 		resultRGBBox = new JLabel();
 		resultRGBPanel.add(resultRGBBox, BorderLayout.CENTER);		
-		resultRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo201.rgb", 352, 288)));
+		resultRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo556.rgb", 352, 288, 100, 300)));
 		resultRGBTextLabel = new JLabel("Result RGB Histogram");
 		resultRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
 		resultRGBPanel.add(resultRGBTextLabel);
 		mainPanel.add(resultRGBPanel);
-		
-//		JList queryList = new JList();
-//		queryList.setBounds(43, 44, 235, 100);
-//		mainPanel.add(queryList);
-		
-
-		
-		
 		
 	}
 }
