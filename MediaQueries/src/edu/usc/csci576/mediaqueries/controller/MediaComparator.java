@@ -1,9 +1,12 @@
 package edu.usc.csci576.mediaqueries.controller;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import edu.usc.csci576.mediaqueries.model.AudioComparatorResult;
 
 public class MediaComparator {
 	
@@ -19,9 +22,9 @@ public static void main(String[] args) throws InterruptedException, ExecutionExc
 				databaseVideoNames, queryDir, queryVideoString);
 		
 		ExecutorService worker = Executors.newSingleThreadExecutor();
-		Future<MediaCompareResult> result = worker.submit(videoTask);
+		Future<VideoCompareResult> result = worker.submit(videoTask);
 		
-		MediaCompareResult compare = result.get();
+		VideoCompareResult compare = result.get();
 		
 		System.out.println(compare.scoresMap);
 		
@@ -30,7 +33,7 @@ public static void main(String[] args) throws InterruptedException, ExecutionExc
 		return;
 	}
 
-public MediaCompareResult run(String queryDir, String queryVideoString, String databaseDir, 
+public VideoCompareResult run(String queryDir, String queryVideoString, String databaseDir, 
 		String[] databaseVideoNames, String databaseDirString) {
 		
 		
@@ -43,8 +46,12 @@ public MediaCompareResult run(String queryDir, String queryVideoString, String d
 				databaseVideoNames, queryDir, queryVideoString);
 		
 		ExecutorService worker = Executors.newFixedThreadPool(1);
-		Future<MediaCompareResult> result = worker.submit(videoTask);
-		MediaCompareResult compare = null;
+		Future<VideoCompareResult> result = worker.submit(videoTask);
+		
+		List<AudioComparatorResult> audioResults = 
+				AudioComparator.getSimilarAudios(queryDir+queryDir.substring(6));
+		
+		VideoCompareResult compare = null;
 		try {
 		
 			compare = result.get();

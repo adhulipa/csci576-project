@@ -30,7 +30,7 @@ import edu.usc.csci576.mediaqueries.model.SceneDetector;
 import edu.usc.csci576.mediaqueries.parallel.SCResultType;
 import edu.usc.csci576.mediaqueries.parallel.SceneChecker;
 
-public class VideoComparator implements Callable<MediaCompareResult> {
+public class VideoComparator implements Callable<VideoCompareResult> {
 
 	private static final int NUM_QUERY_FRAMES = 150;
 	private HashMap<String, List<Integer[]>> sceneMap = DataLoader.loadScenes();
@@ -67,10 +67,10 @@ public class VideoComparator implements Callable<MediaCompareResult> {
 	}
 
 	@Override
-	public MediaCompareResult call() throws Exception {
+	public VideoCompareResult call() throws Exception {
 		
 		// Setup
-		MediaCompareResult videoCompareResult = null;
+		VideoCompareResult videoCompareResult = null;
 		ExecutorService executor = Executors
 				.newFixedThreadPool(2);
 		CompletionService<Pair<String, Double>> videoComparatorService = 
@@ -99,7 +99,7 @@ public class VideoComparator implements Callable<MediaCompareResult> {
 		}
 		
 		// finish and return
-		videoCompareResult = new MediaCompareResult();
+		videoCompareResult = new VideoCompareResult();
 		videoCompareResult.scoresMap = result;
 		executor.shutdown();
 		

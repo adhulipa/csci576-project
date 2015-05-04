@@ -4,7 +4,7 @@ import java.util.Map;
 
 import edu.usc.csci576.mediaqueries.model.Scene;
 
-public class MediaCompareResult {
+public class VideoCompareResult {
 
 	Map<String, Double> scoresMap;
 	

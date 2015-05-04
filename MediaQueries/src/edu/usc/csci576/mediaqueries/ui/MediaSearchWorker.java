@@ -13,7 +13,7 @@ import javax.swing.JList;
 import javax.swing.SwingWorker;
 
 import edu.usc.csci576.mediaqueries.controller.MediaComparator;
-import edu.usc.csci576.mediaqueries.controller.MediaCompareResult;
+import edu.usc.csci576.mediaqueries.controller.VideoCompareResult;
 
 public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 
@@ -42,7 +42,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Double>, Void> {
 		
 		wheelImg.setVisible(true);
 		MediaComparator mediaComparator = new MediaComparator();
-		MediaCompareResult result = mediaComparator.run(queryVideoDir, queryVideoName, databaseDirString, databaseVideoNames, databaseDirString);
+		VideoCompareResult result = mediaComparator.run(queryVideoDir, queryVideoName, databaseDirString, databaseVideoNames, databaseDirString);
 		
 		mediaComparator = null;
 		

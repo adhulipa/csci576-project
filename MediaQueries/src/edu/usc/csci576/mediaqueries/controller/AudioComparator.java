@@ -21,7 +21,7 @@ import edu.usc.csci576.mediaqueries.parallel.AudioChecker;
 public class AudioComparator
 {
 
-	private static ArrayList<AudioComparatorResult> getSimilarAudios(
+	public static ArrayList<AudioComparatorResult> getSimilarAudios(
 			String queryWavPath)
 	{
 		ExecutorService audioCheckExecutor = Executors.newFixedThreadPool(1);
