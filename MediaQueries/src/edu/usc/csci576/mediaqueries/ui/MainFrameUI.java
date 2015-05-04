@@ -84,6 +84,10 @@ public class MainFrameUI extends JFrame {
 	
 	
 	private Map<String, SCResultType> resultData = null;
+	protected String queryVideoPathStr;
+	protected String queryAudioPathStr;
+	protected String queryVideoNameStr;
+	protected String queryAudioNameStr;
 	
 	/**
 	 * Launch the application.
@@ -96,7 +100,7 @@ public class MainFrameUI extends JFrame {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 					MainFrameUI frame = new MainFrameUI();
-					frame.displayImages();
+					//frame.displayImages();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -105,9 +109,9 @@ public class MainFrameUI extends JFrame {
 		});
 	}
 
-	protected void displayImages() {
-		byte[] bytes = ImageHandler.readImageFromFile("database/flowers/flowers061.rgb");
-		byte[] qbytes = ImageHandler.readImageFromFile("query/Q5/Q5_001.rgb");
+	protected void displayImages(String query, String result) {
+		byte[] bytes = ImageHandler.readImageFromFile(result);
+		byte[] qbytes = ImageHandler.readImageFromFile(query);
 		
 		BufferedImage originalImg = ImageHandler.toBufferedImage(bytes, 352,
 				288, BufferedImage.TYPE_INT_RGB);
@@ -117,8 +121,8 @@ public class MainFrameUI extends JFrame {
 		queryImageBox.setIcon(new ImageIcon(qoriginalImg));
 		resultImageBox.setIcon(new ImageIcon(originalImg));
 		
-		queryMediaPlayer = new MediaPlayer("Query", "query/Q4", "Q4_", queryImageBox);
-		resultMediaPlayer = new MediaPlayer("Result", "database/interview", "interview", resultImageBox);
+//		queryMediaPlayer = new MediaPlayer("Query", "query/Q4", "Q4_", queryImageBox);
+//		resultMediaPlayer = new MediaPlayer("Result", "database/interview", "interview", resultImageBox);
 	}
 	
 	/**
@@ -176,10 +180,10 @@ public class MainFrameUI extends JFrame {
 				Path queryVideoPath = Paths.get(queryElements[0]);
 				Path queryAudioPath = Paths.get(queryElements[1]);
 				
-				String queryVideoPathStr = queryVideoPath.getParent() == null ? Paths.get("").toAbsolutePath().toString() : queryVideoPath.getParent().toString();
-				String queryAudioPathStr = queryAudioPath.getParent() == null ? Paths.get("").toAbsolutePath().toString() : queryAudioPath.getParent().toString();
-				String queryVideoNameStr = queryVideoPath.getFileName() == null ? null : queryVideoPath.getFileName().toString();
-				String queryAudioNameStr = queryAudioPath.getFileName() == null ? null : queryAudioPath.getFileName().toString();
+				queryVideoPathStr = queryVideoPath.getParent() == null ? Paths.get("").toAbsolutePath().toString() : queryVideoPath.getParent().toString();
+				queryAudioPathStr = queryAudioPath.getParent() == null ? Paths.get("").toAbsolutePath().toString() : queryAudioPath.getParent().toString();
+				queryVideoNameStr = queryVideoPath.getFileName() == null ? null : queryVideoPath.getFileName().toString();
+				queryAudioNameStr = queryAudioPath.getFileName() == null ? null : queryAudioPath.getFileName().toString();
 					
 				if(queryVideoNameStr == null || queryVideoNameStr == null)
 				{
@@ -218,10 +222,20 @@ public class MainFrameUI extends JFrame {
 					
 					String selection = resultList.getSelectedValue().split(":")[0];
 					System.out.println(selection);
+					
 					int idx = resultData.get(selection).getBestMatchedFrameIdx();
+					
 					resultMediaPlayer = new MediaPlayer("Result", "database/"+selection, selection, resultImageBox);
-					resultMediaPlayer.getVideoPlayer().setCurrentFrame(idx);
+					
+					//float timePos = resultData.get(selection).getAudioMostSimilarTimePosition();
+					resultMediaPlayer.setFrameAfterQuery(idx, idx/30);
 					seekBar.setValue(idx/30);
+					
+					String result = String.format("%s/%s%03d.rgb", "database/"+selection, selection, idx);
+					String query = String.format("%s/%s001.rgb", queryVideoPathStr, queryVideoNameStr);
+					displayImages(query, result);
+					
+					queryMediaPlayer = new MediaPlayer("Query", queryVideoPathStr, queryVideoNameStr, queryImageBox);
 				}
 			}
 		});

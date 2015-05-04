@@ -35,6 +35,7 @@ public class AudioPlayer
 	private Clip clip = null;
 	
 	private final int EXTERNAL_BUFFER_SIZE = 32768; // 4Kb
+	private long microsec = 0;
 	
 	public AudioPlayer(String threadName, String filepath) {
 		int lastsep = filepath.lastIndexOf("/");
@@ -42,6 +43,7 @@ public class AudioPlayer
 		this.threadName = threadName;
 		this.filepath = filepath;
 		this.filename = filepath.substring(lastsep + 1);
+		
 	}
 	public void setAudioPath(String filepath, String fileName) {
 		stopAudio();
@@ -94,7 +96,7 @@ public class AudioPlayer
 			initAudio();
 
 		/* Start the music */
-
+		clip.setMicrosecondPosition(this.microsec); 
 		clip.start();
 
 
@@ -136,6 +138,11 @@ public class AudioPlayer
 	// Convert scrubIndex (which is video position in seconds) to microseconds
 		clip.setMicrosecondPosition(scrubIndex * 1000000);		
 		
+	}
+	
+	public void setAudioAtTime(long microsec)
+	{
+		this.microsec = microsec * 1000000;
 	}
 }
 
