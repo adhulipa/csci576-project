@@ -114,6 +114,11 @@ public class MainFrameUI extends JFrame {
 		resultMediaPlayer = new MediaPlayer("Result", "database/interview", "interview", resultImageBox);
 	}
 	
+	public String[] getQueryVideoList() {
+		String[] queryListData = {"Mov 1 - 90%","Mov 31 - 87%","Mov 11 - 61%","Mov 12 - 14%"};
+		return queryListData;
+	}
+	
 	/**
 	 * Create the frame.
 	 */
