@@ -155,7 +155,7 @@ public class MainFrameUI extends JFrame {
 		mainPanel.add(btnSearch);
 		
 		final JLabel wheelImg = new JLabel();
-		wheelImg.setBounds(150, 100, 40, 40);
+		wheelImg.setBounds(144, 83, 40, 40);
 		wheelImg.setIcon(new ImageIcon("ajax-loader.gif"));
 		mainPanel.add(wheelImg);
 		wheelImg.setVisible(false);
