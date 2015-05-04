@@ -81,7 +81,6 @@ public class MainFrameUI extends JFrame {
 	
 	
 	private Map<String, SCResultType> resultData = null;
-	
 	/**
 	 * Launch the application.
 	 */

@@ -39,7 +39,9 @@ public static void main(String[] args) throws InterruptedException, ExecutionExc
 	}
 
 public VideoCompareResult run(String queryDir, String queryVideoString, String databaseDir, 
-		String[] databaseVideoNames, String databaseDirString) {
+		String[] databaseVideoNames, String databaseDirString, 
+		String queryAudioDir,
+		String queryAudioName) {
 		
 		
 //		String databaseDirString = "database/";
@@ -53,8 +55,13 @@ public VideoCompareResult run(String queryDir, String queryVideoString, String d
 		ExecutorService worker = Executors.newFixedThreadPool(1);
 		Future<VideoCompareResult> result = worker.submit(videoTask);
 		
+//		List<AudioComparatorResult> audioResults = 
+//				AudioComparator.getSimilarAudios(queryDir 
+//						+ "/" + queryDir.substring(6) + ".wav");
+//		
 		List<AudioComparatorResult> audioResults = 
-				AudioComparator.getSimilarAudios(queryDir+queryDir.substring(6));
+				AudioComparator.getSimilarAudios(
+						queryAudioDir+"/"+queryAudioName);
 		
 		VideoCompareResult compare = null;
 		try {

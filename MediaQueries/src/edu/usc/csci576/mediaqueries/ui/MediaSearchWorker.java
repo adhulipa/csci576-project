@@ -37,8 +37,10 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 		
 		this.queryVideoDir = queryVideoDir;
 		this.queryVideoName = queryVideoName;
+		
 		this.queryAudioDir = queryAudioDir;
 		this.queryAudioName = queryAudioName;
+		
 		this.list = resultList;
 		this.wheelImg = wheelImg;
 		
@@ -50,7 +52,14 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 		
 		wheelImg.setVisible(true);
 		MediaComparator mediaComparator = new MediaComparator();
-		VideoCompareResult result = mediaComparator.run(queryVideoDir, queryVideoName, databaseDirString, databaseVideoNames, databaseDirString);
+		VideoCompareResult result = 
+				mediaComparator.run(queryVideoDir, 
+						queryVideoName, 
+						databaseDirString, 
+						databaseVideoNames, 
+						databaseDirString, 
+						queryAudioDir,
+						queryAudioName);
 		
 		mediaComparator = null;
 		
@@ -59,7 +68,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 		Map<String, SCResultType> sceneScoreMap = result.getBestMatchedScene();
 		Map<String, Double> scoreMap = result.getScoresMap();
 		
-		Map<String, Pair<Double, SCResultType>> finalResult = new HashMap<>();
+		Map<String, Pair<Double, SCResultType>> finalResult = new TreeMap<>();
 		for (String key : scoreMap .keySet()) {
 			Double score = scoreMap.get(key);
 			SCResultType sceneResult = sceneScoreMap.get(key);
