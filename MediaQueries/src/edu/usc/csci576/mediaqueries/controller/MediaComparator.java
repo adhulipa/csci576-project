@@ -19,9 +19,9 @@ public static void main(String[] args) throws InterruptedException, ExecutionExc
 				databaseVideoNames, queryDir, queryVideoString);
 		
 		ExecutorService worker = Executors.newSingleThreadExecutor();
-		Future<VideoCompareResult> result = worker.submit(videoTask);
+		Future<MediaCompareResult> result = worker.submit(videoTask);
 		
-		VideoCompareResult compare = result.get();
+		MediaCompareResult compare = result.get();
 		
 		System.out.println(compare.scoresMap);
 		
@@ -30,7 +30,7 @@ public static void main(String[] args) throws InterruptedException, ExecutionExc
 		return;
 	}
 
-public VideoCompareResult run(String queryDir, String queryVideoString, String databaseDir, 
+public MediaCompareResult run(String queryDir, String queryVideoString, String databaseDir, 
 		String[] databaseVideoNames, String databaseDirString) {
 		
 		
@@ -43,14 +43,12 @@ public VideoCompareResult run(String queryDir, String queryVideoString, String d
 				databaseVideoNames, queryDir, queryVideoString);
 		
 		ExecutorService worker = Executors.newSingleThreadExecutor();
-		Future<VideoCompareResult> result = worker.submit(videoTask);
+		Future<MediaCompareResult> result = worker.submit(videoTask);
 		
-		VideoCompareResult compare = null;
+		MediaCompareResult compare = null;
 		try {
 		
 			compare = result.get();
-		
-		
 		
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
