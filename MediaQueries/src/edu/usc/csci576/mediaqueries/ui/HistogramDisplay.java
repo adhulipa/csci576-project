@@ -38,11 +38,11 @@ public class HistogramDisplay
 		Mat b_hist = new Mat();
 
 		List<Mat> channels = RGBHistogram.getRGBMat(filePath, width, height);
-		Imgproc.calcHist(channels, new MatOfInt(0), new Mat(), r_hist, histSize,
+		Imgproc.calcHist(channels, new MatOfInt(2), new Mat(), r_hist, histSize,
 				histRange, accumulate);
 		Imgproc.calcHist(channels, new MatOfInt(1), new Mat(), g_hist, histSize,
 				histRange, accumulate);
-		Imgproc.calcHist(channels, new MatOfInt(2), new Mat(), b_hist, histSize,
+		Imgproc.calcHist(channels, new MatOfInt(0), new Mat(), b_hist, histSize,
 				histRange, accumulate);
 
 		int hist_w = 400;
