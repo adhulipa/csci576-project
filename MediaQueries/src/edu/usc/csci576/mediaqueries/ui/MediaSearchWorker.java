@@ -2,7 +2,9 @@ package edu.usc.csci576.mediaqueries.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -87,6 +89,7 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void done() {
 		try {
@@ -107,7 +110,12 @@ public class MediaSearchWorker extends SwingWorker<Map<String, Pair<Double, SCRe
 				
 			}
 			
-			for (Pair each : listDataSorted) {
+			List<Pair> list2 = new ArrayList<>();
+			list2.addAll(listDataSorted);
+			Collections.sort(list2);
+			Collections.reverse(list2);
+			
+			for (Pair each : list2) {
 				listData.add(each.getRight() + ": " + String.format("%.2f", each.getLeft()) + "%");
 			}
 			
