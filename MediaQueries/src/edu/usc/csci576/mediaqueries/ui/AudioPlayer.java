@@ -37,12 +37,12 @@ public class AudioPlayer
 	private final int EXTERNAL_BUFFER_SIZE = 32768; // 4Kb
 	private long microsec = 0;
 	
-	public AudioPlayer(String threadName, String filepath) {
-		int lastsep = filepath.lastIndexOf("/");
+	public AudioPlayer(String threadName, String filepath, String filename) {
+		//int lastsep = filepath.lastIndexOf("/");
 		
 		this.threadName = threadName;
 		this.filepath = filepath;
-		this.filename = filepath.substring(lastsep + 1);
+		this.filename = filename;
 		
 	}
 	public void setAudioPath(String filepath, String fileName) {

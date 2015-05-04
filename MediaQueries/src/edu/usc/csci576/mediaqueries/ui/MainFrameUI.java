@@ -225,7 +225,7 @@ public class MainFrameUI extends JFrame {
 					
 					int idx = resultData.get(selection).getBestMatchedFrameIdx();
 					
-					resultMediaPlayer = new MediaPlayer("Result", "database/"+selection, selection, resultImageBox);
+					resultMediaPlayer = new MediaPlayer("Result", "database/"+selection, selection, "database/"+selection, selection, resultImageBox);
 					
 					//float timePos = resultData.get(selection).getAudioMostSimilarTimePosition();
 					resultMediaPlayer.setFrameAfterQuery(idx, idx/30);
@@ -235,7 +235,12 @@ public class MainFrameUI extends JFrame {
 					String query = String.format("%s/%s001.rgb", queryVideoPathStr, queryVideoNameStr);
 					displayImages(query, result);
 					
-					queryMediaPlayer = new MediaPlayer("Query", queryVideoPathStr, queryVideoNameStr, queryImageBox);
+					queryMediaPlayer = new MediaPlayer("Query", 
+																queryVideoPathStr, 
+																queryVideoNameStr, 
+																queryAudioPathStr, 
+																queryAudioNameStr.substring(0, queryAudioNameStr.indexOf('.')), 
+																queryImageBox);
 				}
 			}
 		});
@@ -419,7 +424,7 @@ public class MainFrameUI extends JFrame {
 		
 		queryRGBBox = new JLabel();
 		queryRGBPanel.add(queryRGBBox, BorderLayout.CENTER);		
-		queryRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo555.rgb", 352, 288, 100, 300)));
+		queryRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo555.rgb", 352, 288, 100, 300, 0, 0)));
 		queryRGBTextLabel = new JLabel("Query RGB Histogram");
 		queryRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
 		queryRGBPanel.add(queryRGBTextLabel);
@@ -429,7 +434,7 @@ public class MainFrameUI extends JFrame {
 		resultRGBPanel.setBounds(453, 181, 300, 100);		
 		resultRGBBox = new JLabel();
 		resultRGBPanel.add(resultRGBBox, BorderLayout.CENTER);		
-		resultRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo556.rgb", 352, 288, 100, 300)));
+		resultRGBBox.setIcon(new ImageIcon(HistogramDisplay.getImage("database/musicvideo/musicvideo556.rgb", 352, 288, 100, 300, 0, 0)));
 		resultRGBTextLabel = new JLabel("Result RGB Histogram");
 		resultRGBTextLabel.setFont(new Font("Arial", Font.PLAIN, 20));
 		resultRGBPanel.add(resultRGBTextLabel);

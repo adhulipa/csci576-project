@@ -6,9 +6,9 @@ public class MediaPlayer {
 	private VideoPlayer videoPlayer;
 	private AudioPlayer audioPlayer;
 	
-	public MediaPlayer(String threadName, String filepath, String fileName, JLabel imgBox) {
-		setVideoPlayer(new VideoPlayer(threadName, filepath, fileName, imgBox));
-		setAudioPlayer(new AudioPlayer(threadName, filepath));
+	public MediaPlayer(String threadName, String videofilepath, String videofileName, String audiofilepath, String audiofilename, JLabel imgBox) {
+		setVideoPlayer(new VideoPlayer(threadName, videofilepath, videofileName, imgBox));
+		setAudioPlayer(new AudioPlayer(threadName, audiofilepath, audiofilename));
 	}
 	
 	public void playMedia() {
