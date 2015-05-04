@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -155,7 +156,7 @@ public class MainFrameUI extends JFrame {
 		mainPanel.add(btnSearch);
 		
 		final JLabel wheelImg = new JLabel();
-		wheelImg.setBounds(144, 83, 40, 40);
+		wheelImg.setBounds(145, 83, 40, 40);
 		wheelImg.setIcon(new ImageIcon("ajax-loader.gif"));
 		mainPanel.add(wheelImg);
 		wheelImg.setVisible(false);
@@ -276,9 +277,16 @@ public class MainFrameUI extends JFrame {
 									0.0,
 									1.0)));
 					
-					
 					queryRGBBox.setVisible(true);
-					resultRGBBox.setVisible(true);
+ 					resultRGBBox.setVisible(true);
+					queryRGBPanel.setVisible(true);
+					resultRGBPanel.setVisible(true);
+					seekBar.setVisible(true);
+					
+					queryVideoWrapper.setVisible(true);
+					resultVideoWrapper.setVisible(true);
+					
+					
 					
 				}
 			}
@@ -475,9 +483,15 @@ public class MainFrameUI extends JFrame {
 		queryBtnPause.setEnabled(false);
 		queryBtnStop.setEnabled(false);
 		
+		
+		
 		queryRGBBox.setVisible(false);
 		resultRGBBox.setVisible(false);
-		
+		seekBar.setVisible(false);
+		queryRGBPanel.setVisible(false);
+		resultRGBPanel.setVisible(false);
+		queryRGBBox.setVisible(false);
+		resultRGBBox.setVisible(false);
 		
 	}
 }

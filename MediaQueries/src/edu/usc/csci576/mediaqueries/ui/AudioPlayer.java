@@ -96,7 +96,11 @@ public class AudioPlayer
 			initAudio();
 
 		/* Start the music */
-		clip.setMicrosecondPosition(this.microsec); 
+		if(this.microsec != 0)
+		{
+			clip.setMicrosecondPosition(this.microsec); 
+			this.microsec = 0;
+		}
 		clip.start();
 
 
@@ -115,7 +119,7 @@ public class AudioPlayer
 		clip.stop();
 		clip.drain();
 		clip.close();
-		
+		this.microsec = 0;
 		state = 0;
 	}
 	
