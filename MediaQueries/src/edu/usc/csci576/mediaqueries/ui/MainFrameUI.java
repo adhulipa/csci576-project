@@ -44,6 +44,8 @@ import java.util.Map;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class MainFrameUI extends JFrame {
 
@@ -208,6 +210,15 @@ public class MainFrameUI extends JFrame {
 		
 		
 		resultList = new JList<String>();
+		resultList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting()) {
+					String selection = resultList.getSelectedValue().split(":")[0];
+					System.out.println(selection);
+				}
+			}
+		});
+		
 		resultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		resultList.setBounds(469, 44, 235, 110);
 		//String[] ResultListData = {"Mov 1 - 90%","Mov 31 - 87%","Mov 11 - 61%","Mov 12 - 14%"};
