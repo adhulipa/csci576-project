@@ -24,7 +24,8 @@ import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 
 public class HistogramDisplay
 {	
-	public static BufferedImage getDiffImage(String resultFilePath, String queryFilePath, int height, int width, int panelHeight, int panelWidth)
+	public static BufferedImage getDiffImage(String resultFilePath, String queryFilePath,
+			int height, int width, int panelHeight, int panelWidth, double audioSimNumber, double audioSimMaxValue)
 	{
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
@@ -103,7 +104,8 @@ public class HistogramDisplay
 		return hist;		
 	}
 	
-	public static BufferedImage getImage(String filePath, int height, int width, int panelHeight, int panelWidth)
+	public static BufferedImage getImage(String filePath, int height, int width, int panelHeight,
+			int panelWidth, double audioSimNumber, double audioSimMaxValue)
 	{
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		MatOfInt histSize = new MatOfInt(256);
@@ -165,6 +167,15 @@ public class HistogramDisplay
 					new Scalar(255, 153, 51), 2, 8, 0);
 
 		}
+
+		double normal = audioSimNumber/audioSimMaxValue;
+		long intensity = Math.round(normal * hist_h);
+		Core.line(
+				histImage,
+				new Point(0, hist_h - intensity),
+				new Point(hist_w, hist_h - intensity),
+				new Scalar(0, 0, 0), 2, 8, 0);
+
 
 
 		BufferedImage hist = ImageHandler.toBufferedImage(histImage);
