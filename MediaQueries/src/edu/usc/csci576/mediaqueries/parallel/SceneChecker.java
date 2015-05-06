@@ -84,7 +84,7 @@ public class SceneChecker implements Callable<SCResultType> {
 	}
 
 	
-	private SCResultType doFirstFrameComparison() throws InterruptedException, ExecutionException {
+	private SCResultType doFirstFrameComparison()  {
 		frameCheckExecutor = Executors.newFixedThreadPool(1);
 		//frameCheckExecutor = Executors.newSingleThreadExecutor();
 		
@@ -121,7 +121,17 @@ public class SceneChecker implements Callable<SCResultType> {
 		
 		for (int i = 0; i < frameCheckResults.size(); i++) {
 			r = frameCheckResults.get(i);
-			resultsHeap.offer(r.get());			
+			try {
+				resultsHeap.offer(r.get());
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				frameCheckExecutor.shutdownNow();
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				frameCheckExecutor.shutdownNow();
+				e.printStackTrace();
+			}			
 		}
 		
 		// Now, get the best matched frames
@@ -178,8 +188,19 @@ public class SceneChecker implements Callable<SCResultType> {
 		double matchPercent = 0;
 		for (int i = 0; i < frameCheckResults.size(); i++) {
 			
-			item = frameCheckResults.get(i).get();
-			matchPercent += item.getMatchpercent();
+			try {
+				item = frameCheckResults.get(i).get();
+				matchPercent += item.getMatchpercent();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				frameCheckExecutor.shutdownNow();
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				frameCheckExecutor.shutdownNow();
+				e.printStackTrace();
+			}
+			
 			/*System.out.println(
 					
 					item.getTargetVideoName() + "" + item.getTargetFrameIdx() +

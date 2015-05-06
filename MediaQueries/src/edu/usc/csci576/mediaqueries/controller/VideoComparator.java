@@ -73,7 +73,7 @@ public class VideoComparator implements Callable<VideoCompareResult> {
 		// Setup
 		VideoCompareResult videoCompareResult = null;
 		ExecutorService executor = Executors
-				.newFixedThreadPool(3);
+				.newFixedThreadPool(4);
 		CompletionService<Pair<String, SCResultType>> videoComparatorService = 
 				new ExecutorCompletionService<Pair<String, SCResultType>>(
 				executor);

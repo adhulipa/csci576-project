@@ -490,8 +490,8 @@ public class MainFrameUI extends JFrame {
 		seekBar.setVisible(false);
 		queryRGBPanel.setVisible(false);
 		resultRGBPanel.setVisible(false);
-		queryRGBBox.setVisible(false);
-		resultRGBBox.setVisible(false);
+		queryVideoWrapper.setVisible(false);
+		resultVideoWrapper.setVisible(false);
 		
 	}
 }

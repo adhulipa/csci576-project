@@ -121,7 +121,7 @@ public class VideoPlayer implements Runnable {
 			setCurrentFrameToImageBox();
 			try {
 				//Thread.sleep(21);
-				TimeUnit.MICROSECONDS.sleep(21379);
+				TimeUnit.MICROSECONDS.sleep(25359);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
