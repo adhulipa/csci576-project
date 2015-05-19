@@ -11,7 +11,7 @@ import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 import edu.usc.csci576.mediaqueries.data.ImageHandler;
-import edu.usc.csci576.mediaqueries.model.RGBHistogram;
+import edu.usc.csci576.mediaqueries.descriptor.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.Scene;
 import edu.usc.csci576.mediaqueries.ui.ViewFrame;
 

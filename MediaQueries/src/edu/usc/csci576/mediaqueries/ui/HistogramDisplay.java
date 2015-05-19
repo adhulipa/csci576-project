@@ -20,7 +20,7 @@ import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 import edu.usc.csci576.mediaqueries.data.ImageHandler;
-import edu.usc.csci576.mediaqueries.model.RGBHistogram;
+import edu.usc.csci576.mediaqueries.descriptor.RGBHistogram;
 
 public class HistogramDisplay
 {	

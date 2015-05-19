@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.opencv.core.Mat;
 
-import edu.usc.csci576.mediaqueries.model.RGBHistogram;
+import edu.usc.csci576.mediaqueries.descriptor.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.SceneDetector;
 
 public class DataLoader {

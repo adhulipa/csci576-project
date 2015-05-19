@@ -1,4 +1,4 @@
-package edu.usc.csci576.mediaqueries.model;
+package edu.usc.csci576.mediaqueries.descriptor;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

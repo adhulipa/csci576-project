@@ -20,8 +20,8 @@ import javax.naming.ConfigurationException;
 import org.opencv.core.Mat;
 
 import edu.usc.csci576.mediaqueries.controller.CompareFrames;
+import edu.usc.csci576.mediaqueries.descriptor.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.Frame;
-import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.Scene;
 
 public class SceneChecker implements Callable<SCResultType> {

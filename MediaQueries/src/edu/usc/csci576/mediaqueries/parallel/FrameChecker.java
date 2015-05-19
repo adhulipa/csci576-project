@@ -13,8 +13,8 @@ import org.opencv.core.Mat;
 
 import edu.usc.csci576.mediaqueries.controller.CompareFrames;
 import edu.usc.csci576.mediaqueries.data.DataLoader;
+import edu.usc.csci576.mediaqueries.descriptor.RGBHistogram;
 import edu.usc.csci576.mediaqueries.model.Frame;
-import edu.usc.csci576.mediaqueries.model.RGBHistogram;
 
 public class FrameChecker implements Callable<FCResultType> {
 
