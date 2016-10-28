@@ -24,3 +24,7 @@ TODO:
 To investigate:
 Region of interest of frames - offline & generate online images
 Optical flow
+
+
+## Screenshot
+![alt tag](https://github.com/adhulipa/csci576-project/blob/master/screenshot.png)
